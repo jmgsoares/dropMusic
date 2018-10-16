@@ -9,9 +9,5 @@
         <module name="multicastserver" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="dropmusic" target="1.8" />
-      <module name="multicastserver" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

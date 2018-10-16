@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/dropmusic.iml" filepath="$PROJECT_DIR$/dropmusic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/multicastserver/multicastserver.iml" filepath="$PROJECT_DIR$/multicastserver/multicastserver.iml" />
+    </modules>
+  </component>
+</project>
