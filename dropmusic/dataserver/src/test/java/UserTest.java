@@ -1,5 +1,5 @@
 import org.junit.Test;
-import pt.onept.dropmusic.multicastserver.datatype.User;
+import pt.onept.dropmusic.dataserver.datatype.User;
 
 public class UserTest {
     User t0 = new User()
