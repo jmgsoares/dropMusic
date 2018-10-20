@@ -1,4 +1,4 @@
-package pt.onept.dropmusic.multicastserver.datatype;
+package pt.onept.dropmusic.dataserver.datatype;
 
 public class Song {
     private String name;

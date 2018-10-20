@@ -1,4 +1,4 @@
-package pt.onept.dropmusic.multicastserver.communications;
+package pt.onept.dropmusic.dataserver.communications;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

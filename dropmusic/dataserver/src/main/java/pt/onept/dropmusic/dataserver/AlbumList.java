@@ -1,6 +1,6 @@
-package pt.onept.dropmusic.multicastserver;
+package pt.onept.dropmusic.dataserver;
 
-import pt.onept.dropmusic.multicastserver.datatype.Album;
+import pt.onept.dropmusic.dataserver.datatype.Album;
 
 import java.util.ArrayList;
 import java.util.List;

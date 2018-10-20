@@ -1,7 +1,7 @@
-package pt.onept.dropmusic.multicastserver;
+package pt.onept.dropmusic.dataserver;
 
-import pt.onept.dropmusic.multicastserver.datatype.PlayList;
-import pt.onept.dropmusic.multicastserver.datatype.User;
+import pt.onept.dropmusic.dataserver.datatype.PlayList;
+import pt.onept.dropmusic.dataserver.datatype.User;
 
 import java.util.HashMap;
 import java.util.HashSet;
