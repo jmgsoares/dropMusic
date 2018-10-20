@@ -1,7 +1,6 @@
 userRegister - password, nome, email(username), iseditor
 
-userEdit - 
-	operation - passwordchange - email, pwdOld, pwdNew
+userEdit - operation - passwordchange - email, pwdOld, pwdNew
 				editor - yes/no
 
 userLogin - email, password
