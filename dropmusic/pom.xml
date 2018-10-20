@@ -15,6 +15,7 @@
         <module>dataserver</module>
         <module>server</module>
         <module>client</module>
+        <module>common</module>
     </modules>
     <dependencies>
         <dependency>
