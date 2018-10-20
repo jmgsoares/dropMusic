@@ -12,7 +12,9 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
-        <module>multicastserver</module>
+        <module>dataserver</module>
+        <module>server</module>
+        <module>client</module>
     </modules>
     <dependencies>
         <dependency>
