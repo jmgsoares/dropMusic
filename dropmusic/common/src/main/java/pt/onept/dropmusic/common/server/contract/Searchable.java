@@ -4,10 +4,17 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * Manage platform Albums
+ * Searchable interface of type  T
  * @author João Soares
  * @version 1e-1024
  */
 public interface Searchable<T> {
-    List<T> search(String query) throws RemoteException;
+
+	/**
+	 * Search
+	 * @param query string to search for
+	 * @return List of objects of type T
+	 * @throws RemoteException if failed to execute the operation
+	 */
+	List<T> search(String query) throws RemoteException;
 }

@@ -1,34 +1,35 @@
 package pt.onept.dropmusic.common.server.contract.subcontract;
 
-import pt.onept.dropmusic.common.exception.DuplicatedException;
-import pt.onept.dropmusic.common.exception.IncompleteException;
+
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.dropmusic.common.server.contract.Crudable;
+import pt.onept.dropmusic.common.server.contract.type.Notification;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * Manage platform users
  * @author João Soares
  * @version 1e-1024
  */
-public interface UserManagerInterface extends Remote {
+public interface UserManagerInterface extends Remote, Crudable<User> {
 
     /**
-     * user login
+     * User login
      * @param user to login with
-     * @throws RemoteException
-     * @throws UnauthorizedException
+     * @throws RemoteException if the operation failed to execute
+     * @throws UnauthorizedException if the login isn't successful
      */
-    public void login(User user) throws RemoteException, UnauthorizedException;
+    void login(User user) throws RemoteException, UnauthorizedException;
 
-    /**
-     * register User
-     * @param user to register
-     * @throws RemoteException
-     * @throws DuplicatedException
-     * @throws IncompleteException
-     */
-    public void register(User user) throws RemoteException, DuplicatedException, IncompleteException;
+	/**
+	 * Get the user stored notifications on the server
+	 * @param user the user to get the stored notifications
+	 * @return the list of unread notifications for the user
+	 * @throws RemoteException if the operation failed to execute
+	 */
+	List<Notification> getNotifications(User user) throws RemoteException;
 }
