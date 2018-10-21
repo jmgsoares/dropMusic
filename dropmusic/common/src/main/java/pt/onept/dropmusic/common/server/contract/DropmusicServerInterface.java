@@ -5,6 +5,7 @@ import pt.onept.dropmusic.common.server.contract.subcontract.ArtistManagerInterf
 import pt.onept.dropmusic.common.server.contract.subcontract.MusicManagerInterface;
 import pt.onept.dropmusic.common.server.contract.subcontract.UserManagerInterface;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -14,7 +15,7 @@ import java.rmi.RemoteException;
  * @version 1e-1024
  */
 
-public interface DropmusicServerInterface extends Remote {
+public interface DropmusicServerInterface extends Remote, Serializable {
     /**
      * @return the user manager
      * @throws RemoteException if failed to execute the operation

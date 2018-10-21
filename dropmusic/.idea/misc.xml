@@ -12,9 +12,6 @@
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/client/pom.xml" />
-        <option value="$PROJECT_DIR$/pepefrog/pom.xml" />
-        <option value="$PROJECT_DIR$/server/pom.xml" />
       </set>
     </option>
   </component>

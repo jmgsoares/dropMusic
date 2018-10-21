@@ -4,6 +4,7 @@ import pt.onept.dropmusic.common.exception.NotFoundException;
 import pt.onept.dropmusic.common.server.contract.type.File;
 import pt.onept.dropmusic.common.server.contract.type.Music;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -12,7 +13,7 @@ import java.rmi.RemoteException;
  * @author João Soares
  * @version 1e-1024
  */
-public interface FileManagerInterface extends Remote {
+public interface FileManagerInterface extends Remote, Serializable {
 
 	/**
 	 * Get the server address where to upload the file

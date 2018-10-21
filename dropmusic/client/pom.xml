@@ -8,9 +8,13 @@
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>server</artifactId>
+    <artifactId>client</artifactId>
     <dependencies>
+        <dependency>
+            <groupId>com.googlecode.clichemaven</groupId>
+            <artifactId>cliche</artifactId>
+            <version>110413</version>
+        </dependency>
         <dependency>
             <groupId>pt.onept</groupId>
             <artifactId>common</artifactId>
@@ -18,6 +22,4 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
-
 </project>

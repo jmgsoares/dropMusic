@@ -1,5 +1,6 @@
 package pt.onept.dropmusic.common.client.contract;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -8,7 +9,7 @@ import java.rmi.RemoteException;
  * @author João Soares
  * @version 1e-1024
  */
-public interface Notifiable extends Remote {
+public interface Notifiable extends Remote, Serializable {
 
     /**
      * Notify client on real-time (Callback)
