@@ -4,6 +4,7 @@ import pt.onept.dropmusic.common.server.contract.Crudable;
 import pt.onept.dropmusic.common.server.contract.type.Album;
 import pt.onept.dropmusic.common.server.contract.type.Review;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author João Soares
  * @version 1e-1024
  */
-public interface ReviewManagerInterface extends Remote, Crudable<Review> {
+public interface ReviewManagerInterface extends Remote, Crudable<Review>, Serializable {
 
     /**
      * @param album the album to get reviews from

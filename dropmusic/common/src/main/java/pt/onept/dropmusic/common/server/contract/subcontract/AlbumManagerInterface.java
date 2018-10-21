@@ -4,6 +4,7 @@ import pt.onept.dropmusic.common.server.contract.Crudable;
 import pt.onept.dropmusic.common.server.contract.Searchable;
 import pt.onept.dropmusic.common.server.contract.type.Album;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -12,7 +13,7 @@ import java.rmi.RemoteException;
  * @author João Soares
  * @version 1e-1024
  */
-public interface AlbumManagerInterface extends Remote, Crudable<Album>, Searchable<Album> {
+public interface AlbumManagerInterface extends Remote, Crudable<Album>, Searchable<Album>, Serializable {
     /**
      * @return the review manager
      * @throws RemoteException if failed to execute the operation
