@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
  * @author João Soares
  * @version 1e-1024
  */
-public interface DropmusicClientInterface extends Remote {
+public interface Notifiable extends Remote {
 
     /**
      * Notify client
@@ -16,5 +16,5 @@ public interface DropmusicClientInterface extends Remote {
      * @return the sucess of the operation
      * @throws RemoteException if failed to execute the operation
      */
-    public boolean notifyClient(String msg) throws RemoteException;
+    public boolean notify(String msg) throws RemoteException;
 }
