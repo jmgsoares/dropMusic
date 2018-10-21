@@ -16,6 +16,7 @@ public interface ArtistManagerInterface extends Remote {
      * Add artist
      * @param artist artist to insert
      * @return the success of the operation
+     * @throws RemoteException if failed to execute the operation
      */
     public boolean insertArtist(Artist artist) throws RemoteException;
 
@@ -23,6 +24,7 @@ public interface ArtistManagerInterface extends Remote {
      * Remove artist
      * @param artist artist to remove
      * @return the success of the operation
+     * @throws RemoteException if failed to execute the operation
      */
     public boolean removeArtist(Artist artist) throws RemoteException;
 
@@ -30,6 +32,7 @@ public interface ArtistManagerInterface extends Remote {
      * Edit artist
      * @param artist the artist to remove
      * @return the success of the operation
+     * @throws RemoteException if failed to execute the operation
      */
     public boolean editArtist(Artist artist) throws RemoteException;
 }
