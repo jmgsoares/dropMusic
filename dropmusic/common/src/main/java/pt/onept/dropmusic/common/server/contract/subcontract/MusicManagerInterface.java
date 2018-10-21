@@ -13,23 +13,26 @@ import java.rmi.RemoteException;
 public interface MusicManagerInterface extends Remote {
 
     /**
-     * insert music
+     * Insert music
      * @param music the music to insert
      * @return the success of the operation
+     * @throws RemoteException if failed to execute the operation
      */
     public boolean insert(Music music) throws RemoteException;
 
     /**
-     * remove music
+     * Remove music
      * @param music the music to remove
      * @return the success of the operation
+     * @throws RemoteException if failed to execute the operation
      */
     public boolean remove(Music music) throws RemoteException;
 
     /**
-     * edit music
+     * Edit music
      * @param music the edited music
      * @return the success of the operation
+     * @throws RemoteException if failed to execute the operation
      */
     public boolean edit(Music music) throws RemoteException;
 }

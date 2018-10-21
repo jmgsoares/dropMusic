@@ -6,6 +6,7 @@ import pt.onept.dropmusic.common.server.contract.subcontract.MusicManagerInterfa
 import pt.onept.dropmusic.common.server.contract.subcontract.UserManagerInterface;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * Manage the DropMusic platform
@@ -16,21 +17,25 @@ import java.rmi.Remote;
 public interface DropmusicServerInterface extends Remote {
     /**
      * @return the user manager
+     * @throws RemoteException if failed to execute the operation
      */
-    public UserManagerInterface user();
+    public UserManagerInterface user() throws RemoteException;
 
     /**
      * @return the album manager
+     * @throws RemoteException if failed to execute the operation
      */
-    public AlbumManagerInterface album();
+    public AlbumManagerInterface album() throws RemoteException;
 
     /**
      * @return the music manager
+     * @throws RemoteException if failed to execute the operation
      */
-    public MusicManagerInterface music();
+    public MusicManagerInterface music() throws RemoteException;
 
     /**
      * @return the artist manager
+     * @throws RemoteException if failed to execute the operation
      */
-    public ArtistManagerInterface artist();
+    public ArtistManagerInterface artist() throws RemoteException;
 }

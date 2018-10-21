@@ -18,6 +18,7 @@ public interface ReviewManagerInterface extends Remote {
      * insert review
      * @param review the review to insert
      * @return the success of the operation
+     * @throws RemoteException if failed to execute the operation
      */
     public boolean insert(Review review) throws RemoteException;
 
@@ -25,6 +26,7 @@ public interface ReviewManagerInterface extends Remote {
      *
      * @param album the album to get reviews from
      * @return the list of reviews
+     * @throws RemoteException if failed to execute the operation
      */
     public List<Review> get(Album album) throws RemoteException;
 }
