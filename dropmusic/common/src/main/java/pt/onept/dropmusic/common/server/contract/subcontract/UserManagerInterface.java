@@ -3,6 +3,7 @@ package pt.onept.dropmusic.common.server.contract.subcontract;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * Manage platform users
@@ -16,12 +17,12 @@ public interface UserManagerInterface extends Remote {
      * @param user user to login with
      * @return the success of the operation
      */
-    public boolean login(User user);
+    public boolean login(User user) throws RemoteException;
 
     /**
      * register User
      * @param user the user to register
      * @return the success of the operation
      */
-    public boolean register(User user);
+    public boolean register(User user) throws RemoteException;
 }

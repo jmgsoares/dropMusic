@@ -3,6 +3,7 @@ package pt.onept.dropmusic.common.server.contract.subcontract;
 import pt.onept.dropmusic.common.server.contract.type.Music;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * Manage the platform musics
@@ -16,19 +17,19 @@ public interface MusicManagerInterface extends Remote {
      * @param music the music to insert
      * @return the success of the operation
      */
-    public boolean insert(Music music);
+    public boolean insert(Music music) throws RemoteException;
 
     /**
      * remove music
      * @param music the music to remove
      * @return the success of the operation
      */
-    public boolean remove(Music music);
+    public boolean remove(Music music) throws RemoteException;
 
     /**
      * edit music
      * @param music the edited music
-     * @return
+     * @return the success of the operation
      */
-    public boolean edit(Music music);
+    public boolean edit(Music music) throws RemoteException;
 }
