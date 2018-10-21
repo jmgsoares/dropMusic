@@ -19,23 +19,23 @@ public interface DropmusicServerInterface extends Remote {
      * @return the user manager
      * @throws RemoteException if failed to execute the operation
      */
-    public UserManagerInterface user() throws RemoteException;
+    UserManagerInterface user() throws RemoteException;
 
     /**
      * @return the album manager
      * @throws RemoteException if failed to execute the operation
      */
-    public AlbumManagerInterface album() throws RemoteException;
+    AlbumManagerInterface album() throws RemoteException;
 
     /**
      * @return the music manager
      * @throws RemoteException if failed to execute the operation
      */
-    public MusicManagerInterface music() throws RemoteException;
+    MusicManagerInterface music() throws RemoteException;
 
     /**
      * @return the artist manager
      * @throws RemoteException if failed to execute the operation
      */
-    public ArtistManagerInterface artist() throws RemoteException;
+    ArtistManagerInterface artist() throws RemoteException;
 }

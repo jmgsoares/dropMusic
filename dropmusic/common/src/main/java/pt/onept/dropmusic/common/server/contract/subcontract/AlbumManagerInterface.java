@@ -17,5 +17,5 @@ public interface AlbumManagerInterface extends Remote, Crudable<Album>, Searchab
      * @return the review manager
      * @throws RemoteException if failed to execute the operation
      */
-    public ReviewManagerInterface review(Album album) throws RemoteException;
+    ReviewManagerInterface review(Album album) throws RemoteException;
 }
