@@ -13,7 +13,7 @@ import java.rmi.Remote;
  * @version 1e-1024
  */
 
-public interface DropmusicInterface extends Remote {
+public interface DropmusicServerInterface extends Remote {
     /**
      * @return the user manager
      */
