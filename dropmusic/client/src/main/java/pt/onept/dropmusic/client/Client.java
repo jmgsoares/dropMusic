@@ -2,6 +2,7 @@ package pt.onept.dropmusic.client;
 
 
 import asg.cliche.ShellFactory;
+import pt.onept.dropmusic.client.shell.LoginShell;
 import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
 
 import java.io.IOException;
@@ -14,8 +15,8 @@ public class Client {
 	public static void main(String[] args) {
 		try {
 			DropmusicServerInterface dropmusicServer = (DropmusicServerInterface) Naming.lookup("Dropmusic");
-			ShellHandler shellHandler = new ShellHandler(dropmusicServer);
-			ShellFactory.createConsoleShell("Dropmusic", "", shellHandler).commandLoop();
+			LoginShell loginShell = new LoginShell(dropmusicServer);
+			ShellFactory.createConsoleShell("Dropmusic", "", loginShell).commandLoop();
 		} catch (NotBoundException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {

@@ -1,6 +1,7 @@
 package pt.onept.dropmusic.common.server.contract.subcontract;
 
 import pt.onept.dropmusic.common.exception.NotFoundException;
+import pt.onept.dropmusic.common.server.contract.Crudable;
 import pt.onept.dropmusic.common.server.contract.type.File;
 import pt.onept.dropmusic.common.server.contract.type.Music;
 

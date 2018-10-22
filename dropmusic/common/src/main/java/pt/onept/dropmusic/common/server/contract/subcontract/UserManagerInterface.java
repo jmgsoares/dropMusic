@@ -1,16 +1,12 @@
 package pt.onept.dropmusic.common.server.contract.subcontract;
 
-
-import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.dropmusic.common.server.contract.Crudable;
-import pt.onept.dropmusic.common.server.contract.type.Notification;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
 
 /**
  * Manage platform users
@@ -25,13 +21,5 @@ public interface UserManagerInterface extends Remote, Crudable<User>, Serializab
      * @throws RemoteException if the operation failed to execute
      * @throws UnauthorizedException if the login isn't successful
      */
-    void login(User user) throws RemoteException, UnauthorizedException;
-
-	/**
-	 * Get the user stored notifications on the server
-	 * @param user the user to get the stored notifications
-	 * @return the list of unread notifications for the user
-	 * @throws RemoteException if the operation failed to execute
-	 */
-	List<Notification> getNotifications(User user) throws RemoteException;
+    User login(User user) throws RemoteException, UnauthorizedException;
 }

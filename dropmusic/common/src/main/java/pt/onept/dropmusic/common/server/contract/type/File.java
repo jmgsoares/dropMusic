@@ -1,4 +1,6 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-public class File {
+import java.io.Serializable;
+
+public class File implements Serializable {
 }

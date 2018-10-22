@@ -21,6 +21,11 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 	}
 
 	@Override
+	public Music read(Long id) throws NotFoundException, UnauthorizedException, RemoteException {
+		return null;
+	}
+
+	@Override
 	public void update(Music object) throws NotFoundException, UnauthorizedException, RemoteException {
 
 	}
