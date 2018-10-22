@@ -1,0 +1,32 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="444D3373-476F-F91D-C2CF-7F66E1C1F3E3" name="Music">
+<createdBy>soares</createdBy>
+<createdTime>2018-10-22 22:06:11 UTC</createdTime>
+<ownerDesignName>dropmusic.dmd</ownerDesignName>
+<engineerTo>
+<item key="C311F5F2-C168-6838-395E-3421BAA6941B" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="name" id="0EBE6F65-36EA-EF8F-40BE-09B012F3E1A9">
+<createdBy>soares</createdBy>
+<createdTime>2018-10-22 22:06:21 UTC</createdTime>
+<ownerDesignName>dropmusic.dmd</ownerDesignName>
+<engineerTo>
+<item key="C311F5F2-C168-6838-395E-3421BAA6941B" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>32</dataTypeSize>
+<ownDataTypeParameters>32,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+</Entity>

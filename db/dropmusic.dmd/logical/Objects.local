@@ -1,0 +1,10 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle.dbtools.crest.model.design.logical.LogicalDesign>
+   <object objectType="Entity" objectID="5301672E-CCA4-2A15-D63A-0F1118632400" name="Album" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.logical.Entity" propertyParentId="20F31C1E-EDA9-C3B1-7DB9-637A9F0A5818" propertySourceId="" propertyTargetId=""/>
+   <object objectType="Entity" objectID="9169DA3E-409E-0582-F06F-A888108261D9" name="File" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.logical.Entity" propertyParentId="20F31C1E-EDA9-C3B1-7DB9-637A9F0A5818" propertySourceId="" propertyTargetId=""/>
+   <object objectType="Entity" objectID="444D3373-476F-F91D-C2CF-7F66E1C1F3E3" name="Music" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.logical.Entity" propertyParentId="20F31C1E-EDA9-C3B1-7DB9-637A9F0A5818" propertySourceId="" propertyTargetId=""/>
+   <object objectType="Entity" objectID="AFF8AFE6-8766-463E-5BEA-488E80EEC36F" name="Notification" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.logical.Entity" propertyParentId="20F31C1E-EDA9-C3B1-7DB9-637A9F0A5818" propertySourceId="" propertyTargetId=""/>
+   <object objectType="Entity" objectID="FE919DF0-C2F5-4632-65B1-20010A632172" name="Review" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.logical.Entity" propertyParentId="20F31C1E-EDA9-C3B1-7DB9-637A9F0A5818" propertySourceId="" propertyTargetId=""/>
+   <object objectType="Entity" objectID="8866C79F-C594-8F47-8FE2-F942CD6B4CD1" name="User" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.logical.Entity" propertyParentId="20F31C1E-EDA9-C3B1-7DB9-637A9F0A5818" propertySourceId="" propertyTargetId=""/>
+   <object objectType="Relation" objectID="67FCB0A3-B3A9-5217-832B-8E1C10D133AF" name="album_music" seqName="seg_0" propertyClassName="oracle.dbtools.crest.model.design.logical.Relation" propertyParentId="20F31C1E-EDA9-C3B1-7DB9-637A9F0A5818" propertySourceId="5301672E-CCA4-2A15-D63A-0F1118632400" propertyTargetId="444D3373-476F-F91D-C2CF-7F66E1C1F3E3"/>
+</oracle.dbtools.crest.model.design.logical.LogicalDesign>
