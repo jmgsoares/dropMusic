@@ -37,7 +37,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		}
 	}
 
-	@Command(name = "getnotifications")
+	@Command(name = "getnotifications", abbrev = "catnot")
 	public String getNotifications(){
 		String output;
 		List<Notification> notifications;
