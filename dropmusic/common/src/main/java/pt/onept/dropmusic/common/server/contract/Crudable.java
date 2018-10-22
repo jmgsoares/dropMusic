@@ -14,28 +14,40 @@ public interface Crudable<T> {
 
 	/**
 	 * Create object T
+	 *
 	 * @param object object to be created
-	 * @throws DuplicatedException if the object already exists
+	 * @throws DuplicatedException   if the object already exists
 	 * @throws UnauthorizedException if there is no Authorization to perform the operation
-	 * @throws RemoteException if operation failed to execute
+	 * @throws RemoteException       if operation failed to execute
 	 */
 	void create(T object) throws DuplicatedException, UnauthorizedException, RemoteException;
 
 	/**
-	 * Update object T
-	 * @param object object to be updated
+	 * Read object T
+	 *
+	 * @param id of the object to be read
 	 * @throws NotFoundException if the object doesn't exists
+	 * @throws RemoteException   if operation failed to execute
+	 */
+	T read(Long id) throws NotFoundException, UnauthorizedException, RemoteException;
+
+	/**
+	 * Update object T
+	 *
+	 * @param object object to be updated
+	 * @throws NotFoundException     if the object doesn't exists
 	 * @throws UnauthorizedException if there is no Authorization to perform the operation
-	 * @throws RemoteException if operation failed to execute
+	 * @throws RemoteException       if operation failed to execute
 	 */
 	void update(T object) throws NotFoundException, UnauthorizedException, RemoteException;
 
 	/**
 	 * Delete object T
+	 *
 	 * @param object object to be deleted
-	 * @throws NotFoundException if the object doesn't exists
+	 * @throws NotFoundException     if the object doesn't exists
 	 * @throws UnauthorizedException if there is no Authorization to perform the operation
-	 * @throws RemoteException if operation failed to execute
+	 * @throws RemoteException       if operation failed to execute
 	 */
 	void delete(T object) throws NotFoundException, UnauthorizedException, RemoteException;
 }

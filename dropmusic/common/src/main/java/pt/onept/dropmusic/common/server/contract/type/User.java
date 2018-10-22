@@ -1,14 +1,19 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class User implements Serializable {
-	String username;
-	String password;
-	boolean editor;
+	private Long id;
+	private String username;
+	private String password;
+	private boolean editor;
+	private List<Notification> notifications;
 
 	public User() {
 		editor=false;
+		notifications = new LinkedList<>();
 	}
 
 	public User(String username, String password) {
@@ -39,8 +44,22 @@ public class User implements Serializable {
 		return editor;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public User setId(Long id) {
+		this.id = id;
+		return this;
+	}
+
+	public List<Notification> getNotifications() {
+		return notifications;
+	}
+
 	public User setEditor(boolean editor) {
 		this.editor = editor;
 		return this;
 	}
+
 }

@@ -1,21 +1,28 @@
-package pt.onept.dropmusic.client;
+package pt.onept.dropmusic.client.shell;
 
-import asg.cliche.Command;
+import asg.cliche.*;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
-public class ShellHandler {
+public class LoginShell implements ShellDependent, ShellManageable {
 	private DropmusicServerInterface dropmusicServer;
+	private Shell shell;
 
-	public ShellHandler(DropmusicServerInterface dropmusicServer) {
+	public LoginShell(DropmusicServerInterface dropmusicServer) {
 		this.dropmusicServer = dropmusicServer;
 	}
 
-	@Command(description = "Register a user")
+	@Command
+	public String message(String message) {
+		return message;
+	}
+
+	@Command(description = "Register a user. Usage: register <user> <password>")
 	public String register(String name, String password) {
 		User user = new User(name, password);
 		String output;
@@ -28,22 +35,22 @@ public class ShellHandler {
 		} catch (UnauthorizedException e) {
 			output = "Unauthorized!";
 		} catch (RemoteException e) {
-			//TODO Handle the failover
+			//TODO Handle failover
 			e.printStackTrace();
 			output = e.getMessage();
 		}
 		return output;
 	}
 
-	@Command(description = "Login")
+	@Command(description = "Login. Usage: login <user> <password>")
 	public String login(String name, String password) {
 		User user = new User(name, password);
 		String output;
 
 		try {
-			this.dropmusicServer.user().login(user);
-			output = "Welcome to Dropmusic " + user.getUsername();
-			//TODO subshell here
+			user = this.dropmusicServer.user().login(user);
+			createAppShell(user);
+			output = "";
 		} catch (RemoteException e) {
 			//TODO Handle failover
 			output = e.getMessage();
@@ -51,5 +58,35 @@ public class ShellHandler {
 			output = "Wrong user name or password";
 		}
 		return output;
+	}
+
+	private void createAppShell(User user) {
+		AppShell appShell = new AppShell(this.dropmusicServer, user);
+
+		try {
+			ShellFactory.createSubshell(user.getUsername(), this.shell, "", appShell)
+					.commandLoop();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void cliSetShell(Shell theShell) {
+		this.shell = theShell;
+	}
+
+	@Override
+	public void cliEnterLoop() {
+		try {
+			this.shell.processLine("message \"Welcome to Dropmusic v1e-1024\"");
+		} catch (CLIException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void cliLeaveLoop() {
+
 	}
 }

@@ -28,6 +28,11 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 	}
 
 	@Override
+	public Album read(Long id) throws NotFoundException, UnauthorizedException, RemoteException {
+		return null;
+	}
+
+	@Override
 	public void update(Album object) throws NotFoundException, UnauthorizedException, RemoteException {
 
 	}
