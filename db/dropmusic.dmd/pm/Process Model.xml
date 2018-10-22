@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<ProcessModel class="oracle.dbtools.crest.model.design.process.ProcessModel" name="Process Model" id="55092E4C-B9FE-86CD-813E-878F48813547">
+<createdBy>soares</createdBy>
+<createdTime>2018-10-22 21:07:31 UTC</createdTime>
+<ownerDesignName>dropmusic.dmd</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</ProcessModel>
