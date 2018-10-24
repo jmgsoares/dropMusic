@@ -1,7 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="20F31C1E-EDA9-C3B1-7DB9-637A9F0A5818" mainViewID="8633CD8C-3AB4-F4A7-5576-D16169CAC451">
-<createdBy>soares</createdBy>
-<createdTime>2018-10-22 21:07:31 UTC</createdTime>
-<ownerDesignName>dropmusic.dmd</ownerDesignName>
-<shouldBeOpen>false</shouldBeOpen>
-</LogicalDesign>
