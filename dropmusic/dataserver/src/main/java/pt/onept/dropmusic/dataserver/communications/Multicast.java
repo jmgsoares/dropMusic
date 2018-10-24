@@ -6,18 +6,18 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
-public class Server implements Runnable {
+public class Multicast implements Runnable {
     private InetAddress multicastAddress;
     private int port;
     private MulticastSocket socket;
 
-    public Server(InetAddress multicastAddress, int port) {
+    public Multicast(InetAddress multicastAddress, int port) {
         this.multicastAddress = multicastAddress;
         this.port = port;
         this.socket = null;
     }
 
-    public Server(String multicastAddress, int port) throws UnknownHostException {
+    public Multicast(String multicastAddress, int port) throws UnknownHostException {
         this(InetAddress.getByName(multicastAddress), port);
     }
 
