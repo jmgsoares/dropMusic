@@ -3,16 +3,13 @@ package pt.onept.dropmusic.client.shell;
 import asg.cliche.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.NotFoundException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.dropmusic.common.server.contract.Crudable;
 import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
-import pt.onept.dropmusic.common.server.contract.subcontract.AlbumManagerInterface;
 import pt.onept.dropmusic.common.server.contract.type.*;
 
-import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -301,5 +298,4 @@ public class AppShell implements ShellManageable, ShellDependent {
 		}
 		return output;
 	}
-
 }
