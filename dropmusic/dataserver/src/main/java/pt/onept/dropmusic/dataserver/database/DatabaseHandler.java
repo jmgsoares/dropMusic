@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import oracle.jdbc.pool.OracleDataSource;
-
-import javax.xml.crypto.Data;
 
 public class DatabaseHandler {
     private Connection db;
@@ -25,7 +24,7 @@ public class DatabaseHandler {
 
     private String getSqlScript () throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("dropmusic_db.sql").getFile());
+        File file = new File(classLoader.getResource("recreate_dropmusic_db.sql").getFile());
         byte[] bin = Files.readAllBytes(Paths.get(file.getPath()));
         return new String(bin);
     }
@@ -33,5 +32,15 @@ public class DatabaseHandler {
     public void createDB() throws SQLException, IOException {
         Statement statement = this.db.createStatement();
         statement.executeUpdate(getSqlScript());
+    }
+
+    public boolean executeSql(String sql) throws SQLException {
+        Statement statement = this.db.createStatement();
+        return statement.execute(sql);
+    }
+
+    public ResultSet querySql(String sql) throws SQLException {
+        Statement statement = this.db.createStatement();
+        return statement.executeQuery(sql);
     }
 }

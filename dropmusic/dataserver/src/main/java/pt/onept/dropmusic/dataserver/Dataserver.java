@@ -17,5 +17,6 @@ public class Dataserver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        db.executeSql("");
     }
 }
