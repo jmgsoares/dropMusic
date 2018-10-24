@@ -3,6 +3,7 @@ package pt.onept.dropmusic.dataserver;
 import pt.onept.dropmusic.dataserver.database.DatabaseHandler;
 
 import java.io.IOException;
+
 import java.sql.SQLException;
 
 
@@ -17,6 +18,5 @@ public class Dataserver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        db.executeSql("");
     }
 }
