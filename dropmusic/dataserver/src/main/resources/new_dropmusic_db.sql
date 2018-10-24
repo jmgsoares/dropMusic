@@ -16,7 +16,7 @@ create sequence S_USER
 /*==============================================================*/
 /* Table: ALBUM                                                 */
 /*==============================================================*/
-create table ALBUM 
+create table ALBUM
 (
    ID                   NUMBER(6)            not null,
    NAME                 VARCHAR2(64)         not null,
@@ -29,7 +29,7 @@ create table ALBUM
 /*==============================================================*/
 /* Table: ARTIST                                                */
 /*==============================================================*/
-create table ARTIST 
+create table ARTIST
 (
    ID                   NUMBER(6)            not null,
    NAME                 VARCHAR2(32)         not null,
@@ -40,7 +40,7 @@ create table ARTIST
 /*==============================================================*/
 /* Table: ARTIST_ALBUM                                          */
 /*==============================================================*/
-create table ARTIST_ALBUM 
+create table ARTIST_ALBUM
 (
    ID                   NUMBER(6)            not null,
    ALB_ID               NUMBER(6)            not null,
@@ -67,7 +67,7 @@ create index ARTIST_ALBUM2_FK on ARTIST_ALBUM (
 /*==============================================================*/
 /* Table: "FILE"                                                */
 /*==============================================================*/
-create table "FILE" 
+create table "FILE"
 (
    ID                   NUMBER(6)            not null,
    MUS_ID               NUMBER(6)            not null,
@@ -87,7 +87,7 @@ create index FILE_MUSIC_FK on "FILE" (
 /*==============================================================*/
 /* Table: MUSIC                                                 */
 /*==============================================================*/
-create table MUSIC 
+create table MUSIC
 (
    ID                   NUMBER(6)            not null,
    ALB_ID               NUMBER(6)            not null,
@@ -107,7 +107,7 @@ create index ALBUM_MUSIC_FK on MUSIC (
 /*==============================================================*/
 /* Table: "USER"                                                */
 /*==============================================================*/
-create table "USER" 
+create table "USER"
 (
    ID                   NUMBER(6)            not null,
    NAME                 VARCHAR2(32)         not null,
@@ -120,7 +120,7 @@ create table "USER"
 /*==============================================================*/
 /* Table: USER_FILES                                            */
 /*==============================================================*/
-create table USER_FILES 
+create table USER_FILES
 (
    ID                   NUMBER(6)            not null,
    FIL_ID               NUMBER(6)            not null,
@@ -174,91 +174,6 @@ alter table USER_FILES
       references "FILE" (ID)
 /
 
-
-create or replace trigger COMPOUNDDELETETRIGGER_ALBUM
-for delete on ALBUM compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_ALBUM
-for insert on ALBUM compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_ALBUM
-for update on ALBUM compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
 create trigger TIB_ALBUM before insert
 on ALBUM for each row
 declare
@@ -278,91 +193,6 @@ exception
        raise_application_error(errno, errmsg);
 end;
 /
-
-
-create or replace trigger COMPOUNDDELETETRIGGER_ARTIST
-for delete on ARTIST compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_ARTIST
-for insert on ARTIST compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_ARTIST
-for update on ARTIST compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
 
 create trigger TIB_ARTIST before insert
 on ARTIST for each row
@@ -384,91 +214,6 @@ exception
 end;
 /
 
-
-create or replace trigger COMPOUNDDELETETRIGGER_FILE
-for delete on "FILE" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_FILE
-for insert on "FILE" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_FILE
-for update on "FILE" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
 create trigger TIB_FILE before insert
 on "FILE" for each row
 declare
@@ -489,91 +234,6 @@ exception
 end;
 /
 
-
-create or replace trigger COMPOUNDDELETETRIGGER_MUSIC
-for delete on MUSIC compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_MUSIC
-for insert on MUSIC compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_MUSIC
-for update on MUSIC compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
 create trigger TIB_MUSIC before insert
 on MUSIC for each row
 declare
@@ -593,91 +253,6 @@ exception
        raise_application_error(errno, errmsg);
 end;
 /
-
-
-create or replace trigger COMPOUNDDELETETRIGGER_USER
-for delete on "USER" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_USER
-for insert on "USER" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_USER
-for update on "USER" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
 
 create trigger TIB_USER before insert
 on "USER" for each row

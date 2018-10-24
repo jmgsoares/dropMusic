@@ -1,10 +1,3 @@
-/*==============================================================*/
-/* DBMS name:      ORACLE Version 11g                           */
-/* Created on:     24/10/2018 18:02:55                          */
-/*==============================================================*/
-
-
-
 -- Type package declaration
 create or replace package PDTypes
 as
@@ -59,61 +52,16 @@ create or replace package body IntegrityPackage AS
 /
 
 
-drop trigger COMPOUNDDELETETRIGGER_ALBUM
-/
-
-drop trigger COMPOUNDINSERTTRIGGER_ALBUM
-/
-
-drop trigger COMPOUNDUPDATETRIGGER_ALBUM
-/
-
 drop trigger TIB_ALBUM
-/
-
-drop trigger COMPOUNDDELETETRIGGER_ARTIST
-/
-
-drop trigger COMPOUNDINSERTTRIGGER_ARTIST
-/
-
-drop trigger COMPOUNDUPDATETRIGGER_ARTIST
 /
 
 drop trigger TIB_ARTIST
 /
 
-drop trigger COMPOUNDDELETETRIGGER_FILE
-/
-
-drop trigger COMPOUNDINSERTTRIGGER_FILE
-/
-
-drop trigger COMPOUNDUPDATETRIGGER_FILE
-/
-
 drop trigger TIB_FILE
 /
 
-drop trigger COMPOUNDDELETETRIGGER_MUSIC
-/
-
-drop trigger COMPOUNDINSERTTRIGGER_MUSIC
-/
-
-drop trigger COMPOUNDUPDATETRIGGER_MUSIC
-/
-
 drop trigger TIB_MUSIC
-/
-
-drop trigger COMPOUNDDELETETRIGGER_USER
-/
-
-drop trigger COMPOUNDINSERTTRIGGER_USER
-/
-
-drop trigger COMPOUNDUPDATETRIGGER_USER
 /
 
 drop trigger TIB_USER
@@ -373,91 +321,6 @@ alter table USER_FILES
       references "FILE" (ID)
 /
 
-
-create or replace trigger COMPOUNDDELETETRIGGER_ALBUM
-for delete on ALBUM compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_ALBUM
-for insert on ALBUM compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_ALBUM
-for update on ALBUM compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
 create trigger TIB_ALBUM before insert
 on ALBUM for each row
 declare
@@ -477,91 +340,6 @@ exception
        raise_application_error(errno, errmsg);
 end;
 /
-
-
-create or replace trigger COMPOUNDDELETETRIGGER_ARTIST
-for delete on ARTIST compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_ARTIST
-for insert on ARTIST compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_ARTIST
-for update on ARTIST compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
 
 create trigger TIB_ARTIST before insert
 on ARTIST for each row
@@ -583,91 +361,6 @@ exception
 end;
 /
 
-
-create or replace trigger COMPOUNDDELETETRIGGER_FILE
-for delete on "FILE" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_FILE
-for insert on "FILE" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_FILE
-for update on "FILE" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
 create trigger TIB_FILE before insert
 on "FILE" for each row
 declare
@@ -688,91 +381,6 @@ exception
 end;
 /
 
-
-create or replace trigger COMPOUNDDELETETRIGGER_MUSIC
-for delete on MUSIC compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_MUSIC
-for insert on MUSIC compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_MUSIC
-for update on MUSIC compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
 create trigger TIB_MUSIC before insert
 on MUSIC for each row
 declare
@@ -792,91 +400,6 @@ exception
        raise_application_error(errno, errmsg);
 end;
 /
-
-
-create or replace trigger COMPOUNDDELETETRIGGER_USER
-for delete on "USER" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDINSERTTRIGGER_USER
-for insert on "USER" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
-
-create or replace trigger COMPOUNDUPDATETRIGGER_USER
-for update on "USER" compound trigger
-// Declaration
-// Body
-  before statement is
-  begin
-     NULL;
-  end before statement;
-
-  before each row is
-  begin
-     NULL;
-  end before each row;
-
-  after each row is
-  begin
-     NULL;
-  end after each row;
-
-  after statement is
-  begin
-     NULL;
-  end after statement;
-
-END
-/
-
 
 create trigger TIB_USER before insert
 on "USER" for each row
