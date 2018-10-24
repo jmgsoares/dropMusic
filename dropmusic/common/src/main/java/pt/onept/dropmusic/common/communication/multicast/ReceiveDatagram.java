@@ -6,39 +6,36 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.UUID;
 
-public class ReceiveDatagram extends Thread{
-	private final String multicastAddress;
-	private final int port;
-	private final UUID uuid;
+class ReceiveDatagram extends Thread {
+	private String address;
+	private int port;
+	private UUID uuid;
 
-	public ReceiveDatagram(UUID uuid, String address, int port) {
-		this.uuid=uuid;
-		this.multicastAddress = address;
-		this.port= port;
+	ReceiveDatagram(String address, int port, UUID uuid) {
+		this.address = address;
+		this.port = port;
+		this.uuid = uuid;
 	}
 
 	public void run() {
-		MulticastSocket socket = null;
 		try {
-			InetAddress group = InetAddress.getByName(multicastAddress);
-			socket = new MulticastSocket(port);
+			MulticastSocket socket = new MulticastSocket(this.port);
+			InetAddress group = InetAddress.getByName(this.address);
 			socket.joinGroup(group);
-			while (!Thread.interrupted()) {
-				byte[] buffer = new byte[65536];
+			while (true) {
+				byte[] buffer = new byte[65500];
 				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 				socket.receive(packet);
-				String text = new String(packet.getData(), 0, packet.getLength());
-				int messageLength=text.length();
-				if(!text.contains(uuid.toString())) {
-					System.out.print(text.substring(0,36) + " said: ");
-					System.out.println(text.substring(36,messageLength));
+				String message = new String(packet.getData(),0,packet.getLength());
+				int messagelenght = message.length();
+				if(!message.contains(this.uuid.toString())){
+					message=message.substring(this.uuid.toString().length(),messagelenght);
+					//TODO CREATE INTERFACE
+					messageHandler(message);
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			assert socket != null;
-			socket.close();
 		}
 	}
 }
