@@ -1,3 +1,4 @@
+
 create sequence S_ALBUM
 /
 
@@ -273,3 +274,4 @@ exception
        raise_application_error(errno, errmsg);
 end;
 /
+
