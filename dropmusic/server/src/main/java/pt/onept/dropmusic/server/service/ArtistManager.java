@@ -24,6 +24,9 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 	public Artist read(Long id) throws NotFoundException, UnauthorizedException, RemoteException {
 		Artist artist = new Artist(1,"TEST ARTIST");
 
+
+
+
 		return artist;
 	}
 
