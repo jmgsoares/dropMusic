@@ -19,7 +19,7 @@ public class MulticastHandler {
 		this.uuid = uuid;
 	}
 
-	public receive(String address, int port, UUID uuid){
+	public void receive(String address, int port, UUID uuid){
 		try {
 			MulticastSocket socket = new MulticastSocket(port);
 			InetAddress group = InetAddress.getByName(address);
