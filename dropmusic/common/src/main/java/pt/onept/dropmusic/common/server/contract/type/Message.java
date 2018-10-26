@@ -1,9 +1,10 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
 
 public class Message<T> {
+	private final String appid = "de9db107-9834-4aeb-a731-86d959513831";
 	private final UUID id;
 	private final String operation;
 	private final String objectClass;
@@ -16,7 +17,7 @@ public class Message<T> {
 		this.dataList = dataList;
 	}
 
-	public UUID getId() {
+	public UUID getUuid() {
 		return id;
 	}
 
@@ -32,4 +33,3 @@ public class Message<T> {
 		return dataList;
 	}
 }
-

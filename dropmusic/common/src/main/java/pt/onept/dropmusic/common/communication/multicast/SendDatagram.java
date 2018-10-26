@@ -5,12 +5,12 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class SendDatagram implements Runnable {
+public class SendDatagram extends Thread {
 	private String multicastAddress;
 	private int port;
 	private String message;
 
-	public SendDatagram(String multicastAddress, int port, String message) {
+	SendDatagram(String multicastAddress, int port, String message) {
 		this.multicastAddress = multicastAddress;
 		this.port = port;
 		this.message = message;

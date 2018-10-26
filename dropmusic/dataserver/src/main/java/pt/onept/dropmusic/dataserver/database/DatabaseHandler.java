@@ -25,7 +25,7 @@ public class DatabaseHandler {
     	this.dbUserPassword = dbUserPassword;
     }
 
-    public Connection getConnection() {
+    private Connection getConnection() {
 	    Connection connection = null;
     	try {
 	    	connection = DriverManager.getConnection(this.url, this.dbUser, this.dbUserPassword);
