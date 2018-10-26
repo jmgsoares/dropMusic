@@ -3,7 +3,6 @@ package pt.onept.dropmusic.server;
 import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
 import pt.onept.dropmusic.server.service.DropmusicServer;
 
-
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
