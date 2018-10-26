@@ -3,6 +3,7 @@ package pt.onept.dropmusic.common.utililty;
 import com.google.gson.Gson;
 import pt.onept.dropmusic.common.server.contract.type.Message;
 
+import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -25,7 +26,8 @@ public final class GsonUtility {
 		return gson.toJson(message);
 	}
 
-	public Gson fromGson() {
-		return null;
+	public static Message fromGson(String message) {
+		Gson gson = new Gson();
+		return gson.fromJson(message, Message.class);
 	}
 }
