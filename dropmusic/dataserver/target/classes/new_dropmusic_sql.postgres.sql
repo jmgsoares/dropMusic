@@ -102,7 +102,7 @@ create table "USER" (
    ID                   SERIAL not null,
    NAME                 VARCHAR(32)          not null,
    PASSWORD             VARCHAR(32)          not null,
-   EDITOR               INT2                 not null
+   EDITOR               BOOLEAN                 not null
 );
 
 alter table "USER"
