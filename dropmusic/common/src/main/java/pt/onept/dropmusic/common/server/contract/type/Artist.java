@@ -6,9 +6,7 @@ public class Artist implements Serializable {
 	private long id;
 	private String name;
 
-	public Artist(String name) {
-		this.name = name;
-	}
+	public Artist() { }
 
 	public Artist(long id, String name) {
 		this.id = id;

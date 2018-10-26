@@ -1,5 +1,6 @@
 package pt.onept.dropmusic.server.service;
 
+import pt.onept.dropmusic.common.communication.multicast.MulticastHandler;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.NotFoundException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
@@ -11,9 +12,14 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class UserManager extends UnicastRemoteObject implements UserManagerInterface {
+	MulticastHandler multicastHandler;
 
-	public UserManager() throws RemoteException {
+	public UserManager(MulticastHandler multicastHandler) throws RemoteException {
+		super();
+		this.multicastHandler = multicastHandler;
 	}
+
+	public MulticastHandler comunicationHandler() { return this.multicastHandler; }
 
 	@Override
 	public User login(User user) throws RemoteException, UnauthorizedException {
