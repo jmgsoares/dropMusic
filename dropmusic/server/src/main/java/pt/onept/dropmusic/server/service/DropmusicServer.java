@@ -27,10 +27,14 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 		this.artistManager = new ArtistManager(this.multicastHandler);
 	}
 
-	public MulticastHandler comunicationHandler() { return this.multicastHandler; }
+	public MulticastHandler comunicationHandler() {
+		return this.multicastHandler;
+	}
 
 	@Override
-	public UserManagerInterface user() { return this.userManager; }
+	public UserManagerInterface user() {
+		return this.userManager;
+	}
 
 	@Override
 	public AlbumManagerInterface album() {

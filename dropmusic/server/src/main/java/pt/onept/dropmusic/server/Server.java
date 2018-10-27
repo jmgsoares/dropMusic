@@ -16,7 +16,7 @@ public class Server {
 			int multiCastPort = 4321;
 
 			MulticastHandler multicastHandler = new MulticastHandler(txMultiCastAddress, rxMulticastAddress, multiCastPort);
-			multicastHandler.messageReceiver();
+
 			DropmusicServerInterface dropmusicServer = new DropmusicServer(multicastHandler);
 			//Naming.rebind("Dropmusic", dropmusicServer);
 			Registry test = LocateRegistry.createRegistry(1099);

@@ -35,18 +35,17 @@ public class AppShell implements ShellManageable, ShellDependent {
 	}
 
 	@Command(name = "getnotifications", abbrev = "catnot")
-	public String getNotifications(){
+	public String getNotifications() {
 		String output;
 		List<Notification> notifications;
 
 		try {
 			notifications = this.dropmusicServer.user().read(this.user.getId()).getNotifications();
-			if(!notifications.isEmpty()){
+			if (!notifications.isEmpty()) {
 				output = notifications.stream()
 						.map(Notification::getMessage)
 						.collect(Collectors.joining("\n"));
-			}
-			else output = "No new notifications";
+			} else output = "No new notifications";
 		} catch (NotFoundException | RemoteException | UnauthorizedException e) {
 			e.printStackTrace();
 			//TODO Handle failover
@@ -229,7 +228,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	@Command(name = "mvmusic", description = "Update a music. Usage: mvmusic <music-name>", abbrev = "mvmus")
 	public String updateMusic(String musicName) {
-		Music music= new Music(musicName);
+		Music music = new Music(musicName);
 		String output;
 		try {
 			this.dropmusicServer.music().update(music);
@@ -249,7 +248,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 	public String readArtist(long id) {
 		String output;
 		try {
-			output = cat(id,this.dropmusicServer.artist());
+			output = cat(id, this.dropmusicServer.artist());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			output = e.getMessage();
@@ -262,7 +261,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		String output;
 
 		try {
-			output = cat(id,this.dropmusicServer.album());
+			output = cat(id, this.dropmusicServer.album());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			output = e.getMessage();
@@ -274,7 +273,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 	public String readMusic(long id) {
 		String output;
 		try {
-			output = cat(id,this.dropmusicServer.music());
+			output = cat(id, this.dropmusicServer.music());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			output = e.getMessage();
@@ -292,7 +291,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			output = gson.toJson(object);
 		} catch (NotFoundException e) {
-			output = "Not found"  ;
+			output = "Not found";
 		} catch (UnauthorizedException e) {
 			output = "Unauthorized";
 		} catch (RemoteException e) {
