@@ -12,7 +12,7 @@ public class User implements Serializable {
 	private List<Notification> notifications;
 
 	public User() {
-		editor=false;
+		editor = false;
 		notifications = new LinkedList<>();
 	}
 
@@ -44,6 +44,11 @@ public class User implements Serializable {
 		return editor;
 	}
 
+	public User setEditor(boolean editor) {
+		this.editor = editor;
+		return this;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -55,11 +60,6 @@ public class User implements Serializable {
 
 	public List<Notification> getNotifications() {
 		return notifications;
-	}
-
-	public User setEditor(boolean editor) {
-		this.editor = editor;
-		return this;
 	}
 
 }

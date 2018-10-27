@@ -11,32 +11,33 @@ import java.rmi.RemoteException;
 
 /**
  * Manage the DropMusic platform
+ *
  * @author João Soares
  * @version 1e-1024
  */
 
 public interface DropmusicServerInterface extends Remote, Serializable {
-    /**
-     * @return the user manager
-     * @throws RemoteException if failed to execute the operation
-     */
-    UserManagerInterface user() throws RemoteException;
+	/**
+	 * @return the user manager
+	 * @throws RemoteException if failed to execute the operation
+	 */
+	UserManagerInterface user() throws RemoteException;
 
-    /**
-     * @return the album manager
-     * @throws RemoteException if failed to execute the operation
-     */
-    AlbumManagerInterface album() throws RemoteException;
+	/**
+	 * @return the album manager
+	 * @throws RemoteException if failed to execute the operation
+	 */
+	AlbumManagerInterface album() throws RemoteException;
 
-    /**
-     * @return the music manager
-     * @throws RemoteException if failed to execute the operation
-     */
-    MusicManagerInterface music() throws RemoteException;
+	/**
+	 * @return the music manager
+	 * @throws RemoteException if failed to execute the operation
+	 */
+	MusicManagerInterface music() throws RemoteException;
 
-    /**
-     * @return the artist manager
-     * @throws RemoteException if failed to execute the operation
-     */
-    ArtistManagerInterface artist() throws RemoteException;
+	/**
+	 * @return the artist manager
+	 * @throws RemoteException if failed to execute the operation
+	 */
+	ArtistManagerInterface artist() throws RemoteException;
 }

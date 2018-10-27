@@ -5,6 +5,10 @@ import java.io.Serializable;
 public class Music implements Serializable {
 	private String name;
 
+	public Music(String name) {
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -12,9 +16,5 @@ public class Music implements Serializable {
 	public Music setName(String name) {
 		this.name = name;
 		return this;
-	}
-
-	public Music(String name) {
-		this.name = name;
 	}
 }

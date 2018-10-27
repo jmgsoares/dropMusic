@@ -10,13 +10,14 @@ import java.rmi.RemoteException;
 
 /**
  * Manage platform Albums
+ *
  * @author João Soares
  * @version 1e-1024
  */
 public interface AlbumManagerInterface extends Remote, Crudable<Album>, Searchable<Album>, Serializable {
-    /**
-     * @return the review manager
-     * @throws RemoteException if failed to execute the operation
-     */
-    ReviewManagerInterface review(Album album) throws RemoteException;
+	/**
+	 * @return the review manager
+	 * @throws RemoteException if failed to execute the operation
+	 */
+	ReviewManagerInterface review(Album album) throws RemoteException;
 }

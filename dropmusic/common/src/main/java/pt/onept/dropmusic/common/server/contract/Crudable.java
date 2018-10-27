@@ -3,10 +3,12 @@ package pt.onept.dropmusic.common.server.contract;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.NotFoundException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
+
 import java.rmi.RemoteException;
 
 /**
  * CRUDable interface of type T
+ *
  * @author João Soares
  * @version 1e-1024
  */

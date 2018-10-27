@@ -7,7 +7,6 @@ import pt.onept.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.dropmusic.common.server.contract.subcontract.AlbumManagerInterface;
 import pt.onept.dropmusic.common.server.contract.subcontract.ReviewManagerInterface;
 import pt.onept.dropmusic.common.server.contract.type.Album;
-import pt.onept.dropmusic.common.server.contract.type.Message;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -21,7 +20,9 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 		this.multicastHandler = multicastHandler;
 	}
 
-	public MulticastHandler comunicationHandler() { return this.multicastHandler; }
+	public MulticastHandler comunicationHandler() {
+		return this.multicastHandler;
+	}
 
 	@Override
 	public ReviewManagerInterface review(Album album) throws RemoteException {
