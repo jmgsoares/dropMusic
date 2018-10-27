@@ -8,6 +8,7 @@ import java.rmi.Remote;
 
 /**
  * Manage platform Albums
+ *
  * @author João Soares
  * @version 1e-1024
  */

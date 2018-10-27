@@ -19,7 +19,9 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 		this.multicastHandler = multicastHandler;
 	}
 
-	public MulticastHandler comunicationHandler() { return this.multicastHandler; }
+	public MulticastHandler comunicationHandler() {
+		return this.multicastHandler;
+	}
 
 	@Override
 	public User login(User user) throws RemoteException, UnauthorizedException {

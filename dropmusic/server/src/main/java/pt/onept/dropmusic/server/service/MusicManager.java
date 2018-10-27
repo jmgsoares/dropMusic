@@ -18,7 +18,9 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 		this.multicastHandler = multicastHandler;
 	}
 
-	public MulticastHandler comunicationHandler() { return this.multicastHandler; }
+	public MulticastHandler comunicationHandler() {
+		return this.multicastHandler;
+	}
 
 	@Override
 	public void create(Music object) throws DuplicatedException, UnauthorizedException, RemoteException {
