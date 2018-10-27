@@ -4,57 +4,67 @@
 /*==============================================================*/
 
 
-drop index ALBUM_PK;
+drop index if exists ALBUM_PK;
 
-drop table ALBUM;
+drop table if exists ALBUM cascade;
 
-drop index ARTIST_PK;
+drop index if exists ARTIST_PK;
 
-drop table ARTIST;
+drop table if exists ARTIST cascade;
 
-drop index ARTIST_ALBUM2_FK;
+drop index if exists ARTIST_ALBUM2_FK;
 
-drop index ARTIST_ALBUM_FK;
+drop index if exists ARTIST_ALBUM_FK;
 
-drop index ARTIST_ALBUM_PK;
+drop index if exists ARTIST_ALBUM_PK;
 
-drop table ARTIST_ALBUM;
+drop table if exists ARTIST_ALBUM cascade;
 
-drop index FILE_MUSIC_FK;
+drop index if exists UPLOAD_MUSIC_FK;
 
-drop index FILE_PK;
+drop index if exists UPLOAD_PK;
 
-drop table FILE;
+drop table if exists UPLOAD cascade;
 
-drop index ALBUM_MUSIC_FK;
+drop index if exists ALBUM_MUSIC_FK;
 
-drop index MUSIC_PK;
+drop index if exists MUSIC_PK;
 
-drop table MUSIC;
+drop table if exists MUSIC cascade;
 
-drop index USER_NOTIFICATION_FK;
+drop index if exists ACCOUNT_NOTIFICATION_FK;
 
-drop index NOTIFICATION_PK;
+drop index if exists NOTIFICATION_PK;
 
-drop table NOTIFICATION;
+drop table if exists NOTIFICATION cascade;
 
-drop index ALBUM_REVIEW_FK;
+drop index if exists ALBUM_REVIEW_FK;
 
-drop index REVEIEW_PK;
+drop index if exists REVEIEW_PK;
 
-drop table REVEIEW;
+drop table if exists REVEIEW cascade;
 
-drop index USER_PK;
+drop index if exists ACCOUNT_PK;
 
-drop table "USER";
+drop table if exists ACCOUNT cascade;
 
-drop index USER_FILES2_FK;
+drop index if exists ACCOUNT_UPLOADS2_FK;
 
-drop index USER_FILES_FK;
+drop index if exists ACCOUNT_UPLOADS_FK;
 
-drop index USER_FILES_PK;
+drop index if exists ACCOUNT_UPLOADS_PK;
 
-drop table USER_FILES;
+drop table if exists ACCOUNT_UPLOADS cascade;
+
+drop sequence if exists s_album;
+
+drop sequence  if exists s_artist;
+
+drop sequence if exists s_UPLOAD;
+
+drop sequence if exists s_music;
+
+drop sequence if exists s_ACCOUNT;
 
 /*==============================================================*/
 /* Table: ALBUM                                                 */
@@ -71,7 +81,7 @@ create table ALBUM (
 /* Index: ALBUM_PK                                              */
 /*==============================================================*/
 create unique index ALBUM_PK on ALBUM (
-ID
+   ID
 );
 
 /*==============================================================*/
@@ -79,7 +89,7 @@ ID
 /*==============================================================*/
 create table ARTIST (
    ID                   SERIAL               not null,
-   NAME                 VARCHAR(32)          not null,
+   NAME                 VARCHAR(32)          unique not null,
    constraint PK_ARTIST primary key (ID)
 );
 
@@ -87,7 +97,7 @@ create table ARTIST (
 /* Index: ARTIST_PK                                             */
 /*==============================================================*/
 create unique index ARTIST_PK on ARTIST (
-ID
+   ID
 );
 
 /*==============================================================*/
@@ -103,48 +113,48 @@ create table ARTIST_ALBUM (
 /* Index: ARTIST_ALBUM_PK                                       */
 /*==============================================================*/
 create unique index ARTIST_ALBUM_PK on ARTIST_ALBUM (
-ID,
-ALB_ID
+   ID,
+   ALB_ID
 );
 
 /*==============================================================*/
 /* Index: ARTIST_ALBUM_FK                                       */
 /*==============================================================*/
 create  index ARTIST_ALBUM_FK on ARTIST_ALBUM (
-ID
+   ID
 );
 
 /*==============================================================*/
 /* Index: ARTIST_ALBUM2_FK                                      */
 /*==============================================================*/
 create  index ARTIST_ALBUM2_FK on ARTIST_ALBUM (
-ALB_ID
+   ALB_ID
 );
 
 /*==============================================================*/
-/* Table: FILE                                                  */
+/* Table: UPLOAD                                                  */
 /*==============================================================*/
-create table FILE (
+create table UPLOAD (
    ID                   SERIAL               not null,
    MUS_ID               INT4                 not null,
    BIN                  INT2                 null,
    PATH                 VARCHAR(1024)        null,
    NAME                 VARCHAR(1024)        not null,
-   constraint PK_FILE primary key (ID)
+   constraint PK_UPLOAD primary key (ID)
 );
 
 /*==============================================================*/
-/* Index: FILE_PK                                               */
+/* Index: UPLOAD_PK                                               */
 /*==============================================================*/
-create unique index FILE_PK on FILE (
-ID
+create unique index UPLOAD_PK on UPLOAD (
+   ID
 );
 
 /*==============================================================*/
-/* Index: FILE_MUSIC_FK                                         */
+/* Index: UPLOAD_MUSIC_FK                                         */
 /*==============================================================*/
-create  index FILE_MUSIC_FK on FILE (
-MUS_ID
+create  index UPLOAD_MUSIC_FK on UPLOAD (
+   MUS_ID
 );
 
 /*==============================================================*/
@@ -161,14 +171,14 @@ create table MUSIC (
 /* Index: MUSIC_PK                                              */
 /*==============================================================*/
 create unique index MUSIC_PK on MUSIC (
-ID
+   ID
 );
 
 /*==============================================================*/
 /* Index: ALBUM_MUSIC_FK                                        */
 /*==============================================================*/
 create  index ALBUM_MUSIC_FK on MUSIC (
-ALB_ID
+   ALB_ID
 );
 
 /*==============================================================*/
@@ -185,14 +195,14 @@ create table NOTIFICATION (
 /* Index: NOTIFICATION_PK                                       */
 /*==============================================================*/
 create unique index NOTIFICATION_PK on NOTIFICATION (
-ID
+   ID
 );
 
 /*==============================================================*/
-/* Index: USER_NOTIFICATION_FK                                  */
+/* Index: ACCOUNT_NOTIFICATION_FK                                  */
 /*==============================================================*/
-create  index USER_NOTIFICATION_FK on NOTIFICATION (
-USE_ID
+create  index ACCOUNT_NOTIFICATION_FK on NOTIFICATION (
+   USE_ID
 );
 
 /*==============================================================*/
@@ -202,6 +212,7 @@ create table REVEIEW (
    ID                   SERIAL               not null,
    ALB_ID               INT4                 not null,
    TEXT                 VARCHAR(1024)        not null,
+   SCORE                FLOAT8               not null DEFAULT 0,
    constraint PK_REVEIEW primary key (ID)
 );
 
@@ -209,102 +220,104 @@ create table REVEIEW (
 /* Index: REVEIEW_PK                                            */
 /*==============================================================*/
 create unique index REVEIEW_PK on REVEIEW (
-ID
+   ID
 );
 
 /*==============================================================*/
 /* Index: ALBUM_REVIEW_FK                                       */
 /*==============================================================*/
 create  index ALBUM_REVIEW_FK on REVEIEW (
-ALB_ID
+   ALB_ID
 );
 
 /*==============================================================*/
-/* Table: "USER"                                                */
+/* Table: ACCOUNT                                                */
 /*==============================================================*/
-create table "USER" (
+create table ACCOUNT (
    ID                   SERIAL               not null,
-   NAME                 VARCHAR(32)          not null,
+   NAME                 VARCHAR(32)          unique not null,
    PASSWORD             VARCHAR(32)          not null,
-   EDITOR               BOOL                 not null,
-   constraint PK_USER primary key (ID)
+   EDITOR               BOOL                 not null default false,
+   constraint PK_ACCOUNT primary key (ID)
 );
 
 /*==============================================================*/
-/* Index: USER_PK                                               */
+/* Index: ACCOUNT_PK                                               */
 /*==============================================================*/
-create unique index USER_PK on "USER" (
-ID
+create unique index ACCOUNT_PK on ACCOUNT (
+   ID
 );
 
 /*==============================================================*/
-/* Table: USER_FILES                                            */
+/* Table: ACCOUNT_UPLOADS                                            */
 /*==============================================================*/
-create table USER_FILES (
+create table ACCOUNT_UPLOADS (
    ID                   INT4                 not null,
    FIL_ID               INT4                 not null,
-   constraint PK_USER_FILES primary key (ID, FIL_ID)
+   constraint PK_ACCOUNT_UPLOADS primary key (ID, FIL_ID)
 );
 
 /*==============================================================*/
-/* Index: USER_FILES_PK                                         */
+/* Index: ACCOUNT_UPLOADS_PK                                         */
 /*==============================================================*/
-create unique index USER_FILES_PK on USER_FILES (
-ID,
-FIL_ID
+create unique index ACCOUNT_UPLOADS_PK on ACCOUNT_UPLOADS (
+   ID,
+   FIL_ID
 );
 
 /*==============================================================*/
-/* Index: USER_FILES_FK                                         */
+/* Index: ACCOUNT_UPLOADS_FK                                         */
 /*==============================================================*/
-create  index USER_FILES_FK on USER_FILES (
-ID
+create  index ACCOUNT_UPLOADS_FK on ACCOUNT_UPLOADS (
+   ID
 );
 
 /*==============================================================*/
-/* Index: USER_FILES2_FK                                        */
+/* Index: ACCOUNT_UPLOADS2_FK                                        */
 /*==============================================================*/
-create  index USER_FILES2_FK on USER_FILES (
-FIL_ID
+create  index ACCOUNT_UPLOADS2_FK on ACCOUNT_UPLOADS (
+   FIL_ID
 );
 
 alter table ARTIST_ALBUM
    add constraint FK_ARTIST_A_ARTIST_AL_ARTIST foreign key (ID)
-      references ARTIST (ID)
-      on delete restrict on update restrict;
+references ARTIST (ID)
+on delete restrict on update restrict;
 
 alter table ARTIST_ALBUM
    add constraint FK_ARTIST_A_ARTIST_AL_ALBUM foreign key (ALB_ID)
-      references ALBUM (ID)
-      on delete restrict on update restrict;
+references ALBUM (ID)
+on delete restrict on update restrict;
 
-alter table FILE
-   add constraint FK_FILE_FILE_MUSI_MUSIC foreign key (MUS_ID)
-      references MUSIC (ID)
-      on delete restrict on update restrict;
+alter table UPLOAD
+   add constraint FK_UPLOAD_UPLOAD_MUSI_MUSIC foreign key (MUS_ID)
+references MUSIC (ID)
+on delete restrict on update restrict;
 
 alter table MUSIC
    add constraint FK_MUSIC_ALBUM_MUS_ALBUM foreign key (ALB_ID)
-      references ALBUM (ID)
-      on delete restrict on update restrict;
+references ALBUM (ID)
+on delete restrict on update restrict;
 
 alter table NOTIFICATION
-   add constraint FK_NOTIFICA_USER_NOTI_USER foreign key (USE_ID)
-      references "USER" (ID)
-      on delete restrict on update restrict;
+   add constraint FK_NOTIFICA_ACCOUNT_NOTI_ACCOUNT foreign key (USE_ID)
+references ACCOUNT (ID)
+on delete restrict on update restrict;
 
 alter table REVEIEW
    add constraint FK_REVEIEW_ALBUM_REV_ALBUM foreign key (ALB_ID)
-      references ALBUM (ID)
-      on delete restrict on update restrict;
+references ALBUM (ID)
+on delete restrict on update restrict;
 
-alter table USER_FILES
-   add constraint FK_USER_FIL_USER_FILE_USER foreign key (ID)
-      references "USER" (ID)
-      on delete restrict on update restrict;
+alter table ACCOUNT_UPLOADS
+   add constraint FK_ACCOUNT_FIL_ACCOUNT_UPLOAD_ACCOUNT foreign key (ID)
+references ACCOUNT (ID)
+on delete restrict on update restrict;
 
-alter table USER_FILES
-   add constraint FK_USER_FIL_USER_FILE_FILE foreign key (FIL_ID)
-      references FILE (ID)
-      on delete restrict on update restrict;
+alter table ACCOUNT_UPLOADS
+   add constraint FK_ACCOUNT_FIL_ACCOUNT_UPLOAD_UPLOAD foreign key (FIL_ID)
+references UPLOAD (ID)
+on delete restrict on update restrict;
 
+
+insert into ACCOUNT(name, password, editor) VALUES('soares', '123', true);

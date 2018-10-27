@@ -2,8 +2,10 @@ package pt.onept.dropmusic.common.communication.multicast;
 
 import com.google.gson.JsonSyntaxException;
 import pt.onept.dropmusic.common.communication.protocol.Message;
+import pt.onept.dropmusic.common.utililty.JavaSerializationUtility;
 import pt.onept.dropmusic.common.utililty.JsonUtility;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.*;
@@ -14,7 +16,7 @@ public class MulticastHandler {
 	private int port;
 	private Map<UUID, BlockingQueue<Message>> routedReceivingQueues;
 	private BlockingQueue<Message> receivingQueue;
-	private BlockingQueue<String> sendingQueue;
+	private BlockingQueue<byte[]> sendingQueue;
 
 	public MulticastHandler(String txAddress, String rxAddress, int port) {
 		this.txAddress = txAddress;
@@ -69,9 +71,13 @@ public class MulticastHandler {
 	}
 
 	public void send(Message message) {
-		String serializedMessage = JsonUtility.toJson(message);
-		System.out.println("Sending message:");
-		System.out.println(serializedMessage);
+		byte[] serializedMessage = new byte[0];
+		try {
+			serializedMessage = JavaSerializationUtility.serialize(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("S: " + JsonUtility.toJson(message));
 		this.sendingQueue.add(serializedMessage);
 	}
 }

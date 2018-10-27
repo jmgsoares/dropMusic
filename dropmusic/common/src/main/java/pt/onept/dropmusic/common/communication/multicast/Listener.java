@@ -1,6 +1,8 @@
 package pt.onept.dropmusic.common.communication.multicast;
 
 import pt.onept.dropmusic.common.communication.protocol.Message;
+import pt.onept.dropmusic.common.server.contract.type.Artist;
+import pt.onept.dropmusic.common.utililty.JavaSerializationUtility;
 import pt.onept.dropmusic.common.utililty.JsonUtility;
 
 import java.io.IOException;
@@ -43,18 +45,18 @@ public class Listener implements Runnable {
 					packet = new DatagramPacket(buffer, buffer.length);
 					socket.receive(packet);
 					String serializedMessage = new String(packet.getData(), 0, packet.getLength());
-					if (!serializedMessage.contains(Message.getAppIdConstant())) {
-						System.out.println("Invalid message received");
+					if (!serializedMessage.contains(Message.getAPPID())) {
+						System.out.println("IM");
 						return;
 					}
-					Message message = JsonUtility.fromJson(serializedMessage, Message.class);
+					Message message = (Message) JavaSerializationUtility.deserialize(packet.getData());
 					BlockingQueue<Message> destinationQueue = routedReceivingQueues.get(message.getId());
 					if(destinationQueue == null) destinationQueue = this.receivingQueue;
 					//TODO add can lose messages if there is no space - IllegalStateException (no space)
 					destinationQueue.add(message);
-					System.out.println("valid message received: (ID) " + message.getId());
+					System.out.println("R: " + JsonUtility.toJson(message));
 				}
-			} catch (IOException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		} catch (UnknownHostException e) {

@@ -2,6 +2,7 @@ package pt.onept.dropmusic.client.shell;
 
 import asg.cliche.*;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
+import pt.onept.dropmusic.common.exception.IncompleteException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
 import pt.onept.dropmusic.common.server.contract.type.User;
@@ -28,7 +29,7 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		String output;
 
 		try {
-			this.dropmusicServer.user().create(user);
+			this.dropmusicServer.user().create(user,null);
 			output = "User " + user.getUsername() + " created successfully";
 		} catch (DuplicatedException e) {
 			output = "User " + user.getUsername() + " already exists";
@@ -38,6 +39,9 @@ public class LoginShell implements ShellDependent, ShellManageable {
 			//TODO Handle failover
 			e.printStackTrace();
 			output = e.getMessage();
+		} catch (IncompleteException e) {
+			e.printStackTrace();
+			output = "Incomplete request";
 		}
 		return output;
 	}

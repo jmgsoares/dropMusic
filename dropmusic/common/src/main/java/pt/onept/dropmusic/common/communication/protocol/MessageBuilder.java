@@ -1,5 +1,8 @@
 package pt.onept.dropmusic.common.communication.protocol;
 
+import pt.onept.dropmusic.common.server.contract.type.DropmusicDataType;
+import pt.onept.dropmusic.common.server.contract.type.User;
+
 import java.util.*;
 
 public final class MessageBuilder {
@@ -7,15 +10,15 @@ public final class MessageBuilder {
 	private MessageBuilder() {
 	}
 
-	public static <T> Message<T> buildMessage(T object, String operation) {
-		Map<String, String> dataList = new HashMap<>();
-		//TODO PUT object to list??
-		return MessageBuilder.buildMessage(dataList, operation);
+	public static <T extends DropmusicDataType> Message<T> build(Operation operation, User self) {
+		return new Message<T>()
+				.setAppId(Message.getAPPID())
+				.setId(UUID.randomUUID())
+				.setOperation(operation)
+				.setSelf(self);
 	}
 
-	public static <T> Message<T> buildMessage(Map<String,String> objects, String operation) {
-		UUID requestUuid = UUID.randomUUID();
-		//TODO error on objects.getclass() - need to get the Class of the object inside the list
-		return new Message<> (requestUuid, operation, Message.class , objects);
+	public static <T extends DropmusicDataType> Message<T> buildReply(Message request, Operation operation) {
+		return build(operation, null).setId(request.getId());
 	}
 }

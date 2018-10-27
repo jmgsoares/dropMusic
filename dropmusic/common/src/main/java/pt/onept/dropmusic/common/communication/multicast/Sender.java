@@ -9,9 +9,9 @@ import java.util.concurrent.BlockingQueue;
 public class Sender implements Runnable {
 	private String multicastAddress;
 	private int port;
-	private BlockingQueue<String> sendingQueue;
+	private BlockingQueue<byte[]> sendingQueue;
 
-	Sender(String multicastAddress, int port, BlockingQueue<String> sendingQueue) {
+	Sender(String multicastAddress, int port, BlockingQueue<byte[]> sendingQueue) {
 		this.multicastAddress = multicastAddress;
 		this.port = port;
 		this.sendingQueue = sendingQueue;
@@ -23,10 +23,10 @@ public class Sender implements Runnable {
 			InetAddress group = InetAddress.getByName(this.multicastAddress);
 			while (!Thread.interrupted()) {
 				try {
-					String serializedMessage = this.sendingQueue.take();
+					byte[] serializedMessage = this.sendingQueue.take();
 					DatagramPacket packet = new DatagramPacket(
-							serializedMessage.getBytes(),
-							serializedMessage.getBytes().length,
+							serializedMessage,
+							serializedMessage.length,
 							group,
 							port
 					);

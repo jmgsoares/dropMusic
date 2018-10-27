@@ -1,8 +1,10 @@
 package pt.onept.dropmusic.common.server.contract;
 
 import pt.onept.dropmusic.common.exception.DuplicatedException;
+import pt.onept.dropmusic.common.exception.IncompleteException;
 import pt.onept.dropmusic.common.exception.NotFoundException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.dropmusic.common.server.contract.type.User;
 
 import java.rmi.RemoteException;
 
@@ -14,42 +16,14 @@ import java.rmi.RemoteException;
  */
 public interface Crudable<T> {
 
-	/**
-	 * Create object T
-	 *
-	 * @param object object to be created
-	 * @throws DuplicatedException   if the object already exists
-	 * @throws UnauthorizedException if there is no Authorization to perform the operation
-	 * @throws RemoteException       if operation failed to execute
-	 */
-	void create(T object) throws DuplicatedException, UnauthorizedException, RemoteException;
 
-	/**
-	 * Read object T
-	 *
-	 * @param id of the object to be read
-	 * @throws NotFoundException if the object doesn't exists
-	 * @throws RemoteException   if operation failed to execute
-	 */
-	T read(Long id) throws NotFoundException, UnauthorizedException, RemoteException;
+	void create(User self, T object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException;
 
-	/**
-	 * Update object T
-	 *
-	 * @param object object to be updated
-	 * @throws NotFoundException     if the object doesn't exists
-	 * @throws UnauthorizedException if there is no Authorization to perform the operation
-	 * @throws RemoteException       if operation failed to execute
-	 */
-	void update(T object) throws NotFoundException, UnauthorizedException, RemoteException;
+	T read(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException;
 
-	/**
-	 * Delete object T
-	 *
-	 * @param object object to be deleted
-	 * @throws NotFoundException     if the object doesn't exists
-	 * @throws UnauthorizedException if there is no Authorization to perform the operation
-	 * @throws RemoteException       if operation failed to execute
-	 */
-	void delete(T object) throws NotFoundException, UnauthorizedException, RemoteException;
+
+	void update(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException;
+
+
+	void delete(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException;
 }

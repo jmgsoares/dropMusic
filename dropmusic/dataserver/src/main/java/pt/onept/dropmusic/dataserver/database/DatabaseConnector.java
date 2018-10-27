@@ -7,12 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
 
-public class DatabaseHandler {
+	public class DatabaseConnector {
 	private String url;
 	private String dbUser;
 	private String dbUserPassword;
 
-	public DatabaseHandler(String url, String dbUser, String dbUserPassword) {
+	public DatabaseConnector(String url, String dbUser, String dbUserPassword) {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
@@ -24,7 +24,7 @@ public class DatabaseHandler {
 		this.dbUserPassword = dbUserPassword;
 	}
 
-	private Connection getConnection() {
+	public Connection getConnection() {
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(this.url, this.dbUser, this.dbUserPassword);
@@ -35,7 +35,7 @@ public class DatabaseHandler {
 		return connection;
 	}
 
-	public String getSqlScriptFromFile(String file) throws NullPointerException {
+	private String getSqlScriptFromFile(String file) throws NullPointerException {
 		byte[] encoded = null;
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
@@ -49,44 +49,18 @@ public class DatabaseHandler {
 		return new String(encoded != null ? encoded : new byte[0]);
 	}
 
-	public void createDB(String sqlScript) {
+	public void createDB(String filePath) {
 		try {
+			String createScript = getSqlScriptFromFile(filePath);
+
 			Connection connection = getConnection();
 			Statement statement = connection.createStatement();
-			statement.executeUpdate(sqlScript);
+			statement.executeUpdate(createScript);
 			statement.close();
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Could not create the database");
 		}
-	}
-
-	public void executeSqlStatement(String sqlStatement) {
-		try {
-			Connection connection = getConnection();
-			Statement statement = connection.createStatement();
-			statement.execute(sqlStatement);
-			statement.close();
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Could not execute the sql statement " + sqlStatement);
-		}
-	}
-
-	public ResultSet executeSqlQuery(String sqlQuery) {
-		ResultSet resultSet = null;
-		try {
-			Connection connection = getConnection();
-			Statement statement = connection.createStatement();
-			resultSet = statement.executeQuery(sqlQuery);
-			statement.close();
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Could not execute the sql query" + sqlQuery);
-		}
-		return resultSet;
 	}
 }

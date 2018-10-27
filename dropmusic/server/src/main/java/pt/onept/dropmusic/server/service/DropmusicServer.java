@@ -2,21 +2,20 @@ package pt.onept.dropmusic.server.service;
 
 import pt.onept.dropmusic.common.communication.multicast.MulticastHandler;
 import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
-import pt.onept.dropmusic.common.server.contract.subcontract.AlbumManagerInterface;
-import pt.onept.dropmusic.common.server.contract.subcontract.ArtistManagerInterface;
-import pt.onept.dropmusic.common.server.contract.subcontract.MusicManagerInterface;
-import pt.onept.dropmusic.common.server.contract.subcontract.UserManagerInterface;
+import pt.onept.dropmusic.common.server.contract.subcontract.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class DropmusicServer extends UnicastRemoteObject implements DropmusicServerInterface {
-	MulticastHandler multicastHandler;
+	private MulticastHandler multicastHandler;
 
 	private UserManagerInterface userManager;
 	private AlbumManagerInterface albumManager;
 	private MusicManagerInterface musicManager;
 	private ArtistManagerInterface artistManager;
+	private NotificationManagerInterface notificationManager;
+	private ReviewManagerInterface reviewManager;
 
 	public DropmusicServer(MulticastHandler multicastHandler) throws RemoteException {
 		super();
@@ -25,10 +24,8 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 		this.albumManager = new AlbumManager(this.multicastHandler);
 		this.musicManager = new MusicManager(this.multicastHandler);
 		this.artistManager = new ArtistManager(this.multicastHandler);
-	}
-
-	public MulticastHandler comunicationHandler() {
-		return this.multicastHandler;
+		this.notificationManager = new NotificationManager(this.multicastHandler);
+		this.reviewManager = new ReviewManager(this.multicastHandler);
 	}
 
 	@Override
@@ -49,5 +46,15 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 	@Override
 	public ArtistManagerInterface artist() {
 		return this.artistManager;
+	}
+
+	@Override
+	public NotificationManagerInterface notification() {
+		return this.notificationManager;
+	}
+
+	@Override
+	public ReviewManagerInterface review() {
+		return this.reviewManager;
 	}
 }
