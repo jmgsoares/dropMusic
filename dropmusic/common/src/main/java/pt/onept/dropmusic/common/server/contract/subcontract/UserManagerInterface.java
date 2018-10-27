@@ -16,12 +16,5 @@ import java.rmi.RemoteException;
  */
 public interface UserManagerInterface extends Remote, Crudable<User>, Serializable {
 
-	/**
-	 * User login
-	 *
-	 * @param user to login with
-	 * @throws RemoteException       if the operation failed to execute
-	 * @throws UnauthorizedException if the login isn't successful
-	 */
 	User login(User user) throws RemoteException, UnauthorizedException;
 }

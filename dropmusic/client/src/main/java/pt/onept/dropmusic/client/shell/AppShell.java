@@ -1,14 +1,14 @@
 package pt.onept.dropmusic.client.shell;
 
 import asg.cliche.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
+import pt.onept.dropmusic.common.exception.IncompleteException;
 import pt.onept.dropmusic.common.exception.NotFoundException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.dropmusic.common.server.contract.Crudable;
 import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
 import pt.onept.dropmusic.common.server.contract.type.*;
+import pt.onept.dropmusic.common.utililty.JsonUtility;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -28,7 +28,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 	public void cliEnterLoop() {
 		try {
 			this.shell.processLine("message \"Welcome " + this.user.getUsername() + "\"");
-			this.shell.processLine("getnotifications");
+			//this.shell.processLine("getnotifications");
 		} catch (CLIException e) {
 			e.printStackTrace();
 		}
@@ -40,13 +40,13 @@ public class AppShell implements ShellManageable, ShellDependent {
 		List<Notification> notifications;
 
 		try {
-			notifications = this.dropmusicServer.user().read(this.user.getId()).getNotifications();
+			notifications = this.dropmusicServer.notification().get(this.user);
 			if (!notifications.isEmpty()) {
 				output = notifications.stream()
 						.map(Notification::getMessage)
 						.collect(Collectors.joining("\n"));
 			} else output = "No new notifications";
-		} catch (NotFoundException | RemoteException | UnauthorizedException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 			//TODO Handle failover
 			output = e.getMessage();
@@ -80,7 +80,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		String output;
 
 		try {
-			this.dropmusicServer.artist().create(artist);
+			this.dropmusicServer.artist().create(this.user, artist);
 			output = "Artist " + artist.getName() + " created successfully";
 		} catch (DuplicatedException e) {
 			output = "Artist " + artist.getName() + " already exists";
@@ -89,18 +89,20 @@ public class AppShell implements ShellManageable, ShellDependent {
 		} catch (RemoteException e) {
 			//TODO Handle failover
 			output = e.getMessage();
+		} catch (IncompleteException e) {
+			output = "Incomplete request";
 		}
 		return output;
 	}
 
-	@Command(name = "rmartist", description = "Remove a artist. Usage: rmartist <artist-name>", abbrev = "rmart")
-	public String deleteArtist(String artistName) {
+	@Command(name = "rmartist", description = "Remove a artist. Usage: rmartist <artist-id>", abbrev = "rmart")
+	public String deleteArtist(int id) {
 		Artist artist = new Artist()
-				.setName(artistName);
+				.setId(id);
 		String output;
 
 		try {
-			this.dropmusicServer.artist().delete(artist);
+			this.dropmusicServer.artist().delete(this.user, artist);
 			output = "Artist " + artist.getName() + " deleted";
 		} catch (NotFoundException e) {
 			output = "Artist " + artist.getName() + " not found";
@@ -113,13 +115,14 @@ public class AppShell implements ShellManageable, ShellDependent {
 		return output;
 	}
 
-	@Command(name = "mvartist", description = "Update a artist. Usage: mvartist <artist-name>", abbrev = "mvart")
-	public String updateArtist(String artistName) {
+	@Command(name = "mvartist", description = "Update a artist. Usage: mvartist <artist-id> <artist-name>", abbrev = "mvart")
+	public String updateArtist(int id, String artistName) {
 		Artist artist = new Artist()
+				.setId(id)
 				.setName(artistName);
 		String output;
 		try {
-			this.dropmusicServer.artist().update(artist);
+			this.dropmusicServer.artist().update(this.user, artist);
 			output = "Artist " + artist.getName() + " updated successfully";
 		} catch (NotFoundException e) {
 			output = "Artist " + artist.getName() + " not found";
@@ -128,17 +131,22 @@ public class AppShell implements ShellManageable, ShellDependent {
 		} catch (RemoteException e) {
 			//TODO Handle failover
 			output = e.getMessage();
+		} catch (IncompleteException e) {
+			output = "Request incomplete";
 		}
 		return output;
 	}
 
-	@Command(name = "mkalbum", description = "Create a new album. Usage: mkalbum <album-name>", abbrev = "mkalb")
-	public String createAlbum(String albumName) {
-		Album album = new Album();
+	@Command(name = "mkalbum", description = "Create a new album. Usage: mkalbum <album-name> <artist-id> <description>", abbrev = "mkalb")
+	public String createAlbum(String albumName, int artistId, String description) {
+		Album album = new Album()
+				.setName(albumName)
+				.setArtist(new Artist().setId(artistId))
+				.setDescription(description);
 		String output;
 
 		try {
-			dropmusicServer.album().create(album);
+			dropmusicServer.album().create(this.user, album);
 			output = "Album " + album.getName() + " created successfully";
 		} catch (DuplicatedException e) {
 			output = "Album " + album.getName() + " already exists";
@@ -147,17 +155,19 @@ public class AppShell implements ShellManageable, ShellDependent {
 		} catch (RemoteException e) {
 			//TODO Handle failover
 			output = e.getMessage();
+		} catch (IncompleteException e) {
+			output = "Incomplete request";
 		}
 		return output;
 	}
 
-	@Command(name = "rmalbum", description = "Remove a album. Usage: rmalbum <album-name>", abbrev = "rmaalb")
-	public String deleteAlbum(String albumName) {
-		Album album = new Album();
+	@Command(name = "rmalbum", description = "Remove a album. Usage: rmalbum <album-id>", abbrev = "rmaalb")
+	public String deleteAlbum(int id) {
+		Album album = new Album().setId(id);
 		String output;
 
 		try {
-			this.dropmusicServer.album().delete(album);
+			this.dropmusicServer.album().delete(this.user, album);
 			output = "Album " + album.getName() + " deleted";
 		} catch (NotFoundException e) {
 			output = "Album " + album.getName() + " not found";
@@ -170,12 +180,15 @@ public class AppShell implements ShellManageable, ShellDependent {
 		return output;
 	}
 
-	@Command(name = "mvalbum", description = "Update a album. Usage: mvalbum <album-name>", abbrev = "mvalb")
-	public String updateAlbum(String albumName) {
-		Album album = new Album();
+	@Command(name = "mvalbum", description = "Update a album. Usage: mvalbum <album-id> <album-name> <album-desc>", abbrev = "mvalb")
+	public String updateAlbum(int id, String albumName, String albumDescription) {
+		Album album = new Album()
+				.setId(id)
+				.setName(albumName)
+				.setDescription(albumDescription);
 		String output;
 		try {
-			this.dropmusicServer.album().update(album);
+			this.dropmusicServer.album().update(this.user, album);
 			output = "Album " + album.getName() + " updated successfully";
 		} catch (NotFoundException e) {
 			output = "Album " + album.getName() + " not found";
@@ -184,17 +197,21 @@ public class AppShell implements ShellManageable, ShellDependent {
 		} catch (RemoteException e) {
 			//TODO Handle failover
 			output = e.getMessage();
+		} catch (IncompleteException e) {
+			output = "Incomplete request";
 		}
 		return output;
 	}
 
-	@Command(name = "mkmusic", description = "Create a new music. Usage: mkmusic <music-name>", abbrev = "mkmus")
-	public String createMusic(String musicName) {
-		Music music = new Music(musicName);
+	@Command(name = "mkmusic", description = "Create a new music. Usage: mkmusic <album-id> <music-name>", abbrev = "mkmus")
+	public String createMusic(int id, String musicName) {
+		Music music = new Music()
+				.setAlbumId(id)
+				.setName(musicName);
 		String output;
 
 		try {
-			dropmusicServer.music().create(music);
+			dropmusicServer.music().create(this.user, music);
 			output = "Music " + music.getName() + " created successfully";
 		} catch (DuplicatedException e) {
 			output = "Music " + music.getName() + " already exists";
@@ -203,17 +220,19 @@ public class AppShell implements ShellManageable, ShellDependent {
 		} catch (RemoteException e) {
 			//TODO Handle failover
 			output = e.getMessage();
+		} catch (IncompleteException e) {
+			output = "Request incomplete";
 		}
 		return output;
 	}
 
-	@Command(name = "rmmusic", description = "Remove a music. Usage: rmmusic <music-name>", abbrev = "rmmus")
-	public String deleteMusic(String musicName) {
-		Music music = new Music(musicName);
+	@Command(name = "rmmusic", description = "Remove a music. Usage: rmmusic <music-id>", abbrev = "rmmus")
+	public String deleteMusic(int id) {
+		Music music = new Music().setId(id);
 		String output;
 
 		try {
-			this.dropmusicServer.music().delete(music);
+			this.dropmusicServer.music().delete(this.user, music);
 			output = "Music " + music.getName() + " deleted";
 		} catch (NotFoundException e) {
 			output = "Music " + music.getName() + " not found";
@@ -226,12 +245,14 @@ public class AppShell implements ShellManageable, ShellDependent {
 		return output;
 	}
 
-	@Command(name = "mvmusic", description = "Update a music. Usage: mvmusic <music-name>", abbrev = "mvmus")
-	public String updateMusic(String musicName) {
-		Music music = new Music(musicName);
+	@Command(name = "mvmusic", description = "Update a music. Usage: mvmusic <album-id> <music-name>", abbrev = "mvmus")
+	public String updateMusic(int id, String musicName) {
+		Music music = new Music()
+				.setAlbumId(id)
+				.setName(musicName);
 		String output;
 		try {
-			this.dropmusicServer.music().update(music);
+			this.dropmusicServer.music().update(this.user, music);
 			output = "Music " + music.getName() + " updated successfully";
 		} catch (NotFoundException e) {
 			output = "Music " + music.getName() + " not found";
@@ -240,15 +261,17 @@ public class AppShell implements ShellManageable, ShellDependent {
 		} catch (RemoteException e) {
 			//TODO Handle failover
 			output = e.getMessage();
+		} catch (IncompleteException e) {
+			output = "Incomplete request";
 		}
 		return output;
 	}
 
 	@Command(name = "catartist", description = "Show details about an artist. Usage catartist <artist-id>", abbrev = "catart")
-	public String readArtist(long id) {
+	public String readArtist(int id) {
 		String output;
 		try {
-			output = cat(id, this.dropmusicServer.artist());
+			output = cat(new Artist().setId(id), this.dropmusicServer.artist());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			output = e.getMessage();
@@ -257,11 +280,11 @@ public class AppShell implements ShellManageable, ShellDependent {
 	}
 
 	@Command(name = "catalbum", description = "Show details about an album. Usage catalbum <album-id>", abbrev = "catalb")
-	public String readAlbum(long id) {
+	public String readAlbum(int id) {
 		String output;
 
 		try {
-			output = cat(id, this.dropmusicServer.album());
+			output = cat(new Album().setId(id), this.dropmusicServer.album());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			output = e.getMessage();
@@ -270,10 +293,22 @@ public class AppShell implements ShellManageable, ShellDependent {
 	}
 
 	@Command(name = "catmusic", description = "Show details about a music. Usage catmusic <music-id>", abbrev = "catmus")
-	public String readMusic(long id) {
+	public String readMusic(int id) {
 		String output;
 		try {
-			output = cat(id, this.dropmusicServer.music());
+			output = cat(new Music().setId(id), this.dropmusicServer.music());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			output = e.getMessage();
+		}
+		return output;
+	}
+
+	public String search(String searchString) {
+		String output;
+		try {
+			List<Album> albums = this.dropmusicServer.album().search(this.user, searchString);
+			output = JsonUtility.toPrettyJson(albums);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			output = e.getMessage();
@@ -282,14 +317,13 @@ public class AppShell implements ShellManageable, ShellDependent {
 	}
 
 	//TODO generify the mk mv rm
-	private <T> String cat(long id, Crudable<T> client) {
-		String output;
+	private <T> String cat(T objectId, Crudable<T> client) {
+		String output = null;
 		T object;
 
 		try {
-			object = client.read(id);
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			output = gson.toJson(object);
+			object = client.read(this.user, objectId);
+			output = JsonUtility.toPrettyJson(object);
 		} catch (NotFoundException e) {
 			output = "Not found";
 		} catch (UnauthorizedException e) {

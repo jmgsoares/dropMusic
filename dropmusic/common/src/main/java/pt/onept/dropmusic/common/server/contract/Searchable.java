@@ -1,22 +1,12 @@
 package pt.onept.dropmusic.common.server.contract;
 
+import pt.onept.dropmusic.common.server.contract.type.User;
+
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
 
-/**
- * Searchable interface of type  T
- *
- * @author João Soares
- * @version 1e-1024
- */
-public interface Searchable<T> {
+public interface Searchable<T> extends Serializable {
 
-	/**
-	 * Search
-	 *
-	 * @param query string to search for
-	 * @return List of objects of type T
-	 * @throws RemoteException if failed to execute the operation
-	 */
-	List<T> search(String query) throws RemoteException;
+	List<T> search(User self, String query) throws RemoteException;
 }

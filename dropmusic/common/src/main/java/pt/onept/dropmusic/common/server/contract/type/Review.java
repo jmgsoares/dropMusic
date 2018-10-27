@@ -2,7 +2,8 @@ package pt.onept.dropmusic.common.server.contract.type;
 
 import java.io.Serializable;
 
-public class Review implements Serializable {
+public class Review extends DropmusicDataType implements Serializable {
+	private int id;
 	private float score;
 	private String review;
 
