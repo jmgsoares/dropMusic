@@ -76,7 +76,8 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	@Command(name = "mkartist", description = "Create a new artist. Usage: mkartist <artist-name>", abbrev = "mkart")
 	public String createArtist(String artistName) {
-		Artist artist = new Artist(artistName);
+		Artist artist = new Artist()
+				.setName(artistName);
 		String output;
 
 		try {
@@ -95,7 +96,8 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	@Command(name = "rmartist", description = "Remove a artist. Usage: rmartist <artist-name>", abbrev = "rmart")
 	public String deleteArtist(String artistName) {
-		Artist artist = new Artist(artistName);
+		Artist artist = new Artist()
+				.setName(artistName);
 		String output;
 
 		try {
@@ -114,7 +116,8 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	@Command(name = "mvartist", description = "Update a artist. Usage: mvartist <artist-name>", abbrev = "mvart")
 	public String updateArtist(String artistName) {
-		Artist artist = new Artist(artistName);
+		Artist artist = new Artist()
+				.setName(artistName);
 		String output;
 		try {
 			this.dropmusicServer.artist().update(artist);
