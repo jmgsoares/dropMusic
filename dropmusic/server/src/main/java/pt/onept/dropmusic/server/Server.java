@@ -10,17 +10,36 @@ import java.rmi.registry.Registry;
 
 public class Server {
 	public static void main(String[] args) {
+		String txMultiCastAddress = "224.3.2.1";
+		String rxMulticastAddress = "224.3.2.2";
+		int multiCastPort = 4321;
+		int rmiServerPort = 1099;
+		Registry registry = null;
+		boolean boot = true;
+
+		while (registry == null){
+			try {
+				registry = LocateRegistry.createRegistry(rmiServerPort);
+			} catch (RemoteException e) {
+				registry = null;
+				if (boot) {
+					System.out.println("Server in backup mode");
+					boot = false;
+				}
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		System.out.println("Server in primary mode");
+
 		try {
-			String txMultiCastAddress = "224.3.2.1";
-			String rxMulticastAddress = "224.3.2.2";
-			int multiCastPort = 4321;
-
 			MulticastHandler multicastHandler = new MulticastHandler(txMultiCastAddress, rxMulticastAddress, multiCastPort);
-
-			DropmusicServerInterface dropmusicServer = new DropmusicServer(multicastHandler);
-			//Naming.rebind("Dropmusic", dropmusicServer);
-			Registry test = LocateRegistry.createRegistry(1099);
-			test.rebind("Dropmusic", dropmusicServer);
+			DropmusicServerInterface dropmusicServer = null;
+			dropmusicServer = new DropmusicServer(multicastHandler);
+			registry.rebind("Dropmusic", dropmusicServer);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

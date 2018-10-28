@@ -1,6 +1,7 @@
 package pt.onept.dropmusic.client.shell;
 
 import asg.cliche.*;
+import pt.onept.dropmusic.client.CommunicationManager;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.IncompleteException;
 import pt.onept.dropmusic.common.exception.NotFoundException;
@@ -15,20 +16,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AppShell implements ShellManageable, ShellDependent {
-	private DropmusicServerInterface dropmusicServer;
 	private Shell shell;
 	private User user;
 
-	public AppShell(DropmusicServerInterface dropmusicServer, User user) {
-		this.dropmusicServer = dropmusicServer;
+	public AppShell(User user) {
 		this.user = user;
 	}
-
 	@Override
 	public void cliEnterLoop() {
 		try {
 			this.shell.processLine("message \"Welcome " + this.user.getUsername() + "\"");
-			//this.shell.processLine("getnotifications");
+			this.shell.processLine("getnotifications");
 		} catch (CLIException e) {
 			e.printStackTrace();
 		}
@@ -36,20 +34,24 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	@Command(name = "getnotifications", abbrev = "catnot")
 	public String getNotifications() {
-		String output;
+		String output = null;
 		List<Notification> notifications;
+		boolean retry = true;
 
-		try {
-			notifications = this.dropmusicServer.notification().get(this.user);
-			if (notifications != null && !notifications.isEmpty()) {
-				output = notifications.stream()
-						.map(Notification::getMessage)
-						.collect(Collectors.joining("\n"));
-			} else output = "No new notifications";
-		} catch (RemoteException e) {
-			e.printStackTrace();
-			//TODO Handle failover
-			output = e.getMessage();
+		while (retry) {
+			retry = false;
+			try {
+				notifications = CommunicationManager.dropmusicServer.notification().get(this.user);
+				if (notifications != null && !notifications.isEmpty()) {
+					output = "You have " + notifications.size() + " new notifications\n" +
+							notifications.stream()
+							.map(Notification::getMessage)
+							.collect(Collectors.joining("\n"));
+				} else output = "No new notifications";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			}
 		}
 		return output;
 	}
@@ -77,20 +79,24 @@ public class AppShell implements ShellManageable, ShellDependent {
 	public String createArtist(String artistName) {
 		Artist artist = new Artist()
 				.setName(artistName);
-		String output;
+		String output = null;
+		boolean retry = true;
 
-		try {
-			this.dropmusicServer.artist().create(this.user, artist);
-			output = "Artist " + artist.getName() + " created successfully";
-		} catch (DuplicatedException e) {
-			output = "Artist " + artist.getName() + " already exists";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
-		} catch (IncompleteException e) {
-			output = "Incomplete request";
+		while (retry) {
+			retry = false;
+			try {
+				CommunicationManager.dropmusicServer.artist().create(this.user, artist);
+				output = "Artist " + artist.getName() + " created successfully";
+			} catch (DuplicatedException e) {
+				output = "Artist " + artist.getName() + " already exists";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			} catch (IncompleteException e) {
+				output = "Incomplete request";
+			}
 		}
 		return output;
 	}
@@ -99,18 +105,22 @@ public class AppShell implements ShellManageable, ShellDependent {
 	public String deleteArtist(int id) {
 		Artist artist = new Artist()
 				.setId(id);
-		String output;
+		String output = null;
+		boolean retry = true;
 
-		try {
-			this.dropmusicServer.artist().delete(this.user, artist);
-			output = "Artist " + artist.getName() + " deleted";
-		} catch (NotFoundException e) {
-			output = "Artist " + artist.getName() + " not found";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
+		while (retry) {
+			retry = false;
+			try {
+				CommunicationManager.dropmusicServer.artist().delete(this.user, artist);
+				output = "Artist " + artist.getName() + " deleted";
+			} catch (NotFoundException e) {
+				output = "Artist " + artist.getName() + " not found";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			}
 		}
 		return output;
 	}
@@ -120,19 +130,24 @@ public class AppShell implements ShellManageable, ShellDependent {
 		Artist artist = new Artist()
 				.setId(id)
 				.setName(artistName);
-		String output;
-		try {
-			this.dropmusicServer.artist().update(this.user, artist);
-			output = "Artist " + artist.getName() + " updated successfully";
-		} catch (NotFoundException e) {
-			output = "Artist " + artist.getName() + " not found";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
-		} catch (IncompleteException e) {
-			output = "Request incomplete";
+		String output = null;
+		boolean retry = true;
+
+		while (retry) {
+			retry = false;
+			try {
+				CommunicationManager.dropmusicServer.artist().update(this.user, artist);
+				output = "Artist " + artist.getName() + " updated successfully";
+			} catch (NotFoundException e) {
+				output = "Artist " + artist.getName() + " not found";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			} catch (IncompleteException e) {
+				output = "Request incomplete";
+			}
 		}
 		return output;
 	}
@@ -143,20 +158,25 @@ public class AppShell implements ShellManageable, ShellDependent {
 				.setName(albumName)
 				.setArtist(new Artist().setId(artistId))
 				.setDescription(description);
-		String output;
+		String output = null;
+		boolean retry = true;
 
-		try {
-			dropmusicServer.album().create(this.user, album);
-			output = "Album " + album.getName() + " created successfully";
-		} catch (DuplicatedException e) {
-			output = "Album " + album.getName() + " already exists";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
-		} catch (IncompleteException e) {
-			output = "Incomplete request";
+		while (retry) {
+			retry = false;
+
+			try {
+				CommunicationManager.dropmusicServer.album().create(this.user, album);
+				output = "Album " + album.getName() + " created successfully";
+			} catch (DuplicatedException e) {
+				output = "Album " + album.getName() + " already exists";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			} catch (IncompleteException e) {
+				output = "Incomplete request";
+			}
 		}
 		return output;
 	}
@@ -164,18 +184,23 @@ public class AppShell implements ShellManageable, ShellDependent {
 	@Command(name = "rmalbum", description = "Remove a album. Usage: rmalbum <album-id>", abbrev = "rmaalb")
 	public String deleteAlbum(int id) {
 		Album album = new Album().setId(id);
-		String output;
+		String output = null;
+		boolean retry = true;
 
-		try {
-			this.dropmusicServer.album().delete(this.user, album);
-			output = "Album " + album.getName() + " deleted";
-		} catch (NotFoundException e) {
-			output = "Album " + album.getName() + " not found";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
+		while (retry) {
+			retry = false;
+
+			try {
+				CommunicationManager.dropmusicServer.album().delete(this.user, album);
+				output = "Album " + album.getName() + " deleted";
+			} catch (NotFoundException e) {
+				output = "Album " + album.getName() + " not found";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			}
 		}
 		return output;
 	}
@@ -186,19 +211,24 @@ public class AppShell implements ShellManageable, ShellDependent {
 				.setId(id)
 				.setName(albumName)
 				.setDescription(albumDescription);
-		String output;
-		try {
-			this.dropmusicServer.album().update(this.user, album);
-			output = "Album " + album.getName() + " updated successfully";
-		} catch (NotFoundException e) {
-			output = "Album " + album.getName() + " not found";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
-		} catch (IncompleteException e) {
-			output = "Incomplete request";
+		String output = null;
+		boolean retry = true;
+
+		while (retry) {
+			retry = false;
+			try {
+				CommunicationManager.dropmusicServer.album().update(this.user, album);
+				output = "Album " + album.getName() + " updated successfully";
+			} catch (NotFoundException e) {
+				output = "Album " + album.getName() + " not found";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			} catch (IncompleteException e) {
+				output = "Incomplete request";
+			}
 		}
 		return output;
 	}
@@ -208,20 +238,25 @@ public class AppShell implements ShellManageable, ShellDependent {
 		Music music = new Music()
 				.setAlbumId(id)
 				.setName(musicName);
-		String output;
+		String output = null;
+		boolean retry = true;
 
-		try {
-			dropmusicServer.music().create(this.user, music);
-			output = "Music " + music.getName() + " created successfully";
-		} catch (DuplicatedException e) {
-			output = "Music " + music.getName() + " already exists";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
-		} catch (IncompleteException e) {
-			output = "Request incomplete";
+		while (retry) {
+			retry = false;
+			try {
+				CommunicationManager.dropmusicServer.music().create(this.user, music);
+				output = "Music " + music.getName() + " created successfully";
+			} catch (DuplicatedException e) {
+				output = "Music " + music.getName() + " already exists";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+				output = e.getMessage();
+			} catch (IncompleteException e) {
+				output = "Request incomplete";
+			}
 		}
 		return output;
 	}
@@ -229,18 +264,23 @@ public class AppShell implements ShellManageable, ShellDependent {
 	@Command(name = "rmmusic", description = "Remove a music. Usage: rmmusic <music-id>", abbrev = "rmmus")
 	public String deleteMusic(int id) {
 		Music music = new Music().setId(id);
-		String output;
+		String output = null;
+		boolean retry = true;
 
-		try {
-			this.dropmusicServer.music().delete(this.user, music);
-			output = "Music " + music.getName() + " deleted";
-		} catch (NotFoundException e) {
-			output = "Music " + music.getName() + " not found";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
+		while (retry) {
+			retry = false;
+
+			try {
+				CommunicationManager.dropmusicServer.music().delete(this.user, music);
+				output = "Music " + music.getName() + " deleted";
+			} catch (NotFoundException e) {
+				output = "Music " + music.getName() + " not found";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			}
 		}
 		return output;
 	}
@@ -250,19 +290,24 @@ public class AppShell implements ShellManageable, ShellDependent {
 		Music music = new Music()
 				.setAlbumId(id)
 				.setName(musicName);
-		String output;
-		try {
-			this.dropmusicServer.music().update(this.user, music);
-			output = "Music " + music.getName() + " updated successfully";
-		} catch (NotFoundException e) {
-			output = "Music " + music.getName() + " not found";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
-		} catch (IncompleteException e) {
-			output = "Incomplete request";
+		String output = null;
+		boolean retry = true;
+
+		while (retry) {
+			retry = false;
+			try {
+				CommunicationManager.dropmusicServer.music().update(this.user, music);
+				output = "Music " + music.getName() + " updated successfully";
+			} catch (NotFoundException e) {
+				output = "Music " + music.getName() + " not found";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			} catch (IncompleteException e) {
+				output = "Incomplete request";
+			}
 		}
 		return output;
 	}
@@ -271,7 +316,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 	public String readArtist(int id) {
 		String output;
 		try {
-			output = cat(new Artist().setId(id), this.dropmusicServer.artist());
+			output = cat(new Artist().setId(id), CommunicationManager.dropmusicServer.artist());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			output = e.getMessage();
@@ -284,7 +329,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		String output;
 
 		try {
-			output = cat(new Album().setId(id), this.dropmusicServer.album());
+			output = cat(new Album().setId(id), CommunicationManager.dropmusicServer.album());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			output = e.getMessage();
@@ -294,24 +339,29 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	@Command(name = "catmusic", description = "Show details about a music. Usage catmusic <music-id>", abbrev = "catmus")
 	public String readMusic(int id) {
-		String output;
+		String output = null;
+
 		try {
-			output = cat(new Music().setId(id), this.dropmusicServer.music());
-		} catch (RemoteException e) {
-			e.printStackTrace();
-			output = e.getMessage();
-		}
+			output = cat(new Music().setId(id), CommunicationManager.dropmusicServer.music());
+		} catch (RemoteException e) { }
 		return output;
 	}
 
+	@Command(name = "search", description = "Search album by the artist name or album title. Usage search <search string>")
 	public String search(String searchString) {
-		String output;
-		try {
-			List<Album> albums = this.dropmusicServer.album().search(this.user, searchString);
-			output = JsonUtility.toPrettyJson(albums);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-			output = e.getMessage();
+		String output = null;
+		boolean retry = true;
+
+		while (retry) {
+			retry = false;
+
+			try {
+				List<Album> albums = CommunicationManager.dropmusicServer.album().search(this.user, searchString);
+				output = JsonUtility.toPrettyJson(albums);
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			}
 		}
 		return output;
 	}
@@ -320,17 +370,22 @@ public class AppShell implements ShellManageable, ShellDependent {
 	private <T> String cat(T objectId, Crudable<T> client) {
 		String output = null;
 		T object;
+		boolean retry = true;
 
-		try {
-			object = client.read(this.user, objectId);
-			output = JsonUtility.toPrettyJson(object);
-		} catch (NotFoundException e) {
-			output = "Not found";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized";
-		} catch (RemoteException e) {
-			e.printStackTrace();
-			output = e.getMessage();
+		while (retry) {
+			retry = false;
+
+			try {
+				object = client.read(this.user, objectId);
+				output = JsonUtility.toPrettyJson(object);
+			} catch (NotFoundException e) {
+				output = "Not found";
+			} catch (UnauthorizedException e) {
+				output = "Unauthorized";
+			} catch (RemoteException e) {
+				retry = CommunicationManager.handleFailOver();
+				if (!retry) output = "RMI SERVER FAIL";
+			}
 		}
 		return output;
 	}

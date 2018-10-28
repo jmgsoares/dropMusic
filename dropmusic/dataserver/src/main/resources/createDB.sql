@@ -74,6 +74,7 @@ create table ALBUM (
    NAME                 VARCHAR(64)          not null,
    DESCRIPTION          VARCHAR(1024)        not null,
    SCORE                FLOAT8               null,
+   UNIQUE (NAME, DESCRIPTION),
    constraint PK_ALBUM primary key (ID)
 );
 
@@ -164,6 +165,7 @@ create table MUSIC (
    ID                   SERIAL               not null,
    ALB_ID               INT4                 not null,
    NAME                 VARCHAR(32)          not null,
+   UNIQUE (ALB_ID, NAME),
    constraint PK_MUSIC primary key (ID)
 );
 
@@ -328,8 +330,9 @@ on delete restrict on update restrict;
 DROP FUNCTION IF EXISTS add_album(artist_id SERIAL, name VARCHAR(64), description VARCHAR(1024));
 CREATE FUNCTION add_album(artist_id INT4, name VARCHAR(64), description VARCHAR(1024)) RETURNS album AS $$
 DECLARE
-   new_album album%ROWTYPE;
+   new_album album %ROWTYPE;
 BEGIN
+   SELECT * FROM ALBUM WHERE name LIKE '%' + name + '%';
    INSERT INTO album(name, description) VALUES($2, $3) RETURNING * INTO new_album;
    INSERT INTO artist_album(id, alb_id) VALUES($1, new_album.id);
    RETURN new_album;
