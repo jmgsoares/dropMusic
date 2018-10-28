@@ -1,6 +1,5 @@
 package pt.onept.dropmusic.dataserver;
 
-import org.omg.PortableInterceptor.SUCCESSFUL;
 import pt.onept.dropmusic.common.communication.multicast.MulticastHandler;
 import pt.onept.dropmusic.common.communication.protocol.Message;
 import pt.onept.dropmusic.common.communication.protocol.MessageBuilder;
@@ -17,7 +16,6 @@ import pt.onept.dropmusic.dataserver.database.TypeFactory;
 import java.io.InvalidClassException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 final class MessageHandler implements Runnable {
