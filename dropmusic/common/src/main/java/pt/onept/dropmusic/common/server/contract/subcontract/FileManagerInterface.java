@@ -1,7 +1,7 @@
 package pt.onept.dropmusic.common.server.contract.subcontract;
 
 import pt.onept.dropmusic.common.exception.NotFoundException;
-import pt.onept.dropmusic.common.server.contract.type.FileAddress;
+import pt.onept.dropmusic.common.server.contract.type.Upload;
 import pt.onept.dropmusic.common.server.contract.type.Music;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
@@ -17,7 +17,7 @@ import java.rmi.RemoteException;
  */
 public interface FileManagerInterface extends Remote, Serializable {
 
-	FileAddress add(User self, FileAddress file, Music music) throws NotFoundException, RemoteException;
+	Upload add(User self, Upload file, Music music) throws NotFoundException, RemoteException;
 
-	FileAddress download(User self, long fileId) throws NotFoundException, RemoteException;
+	Upload download(User self, long fileId) throws NotFoundException, RemoteException;
 }

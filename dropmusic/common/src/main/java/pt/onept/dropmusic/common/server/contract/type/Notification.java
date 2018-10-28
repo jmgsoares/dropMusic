@@ -2,8 +2,7 @@ package pt.onept.dropmusic.common.server.contract.type;
 
 import java.io.Serializable;
 
-public class Notification extends DropmusicDataType implements Serializable {
-	private int id;
+public class Notification extends DropmusicDataType<Notification> {
 	private int userId;
 	private String message;
 
@@ -11,18 +10,9 @@ public class Notification extends DropmusicDataType implements Serializable {
 	}
 
 	public Notification(int id, int userId, String message) {
-		this.id = id;
+		super(id);
 		this.userId = userId;
 		this.message = message;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public Notification setId(int id) {
-		this.id = id;
-		return this;
 	}
 
 	public int getUserId() {

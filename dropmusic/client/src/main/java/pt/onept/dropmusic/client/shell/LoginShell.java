@@ -25,7 +25,9 @@ public class LoginShell implements ShellDependent, ShellManageable {
 
 	@Command(description = "Register a user. Usage: register <user> <password>")
 	public String register(String name, String password) {
-		User user = new User(name, password);
+		User user = new User()
+				.setUsername(name)
+				.setPassword(password);
 		String output;
 
 		try {
@@ -48,7 +50,9 @@ public class LoginShell implements ShellDependent, ShellManageable {
 
 	@Command(description = "Login. Usage: login <user> <password>")
 	public String login(String name, String password) {
-		User user = new User(name, password);
+		User user = new User()
+				.setUsername(name)
+				.setPassword(password);
 		String output;
 
 		try {

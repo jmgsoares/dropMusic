@@ -40,9 +40,9 @@ drop table if exists NOTIFICATION cascade;
 
 drop index if exists ALBUM_REVIEW_FK;
 
-drop index if exists REVEIEW_PK;
+drop index if exists review_PK;
 
-drop table if exists REVEIEW cascade;
+drop table if exists review cascade;
 
 drop index if exists ACCOUNT_PK;
 
@@ -137,8 +137,8 @@ create  index ARTIST_ALBUM2_FK on ARTIST_ALBUM (
 create table UPLOAD (
    ID                   SERIAL               not null,
    MUS_ID               INT4                 not null,
-   BIN                  INT2                 null,
-   PATH                 VARCHAR(1024)        null,
+   BIN                  bytea                 null,
+   IP_ADDRESS                 VARCHAR(1024)        null,
    NAME                 VARCHAR(1024)        not null,
    constraint PK_UPLOAD primary key (ID)
 );
@@ -206,27 +206,27 @@ create  index ACCOUNT_NOTIFICATION_FK on NOTIFICATION (
 );
 
 /*==============================================================*/
-/* Table: REVEIEW                                               */
+/* Table: review                                               */
 /*==============================================================*/
-create table REVEIEW (
+create table review (
    ID                   SERIAL               not null,
    ALB_ID               INT4                 not null,
    TEXT                 VARCHAR(1024)        not null,
    SCORE                FLOAT8               not null DEFAULT 0,
-   constraint PK_REVEIEW primary key (ID)
+   constraint PK_review primary key (ID)
 );
 
 /*==============================================================*/
-/* Index: REVEIEW_PK                                            */
+/* Index: review_PK                                            */
 /*==============================================================*/
-create unique index REVEIEW_PK on REVEIEW (
+create unique index review_PK on review (
    ID
 );
 
 /*==============================================================*/
 /* Index: ALBUM_REVIEW_FK                                       */
 /*==============================================================*/
-create  index ALBUM_REVIEW_FK on REVEIEW (
+create  index ALBUM_REVIEW_FK on review (
    ALB_ID
 );
 
@@ -304,8 +304,8 @@ alter table NOTIFICATION
 references ACCOUNT (ID)
 on delete restrict on update restrict;
 
-alter table REVEIEW
-   add constraint FK_REVEIEW_ALBUM_REV_ALBUM foreign key (ALB_ID)
+alter table review
+   add constraint FK_review_ALBUM_REV_ALBUM foreign key (ALB_ID)
 references ALBUM (ID)
 on delete restrict on update restrict;
 
