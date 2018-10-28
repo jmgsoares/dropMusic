@@ -43,7 +43,7 @@ final class MessageHandler implements Runnable {
 			method.setAccessible(true);
 			Message reply = MessageBuilder.buildReply(message, null);
 			method.invoke(this, message, reply);
-			if(reply != null) this.multicastHandler.send(reply);
+			if(reply != null & Dataserver.isMaster) this.multicastHandler.send(reply);
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}

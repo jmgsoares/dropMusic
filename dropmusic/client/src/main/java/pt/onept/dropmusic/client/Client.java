@@ -3,15 +3,27 @@ package pt.onept.dropmusic.client;
 
 import asg.cliche.ShellFactory;
 import pt.onept.dropmusic.client.shell.LoginShell;
+import pt.onept.dropmusic.common.utililty.PropertiesReaderUtility;
 
 import java.io.IOException;
+import java.util.Properties;
 
 
 public class Client {
+	public static String registryIpAddress;
+	public static int port;
+	public static int failOverTime;
+
 	public static void main(String[] args) {
-		String registryIpAddress = "192.168.1.40";
-		int port = 1099;
-		int failOverTime = 30000;
+
+
+		Properties appProps = PropertiesReaderUtility.read("client.properties");
+
+		registryIpAddress = appProps.getProperty("registryIpAddress");
+		port = Integer.parseInt(appProps.getProperty("port"));
+		failOverTime = Integer.parseInt(appProps.getProperty("failOverTime"));
+
+
 		System.out.println("Dropmusic client starting\nTrying to locate the remote object");
 
 

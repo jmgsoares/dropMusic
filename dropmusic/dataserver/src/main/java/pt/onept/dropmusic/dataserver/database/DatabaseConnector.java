@@ -1,13 +1,17 @@
 package pt.onept.dropmusic.dataserver.database;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-	public class DatabaseConnector {
+public class DatabaseConnector {
 	private String url;
 	private String dbUser;
 	private String dbUserPassword;
@@ -37,19 +41,14 @@ import java.sql.*;
 
 	private String getSqlScriptFromFile(String file) throws NullPointerException {
 		byte[] encoded = null;
-		try {
-			ClassLoader classLoader = getClass().getClassLoader();
-			URL resource = classLoader.getResource(file);
-			if (resource == null) throw new NullPointerException();
-			encoded = Files.readAllBytes(Paths.get(new File(resource.getFile()).getPath()));
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Could not read sql file to create the database");
-		}
-		return new String(encoded != null ? encoded : new byte[0]);
+		Stream<String> stream = new BufferedReader(
+				new InputStreamReader(ClassLoader.getSystemResourceAsStream(file)))
+				.lines();
+		encoded = stream.collect(Collectors.joining("")).getBytes();
+		return new String(encoded);
 	}
 
-	public void createDB(String filePath) {
+	public void executeSqlScript(String filePath) {
 		try {
 			String createScript = getSqlScriptFromFile(filePath);
 
