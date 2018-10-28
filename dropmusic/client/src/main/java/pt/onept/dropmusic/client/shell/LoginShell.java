@@ -31,7 +31,7 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		String output;
 
 		try {
-			this.dropmusicServer.user().create(user,null);
+			this.dropmusicServer.user().create(user,user);
 			output = "User " + user.getUsername() + " created successfully";
 		} catch (DuplicatedException e) {
 			output = "User " + user.getUsername() + " already exists";

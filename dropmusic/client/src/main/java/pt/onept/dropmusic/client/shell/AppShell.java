@@ -41,7 +41,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 		try {
 			notifications = this.dropmusicServer.notification().get(this.user);
-			if (!notifications.isEmpty()) {
+			if (notifications != null && !notifications.isEmpty()) {
 				output = notifications.stream()
 						.map(Notification::getMessage)
 						.collect(Collectors.joining("\n"));

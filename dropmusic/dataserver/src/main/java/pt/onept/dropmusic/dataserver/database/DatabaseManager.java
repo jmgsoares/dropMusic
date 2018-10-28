@@ -1,5 +1,6 @@
 package pt.onept.dropmusic.dataserver.database;
 
+import pt.onept.dropmusic.common.exception.IncompleteException;
 import pt.onept.dropmusic.common.exception.NotFoundException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.dropmusic.common.server.contract.type.*;
@@ -10,13 +11,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-
-import static pt.onept.dropmusic.dataserver.database.TypeFactory.constructType;
 
 public class DatabaseManager {
 	private DatabaseConnector dbConnector;
 	private static Map<Class, String> objectTable = null;
+	private static Map<Class, String> popTable = null;
 	private static final Object lock = new Object();
 
 	private static Map<Class, String> initObjectTable() {
@@ -26,9 +28,18 @@ public class DatabaseManager {
 		c2s.put(Upload.class, "upload");
 		c2s.put(Music.class, "music");
 		c2s.put(Notification.class, "notification");
-		c2s.put(Review.class, "reveiew");
+		c2s.put(Review.class, "review");
 		c2s.put(User.class, "account");
 		return c2s;
+	}
+
+	private static Map<Class, String> initPopTable() {
+		Map<Class, String> queries = new HashMap<>();
+		queries.put(Album.class, "SELECT al.* FROM album al LEFT JOIN artist_album aa on al.id = aa.alb_id WHERE aa.id = ?");
+		queries.put(Review.class, "SELECT * FROM review r WHERE r.alb_id = ?");
+		queries.put(Music.class, "SELECT * FROM music m WHERE m.alb_id = ?");
+		queries.put(Notification.class, "SELECT * FROM notification n WHERE n.use_id = ?");
+		return queries;
 	}
 
 	public static String getTable(Class cls) {
@@ -40,14 +51,23 @@ public class DatabaseManager {
 		return objectTable.get(cls);
 	}
 
+	public static String getPopQuery(Class cls) {
+		if(popTable == null) {
+			synchronized (lock) {
+				if(popTable == null) DatabaseManager.popTable = DatabaseManager.initPopTable();
+			}
+		}
+		return popTable.get(cls);
+	}
+
 	public <T extends DropmusicDataType> PreparedStatement getInsertStatement(Connection connection, Class<T> tClass, T object) throws SQLException, InvalidClassException {
 		PreparedStatement ps;
 		if( object instanceof Album ) {
 			Album album = (Album) object;
-			ps = connection.prepareStatement("INSERT INTO album(name, description) VALUES(?, ?) RETURNING *;" +
-													"INSERT INTO artist_album(id, alb_id) VALUES(?, ?) ");
-			ps.setString(1, album.getName());
-			ps.setString(2, album.getDescription());
+			ps = connection.prepareStatement("SELECT * FROM add_album(?, ?, ?);");
+			ps.setInt(1, album.getArtist().getId());
+			ps.setString(2, album.getName());
+			ps.setString(3, album.getDescription());
 		} else if( object instanceof Artist ) {
 			Artist artist = (Artist) object;
 			ps = connection.prepareStatement("INSERT INTO artist(name) VALUES(?) RETURNING *;");
@@ -77,8 +97,11 @@ public class DatabaseManager {
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getPassword());
 
+		} else {
+			System.out.println("###" + TypeFactory.getSubtype(object).toString());
+			throw new InvalidClassException("");
 		}
-		throw new InvalidClassException("");
+		return ps;
 	}
 
 	public DatabaseManager(DatabaseConnector dbConnector) {
@@ -103,32 +126,57 @@ public class DatabaseManager {
 		}
 	}
 
-	public <T extends DropmusicDataType> T read(Class<T> tClass, int id) throws SQLException, NotFoundException {
+	public <T extends DropmusicDataType> T insert(Class<T> tClass, T object) throws SQLException, InvalidClassException, IncompleteException {
 		String tableName = DatabaseManager.getTable(tClass);
-
 		try (
 			Connection dbConnection = this.dbConnector.getConnection();
-			PreparedStatement ps = dbConnection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?")
+			PreparedStatement ps = this.getInsertStatement(dbConnection, tClass, object)
+		){
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) return TypeFactory.constructType(tClass, rs);
+			else throw new IncompleteException();
+		}
+	}
+
+	public <T extends DropmusicDataType> T read(Class<T> tClass, int id) throws SQLException, NotFoundException {
+		String tableName = DatabaseManager.getTable(tClass);
+		try (
+				Connection dbConnection = this.dbConnector.getConnection();
+				PreparedStatement ps = dbConnection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ?")
 		){
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
-				return TypeFactory.constructType(tClass, rs);
-
+				T object = TypeFactory.constructType(tClass, rs);
+				if( tClass.equals(Artist.class) || tClass.equals(Album.class) ) populate(tClass, object);
+				return object;
 			} else {
 				throw new NotFoundException();
 			}
 		}
 	}
 
-	public <T extends DropmusicDataType> T insert(Class<T> tClass, T object) throws SQLException {
-		String tableName = DatabaseManager.getTable(tClass);
-
+	public <T extends DropmusicDataType> List<T> readList(Class<T> tClass, DropmusicDataType object) throws SQLException {
+				List<T> list = new LinkedList<>();
 		try (
-			Connection dbConnection = this.dbConnector.getConnection();
-			PreparedStatement ps = this.getInsertStatement(dbConnection, tClass, object)
-		){
+			Connection connection = dbConnector.getConnection();
+			PreparedStatement ps = connection.prepareStatement(DatabaseManager.getPopQuery(tClass))
+		) {
+			ps.setInt(1, object.getId());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) list.add(TypeFactory.constructType(tClass, rs));
+		}
+		return list;
+	}
 
+	private  <T extends DropmusicDataType> void populate(Class<T> tClass, T object) throws SQLException, NotFoundException {
+		if( object instanceof Artist ) {
+			Artist artist = (Artist) object;
+			artist.setAlbums(this.readList(Album.class, artist));
+		} else if( object instanceof Album) {
+			Album album = (Album) object;
+			album.setReviews(this.readList(Review.class, album))
+				.setMusics(this.readList(Music.class, album));
 		}
 	}
 

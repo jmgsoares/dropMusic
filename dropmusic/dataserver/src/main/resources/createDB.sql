@@ -320,4 +320,18 @@ references UPLOAD (ID)
 on delete restrict on update restrict;
 
 
-insert into ACCOUNT(name, password, editor) VALUES('soares', '123', true);
+
+
+
+
+
+DROP FUNCTION IF EXISTS add_album(artist_id SERIAL, name VARCHAR(64), description VARCHAR(1024));
+CREATE FUNCTION add_album(artist_id INT4, name VARCHAR(64), description VARCHAR(1024)) RETURNS album AS $$
+DECLARE
+   new_album album%ROWTYPE;
+BEGIN
+   INSERT INTO album(name, description) VALUES($2, $3) RETURNING * INTO new_album;
+   INSERT INTO artist_album(id, alb_id) VALUES($1, new_album.id);
+   RETURN new_album;
+END;
+$$ LANGUAGE plpgsql STRICT;
