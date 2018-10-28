@@ -20,7 +20,7 @@ public class Dataserver {
 		multicastHandler = new MulticastHandler(txMultiCastAddress, rxMultiCastAddress, multiCastPort);
 		databaseConnector = new DatabaseConnector("jdbc:postgresql://" + db, dbUser, dbUserPassword);
 		databaseManager = new DatabaseManager(databaseConnector);
-		//dataBase.createDB("createDB.sql");
+		//databaseConnector.createDB("createDB.sql");
 		new Thread(new MessageHandler(databaseManager, multicastHandler)).start();
 
 	}
