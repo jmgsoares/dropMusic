@@ -1,0 +1,269 @@
+drop index ARTIST_ALBUM_FK;
+
+drop index ALBUM_PK;
+
+drop table ALBUM;
+
+drop index ARTIST_PK;
+
+drop table ARTIST;
+
+drop index ALBUM_MUSIC_FK;
+
+drop index MUSIC_PK;
+
+drop table MUSIC;
+
+drop index USER_NOTIFICATION_FK;
+
+drop index NOTIFICATION_PK;
+
+drop table NOTIFICATION;
+
+drop index ALBUM_REVIEW_FK;
+
+drop index REVIEW_PK;
+
+drop table REVIEW;
+
+drop index FILE_MUSIC_FK;
+
+drop index UPLOAD_PK;
+
+drop table UPLOAD;
+
+drop index USER_PK;
+
+drop table "USER";
+
+drop index USER_FILES2_FK;
+
+drop index USER_FILES_FK;
+
+drop index USER_FILES_PK;
+
+drop table USER_FILES;
+
+/*==============================================================*/
+/* Table: ALBUM                                                 */
+/*==============================================================*/
+create table ALBUM (
+   ID                   SERIAL not null,
+   ART_ID               INT4                 not null,
+   NAME                 VARCHAR(64)          not null,
+   DESCRIPTION          VARCHAR(1024)        not null,
+   SCORE                FLOAT8               null,
+   constraint PK_ALBUM primary key (ID)
+);
+
+/*==============================================================*/
+/* Index: ALBUM_PK                                              */
+/*==============================================================*/
+create unique index ALBUM_PK on ALBUM (
+ID
+);
+
+/*==============================================================*/
+/* Index: ARTIST_ALBUM_FK                                       */
+/*==============================================================*/
+create  index ARTIST_ALBUM_FK on ALBUM (
+ART_ID
+);
+
+/*==============================================================*/
+/* Table: ARTIST                                                */
+/*==============================================================*/
+create table ARTIST (
+   ID                   SERIAL not null,
+   NAME                 VARCHAR(32)          not null,
+   constraint PK_ARTIST primary key (ID)
+);
+
+/*==============================================================*/
+/* Index: ARTIST_PK                                             */
+/*==============================================================*/
+create unique index ARTIST_PK on ARTIST (
+ID
+);
+
+/*==============================================================*/
+/* Table: MUSIC                                                 */
+/*==============================================================*/
+create table MUSIC (
+   ID                   SERIAL not null,
+   ALB_ID               INT4                 not null,
+   NAME                 VARCHAR(32)          not null,
+   constraint PK_MUSIC primary key (ID)
+);
+
+/*==============================================================*/
+/* Index: MUSIC_PK                                              */
+/*==============================================================*/
+create unique index MUSIC_PK on MUSIC (
+ID
+);
+
+/*==============================================================*/
+/* Index: ALBUM_MUSIC_FK                                        */
+/*==============================================================*/
+create  index ALBUM_MUSIC_FK on MUSIC (
+ALB_ID
+);
+
+/*==============================================================*/
+/* Table: NOTIFICATION                                          */
+/*==============================================================*/
+create table NOTIFICATION (
+   ID                   SERIAL not null,
+   USE_ID               INT4                 not null,
+   MESSAGE              VARCHAR(1024)        not null,
+   constraint PK_NOTIFICATION primary key (ID)
+);
+
+/*==============================================================*/
+/* Index: NOTIFICATION_PK                                       */
+/*==============================================================*/
+create unique index NOTIFICATION_PK on NOTIFICATION (
+ID
+);
+
+/*==============================================================*/
+/* Index: USER_NOTIFICATION_FK                                  */
+/*==============================================================*/
+create  index USER_NOTIFICATION_FK on NOTIFICATION (
+USE_ID
+);
+
+/*==============================================================*/
+/* Table: REVIEW                                                */
+/*==============================================================*/
+create table REVIEW (
+   ID                   SERIAL not null,
+   ALB_ID               INT4                 not null,
+   TEXT                 VARCHAR(1024)        not null,
+   constraint PK_REVIEW primary key (ID)
+);
+
+/*==============================================================*/
+/* Index: REVIEW_PK                                             */
+/*==============================================================*/
+create unique index REVIEW_PK on REVIEW (
+ID
+);
+
+/*==============================================================*/
+/* Index: ALBUM_REVIEW_FK                                       */
+/*==============================================================*/
+create  index ALBUM_REVIEW_FK on REVIEW (
+ALB_ID
+);
+
+/*==============================================================*/
+/* Table: UPLOAD                                                */
+/*==============================================================*/
+create table UPLOAD (
+   ID                   SERIAL not null,
+   MUS_ID               INT4                 not null,
+   BIN                  VARCHAR(1024)        null,
+   IP_ADDRESS           VARCHAR(1024)        not null,
+   NAME                 VARCHAR(1024)        not null,
+   constraint PK_UPLOAD primary key (ID)
+);
+
+/*==============================================================*/
+/* Index: UPLOAD_PK                                             */
+/*==============================================================*/
+create unique index UPLOAD_PK on UPLOAD (
+ID
+);
+
+/*==============================================================*/
+/* Index: FILE_MUSIC_FK                                         */
+/*==============================================================*/
+create  index FILE_MUSIC_FK on UPLOAD (
+MUS_ID
+);
+
+/*==============================================================*/
+/* Table: "USER"                                                */
+/*==============================================================*/
+create table "USER" (
+   ID                   SERIAL not null,
+   NAME                 VARCHAR(32)          not null,
+   PASSWORD             VARCHAR(32)          not null,
+   EDITOR               BOOL                 not null,
+   constraint PK_USER primary key (ID)
+);
+
+/*==============================================================*/
+/* Index: USER_PK                                               */
+/*==============================================================*/
+create unique index USER_PK on "USER" (
+ID
+);
+
+/*==============================================================*/
+/* Table: USER_FILES                                            */
+/*==============================================================*/
+create table USER_FILES (
+   ID                   INT4                 not null,
+   UPL_ID               INT4                 not null,
+   constraint PK_USER_FILES primary key (ID, UPL_ID)
+);
+
+/*==============================================================*/
+/* Index: USER_FILES_PK                                         */
+/*==============================================================*/
+create unique index USER_FILES_PK on USER_FILES (
+ID,
+UPL_ID
+);
+
+/*==============================================================*/
+/* Index: USER_FILES_FK                                         */
+/*==============================================================*/
+create  index USER_FILES_FK on USER_FILES (
+ID
+);
+
+/*==============================================================*/
+/* Index: USER_FILES2_FK                                        */
+/*==============================================================*/
+create  index USER_FILES2_FK on USER_FILES (
+UPL_ID
+);
+
+alter table ALBUM
+   add constraint FK_ALBUM_ARTIST_AL_ARTIST foreign key (ART_ID)
+      references ARTIST (ID)
+      on delete restrict on update restrict;
+
+alter table MUSIC
+   add constraint FK_MUSIC_ALBUM_MUS_ALBUM foreign key (ALB_ID)
+      references ALBUM (ID)
+      on delete restrict on update restrict;
+
+alter table NOTIFICATION
+   add constraint FK_NOTIFICA_USER_NOTI_USER foreign key (USE_ID)
+      references "USER" (ID)
+      on delete restrict on update restrict;
+
+alter table REVIEW
+   add constraint FK_REVIEW_ALBUM_REV_ALBUM foreign key (ALB_ID)
+      references ALBUM (ID)
+      on delete restrict on update restrict;
+
+alter table UPLOAD
+   add constraint FK_UPLOAD_FILE_MUSI_MUSIC foreign key (MUS_ID)
+      references MUSIC (ID)
+      on delete restrict on update restrict;
+
+alter table USER_FILES
+   add constraint FK_USER_FIL_USER_FILE_USER foreign key (ID)
+      references "USER" (ID)
+      on delete restrict on update restrict;
+
+alter table USER_FILES
+   add constraint FK_USER_FIL_USER_FILE_UPLOAD foreign key (UPL_ID)
+      references UPLOAD (ID)
+      on delete restrict on update restrict;
