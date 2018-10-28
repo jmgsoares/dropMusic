@@ -2,20 +2,19 @@ package pt.onept.dropmusic.common.server.contract.type;
 
 import java.io.Serializable;
 
-public class User extends DropmusicDataType implements Serializable {
-	private int id;
+public class User extends DropmusicDataType<User> {
 	private String username;
 	private String password;
 	private Boolean editor;
 
 	public User() {
-		editor = false;
 	}
 
-	public User(String username, String password) {
+	public User(int id, String username, String password, Boolean editor) {
+		super(id);
 		this.username = username;
 		this.password = password;
-		this.editor = false;
+		this.editor = editor;
 	}
 
 	public String getUsername() {
@@ -42,15 +41,6 @@ public class User extends DropmusicDataType implements Serializable {
 
 	public User setEditor(Boolean editor) {
 		this.editor = editor;
-		return this;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public User setId(int id) {
-		this.id = id;
 		return this;
 	}
 

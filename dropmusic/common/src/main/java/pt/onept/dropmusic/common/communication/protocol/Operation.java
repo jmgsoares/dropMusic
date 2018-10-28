@@ -12,8 +12,8 @@ public enum Operation {
 	GET_NOTIFICATIONS,      //Self -> List<DropmusicDataType>
 	NOTIFY,                 //UserToNotify, notification
 	DELETE_NOTIFICATIONS,   //Self, lastSeenNotificationId
-	UPLOAD_MUSIC,           //Self, FileAddress -> FileAddress
-	DOWNLOAD_MUSIC,         //Self, FileId -> FileAddress
+	UPLOAD_MUSIC,           //Self, Upload -> Upload
+	DOWNLOAD_MUSIC,         //Self, FileId -> Upload
 	SHARE_MUSIC,            //Self, FileId, UserShare
 
 	SUCCESS,

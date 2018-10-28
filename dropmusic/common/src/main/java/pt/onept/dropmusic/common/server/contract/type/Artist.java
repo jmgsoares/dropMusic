@@ -1,10 +1,8 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class Artist extends DropmusicDataType implements Serializable {
-	private int id;
+public class Artist extends DropmusicDataType<Artist> {
 	private String name;
 	private List<Album> albums;
 
@@ -12,18 +10,9 @@ public class Artist extends DropmusicDataType implements Serializable {
 	}
 
 	public Artist(int id, String name, List<Album> albums) {
-		this.id = id;
+		super(id);
 		this.name = name;
 		this.albums = albums;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public Artist setId(int id) {
-		this.id = id;
-		return this;
 	}
 
 	public String getName() {

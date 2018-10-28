@@ -2,8 +2,7 @@ package pt.onept.dropmusic.common.server.contract.type;
 
 import java.io.Serializable;
 
-public class Music extends DropmusicDataType implements Serializable {
-	private int id;
+public class Music extends DropmusicDataType<Music> {
 	private int albumId;
 	private String name;
 
@@ -11,18 +10,9 @@ public class Music extends DropmusicDataType implements Serializable {
 	}
 
 	public Music(int id, int albumId, String name) {
-		this.id = id;
+		super(id);
 		this.albumId = albumId;
 		this.name = name;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public Music setId(int id) {
-		this.id = id;
-		return this;
 	}
 
 	public String getName() {

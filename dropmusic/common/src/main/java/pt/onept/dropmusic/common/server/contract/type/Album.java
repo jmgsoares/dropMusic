@@ -3,8 +3,7 @@ package pt.onept.dropmusic.common.server.contract.type;
 import java.io.Serializable;
 import java.util.List;
 
-public class Album extends DropmusicDataType implements Serializable {
-	private int id;
+public class Album extends DropmusicDataType<Album> {
 	private String name;
 	private Artist artist;
 	private String description;
@@ -12,17 +11,17 @@ public class Album extends DropmusicDataType implements Serializable {
 	private List<Review> reviews;
 	private float score;
 
-	public Album(int id, String name, Artist artist, String description, List<Music> songs, List<Review> reviews, float score) {
-		this.id = id;
+	public Album() {
+	}
+
+	public Album(int id, String name, Artist artist, String description, List<Music> musics, List<Review> reviews, float score) {
+		super(id);
 		this.name = name;
 		this.artist = artist;
 		this.description = description;
-		this.musics = songs;
+		this.musics = musics;
 		this.reviews = reviews;
 		this.score = score;
-	}
-
-	public Album() {
 	}
 
 	public String getName() {
@@ -79,14 +78,6 @@ public class Album extends DropmusicDataType implements Serializable {
 		return this;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public Album setId(int id) {
-		this.id = id;
-		return this;
-	}
 }
 
 
