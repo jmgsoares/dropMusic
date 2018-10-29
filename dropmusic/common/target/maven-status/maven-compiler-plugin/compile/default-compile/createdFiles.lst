@@ -13,13 +13,13 @@ pt/onept/dropmusic/common/communication/protocol/Message.class
 pt/onept/dropmusic/common/utililty/PropertiesReaderUtility.class
 pt/onept/dropmusic/common/utililty/JsonUtility.class
 pt/onept/dropmusic/common/server/contract/type/Artist.class
-pt/onept/dropmusic/common/exception/DuplicatedException.class
 pt/onept/dropmusic/common/server/contract/type/Album.class
+pt/onept/dropmusic/common/exception/DuplicatedException.class
 pt/onept/dropmusic/common/server/contract/subcontract/FileManagerInterface.class
 pt/onept/dropmusic/common/exception/DataServerException.class
 pt/onept/dropmusic/common/communication/protocol/MessageBuilder.class
-pt/onept/dropmusic/common/server/contract/subcontract/ArtistManagerInterface.class
 pt/onept/dropmusic/common/server/contract/Searchable.class
+pt/onept/dropmusic/common/server/contract/subcontract/ArtistManagerInterface.class
 pt/onept/dropmusic/common/server/contract/type/DropmusicDataType.class
 pt/onept/dropmusic/common/communication/protocol/Operation.class
 pt/onept/dropmusic/common/server/contract/Crudable.class
