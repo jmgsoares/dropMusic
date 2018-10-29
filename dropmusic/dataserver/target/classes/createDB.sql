@@ -328,13 +328,18 @@ on delete cascade on update restrict;
 
 
 DROP FUNCTION IF EXISTS add_album(artist_id SERIAL, name VARCHAR(64), description VARCHAR(1024));
-CREATE FUNCTION add_album(artist_id INT4, name VARCHAR(64), description VARCHAR(1024)) RETURNS album AS $$
+CREATE FUNCTION add_album(artist_id INT4, asname VARCHAR(64), descriptionz VARCHAR(1024)) RETURNS album AS $$
 DECLARE
    new_album album %ROWTYPE;
+   t1 text;
+   t2 text;
+   c1 float;
+
 BEGIN
-   SELECT * FROM ALBUM WHERE name LIKE '%' + name + '%';
-   INSERT INTO album(name, description) VALUES($2, $3) RETURNING * INTO new_album;
-   INSERT INTO artist_album(id, alb_id) VALUES($1, new_album.id);
+   SELECT * FROM ALBUM A WHERE A.NAME LIKE ('%' || asname || '%')
+      INTO t1, t2, c1;
+   INSERT INTO album(name, description) VALUES(asname, descriptionz) RETURNING * INTO new_album;
+   INSERT INTO artist_album(id, alb_id) VALUES(artist_id, new_album.id);
    RETURN new_album;
 END;
 $$ LANGUAGE plpgsql STRICT;
