@@ -4,7 +4,7 @@ import pt.onept.dropmusic.common.communication.multicast.MulticastHandler;
 import pt.onept.dropmusic.common.communication.protocol.Message;
 import pt.onept.dropmusic.common.communication.protocol.MessageBuilder;
 import pt.onept.dropmusic.common.communication.protocol.Operation;
-import pt.onept.dropmusic.common.exception.IncompleteException;
+import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.server.contract.subcontract.NotificationManagerInterface;
 import pt.onept.dropmusic.common.server.contract.type.Notification;
 import pt.onept.dropmusic.common.server.contract.type.User;
@@ -23,7 +23,7 @@ public class NotificationManager extends UnicastRemoteObject implements Notifica
 	}
 
 	@Override
-	public List<Notification> get(User self) throws RemoteException {
+	public List<Notification> get(User self) throws RemoteException, DataServerException {
 		try {
 			Message outgoing = MessageBuilder.build(Operation.GET_NOTIFICATIONS, self);
 			Message incoming = this.multicastHandler.sendAndWait(outgoing);
@@ -34,9 +34,8 @@ public class NotificationManager extends UnicastRemoteObject implements Notifica
 					throw new RemoteException();
 			}
 		} catch (TimeoutException e) {
-			//TODO FAILOVER
-			e.printStackTrace();
-			throw new RemoteException();
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
 		}
 	}
 
@@ -46,7 +45,20 @@ public class NotificationManager extends UnicastRemoteObject implements Notifica
 	}
 
 	@Override
-	public void delete(User self, Long lastSeenNotificationId) {
-
+	public void delete(User self, Long lastSeenNotificationId) throws RemoteException, DataServerException {
+		try {
+			Message outgoing = MessageBuilder.build(Operation.DELETE_NOTIFICATIONS, self)
+					.setData(new Notification().setUserId(self.getId()));
+			Message incoming = this.multicastHandler.sendAndWait(outgoing);
+			switch (incoming.getOperation()) {
+				case SUCCESS:
+					return;
+				default:
+					throw new RemoteException();
+			}
+		} catch (TimeoutException e) {
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
+		}
 	}
 }

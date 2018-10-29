@@ -39,6 +39,7 @@ public class DatabaseManager {
 		queries.put(Review.class, "SELECT * FROM review r WHERE r.alb_id = ?");
 		queries.put(Music.class, "SELECT * FROM music m WHERE m.alb_id = ?");
 		queries.put(Notification.class, "SELECT * FROM notification n WHERE n.use_id = ?");
+		queries.put(Artist.class,"SELECT ar.* FROM artist_album AS aa LEFT JOIN artist ar ON aa.id = ar.id WHERE aa.alb_id = ?");
 		return queries;
 	}
 
@@ -96,10 +97,81 @@ public class DatabaseManager {
 			ps = connection.prepareStatement("INSERT INTO account(name, password) VALUES (?, ?) RETURNING *;");
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getPassword());
+		} else {
+			System.out.println("###" + TypeFactory.getSubtype(object).toString());
+			throw new InvalidClassException("");
+		}
+		return ps;
+	}
+
+	public <T extends DropmusicDataType> PreparedStatement getUpdateStatement(Connection connection, Class<T> tClass, T object) throws SQLException, InvalidClassException {
+		PreparedStatement ps;
+		if( object instanceof Album ) {
+			Album album = (Album) object;
+			ps = connection.prepareStatement("UPDATE album SET name = ?, description = ? WHERE id = ?");
+			ps.setString(1, album.getName());
+			ps.setString(2, album.getDescription());
+			ps.setInt(3, album.getId());
+		} else if( object instanceof Artist ) {
+			Artist artist = (Artist) object;
+			ps = connection.prepareStatement("UPDATE artist SET name = ? WHERE id = ?;");
+			ps.setString(1, artist.getName());
+			ps.setInt(2, artist.getId());
+		} else if( object instanceof Music ) {
+			Music music = (Music) object;
+			ps = connection.prepareStatement("UPDATE music SET name = ? WHERE id = ?;");
+			ps.setString(1, music.getName());
+			ps.setInt(2, music.getId());
+		} else if( object instanceof User ) {
+			User user = (User) object;
+			ps = connection.prepareStatement("UPDATE account SET editor = ? WHERE id = ?;");
+			ps.setBoolean(1, user.isEditor());
+			ps.setInt(2, user.getId());
 
 		} else {
 			System.out.println("###" + TypeFactory.getSubtype(object).toString());
 			throw new InvalidClassException("");
+		}
+		return ps;
+	}
+
+	public <T extends DropmusicDataType> PreparedStatement getDeleteStatement(Connection connection, Class<T> tClass, T object) throws SQLException, InvalidClassException {
+		PreparedStatement ps = null;
+//		if( object instanceof Album ) {
+//			Album album = (Album) object;
+//			ps = connection.prepareStatement("SELECT * FROM add_album(?, ?, ?);");
+//			ps.setInt(1, album.getArtist().getId());
+//			ps.setString(2, album.getName());
+//			ps.setString(3, album.getDescription());
+//		} else if( object instanceof Artist ) {
+//			Artist artist = (Artist) object;
+//			ps = connection.prepareStatement("INSERT INTO artist(name) VALUES(?) RETURNING *;");
+//			ps.setString(1, artist.getName());
+//		} else if( object instanceof Upload ) {
+//			Upload upload = (Upload) object;
+//			ps = connection.prepareStatement("");
+//		} else if( object instanceof Music ) {
+//			Music music = (Music) object;
+//			ps = connection.prepareStatement("INSERT INTO music(alb_id, name) VALUES (?, ?) RETURNING *;");
+//			ps.setInt(1, music.getAlbumId());
+//			ps.setString(2, music.getName());
+//		} else
+		System.out.println(object);
+			if( object instanceof Notification ) {
+				Notification notification = (Notification) object;
+				ps = connection.prepareStatement("DELETE FROM notification WHERE use_id = ?");
+				ps.setInt(1, ((Notification) object).getUserId());
+//		} else if( object instanceof Review ) {
+//			Review review = (Review) object;
+//			ps = connection.prepareStatement("INSERT INTO review(alb_id, text, score) VALUES(?, ?, ?) RETURNING *;");
+//			ps.setInt(1,review.getAlbumId());
+//			ps.setString(2, review.getReview());
+//			ps.setFloat(3, review.getScore());
+//		} else if( object instanceof User ) {
+//			User user = (User) object;
+//			ps = connection.prepareStatement("INSERT INTO account(name, password) VALUES (?, ?) RETURNING *;");
+//			ps.setString(1, user.getUsername());
+//			ps.setString(2, user.getPassword());
 		}
 		return ps;
 	}
@@ -127,7 +199,6 @@ public class DatabaseManager {
 	}
 
 	public <T extends DropmusicDataType> T insert(Class<T> tClass, T object) throws SQLException, InvalidClassException, IncompleteException {
-		String tableName = DatabaseManager.getTable(tClass);
 		try (
 			Connection dbConnection = this.dbConnector.getConnection();
 			PreparedStatement ps = this.getInsertStatement(dbConnection, tClass, object)
@@ -179,5 +250,57 @@ public class DatabaseManager {
 				.setMusics(this.readList(Music.class, album));
 		}
 	}
+
+	public <T extends DropmusicDataType> void delete(Class<T> tClass, T object) throws SQLException, NotFoundException {
+		try (
+				Connection dbConnection = this.dbConnector.getConnection();
+				PreparedStatement ps = this.getDeleteStatement(dbConnection, tClass, object)
+		){
+
+			ps.executeUpdate();
+		} catch (InvalidClassException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<Album> searchAlbum(String queryString) throws SQLException {
+		List<Album> list = new LinkedList<>();
+		try (
+				Connection connection = dbConnector.getConnection();
+				PreparedStatement ps = connection.prepareStatement("SELECT al.* FROM album AS al\n" +
+																		"LEFT JOIN artist_album artal on al.id = artal.alb_id\n" +
+																		"LEFT JOIN artist a on artal.id = a.id\n" +
+																		"WHERE a.name LIKE ? OR al.name LIKE ?"
+				)
+		) {
+			queryString = "%" + queryString + "%";
+			ps.setString(1, queryString);
+			ps.setString(2, queryString);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Album album = TypeFactory.constructType(Album.class, rs);
+				list.add(album);
+				List<Artist> artistList = this.readList(Artist.class, album);
+				album.setArtist(artistList.get(0));
+			}
+		}
+		return list;
+	}
+
+	public <T extends DropmusicDataType> void update(Class<T> tClass, T object) throws SQLException, InvalidClassException, IncompleteException {
+		try (
+				Connection dbConnection = this.dbConnector.getConnection();
+				PreparedStatement ps = this.getUpdateStatement(dbConnection, tClass, object)
+		){
+			ps.executeUpdate();
+		}
+
+	}
+
+
+
+
+
+
 
 }

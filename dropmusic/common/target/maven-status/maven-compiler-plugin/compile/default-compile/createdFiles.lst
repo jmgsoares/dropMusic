@@ -16,6 +16,7 @@ pt/onept/dropmusic/common/server/contract/type/Artist.class
 pt/onept/dropmusic/common/exception/DuplicatedException.class
 pt/onept/dropmusic/common/server/contract/type/Album.class
 pt/onept/dropmusic/common/server/contract/subcontract/FileManagerInterface.class
+pt/onept/dropmusic/common/exception/DataServerException.class
 pt/onept/dropmusic/common/communication/protocol/MessageBuilder.class
 pt/onept/dropmusic/common/server/contract/subcontract/ArtistManagerInterface.class
 pt/onept/dropmusic/common/server/contract/Searchable.class

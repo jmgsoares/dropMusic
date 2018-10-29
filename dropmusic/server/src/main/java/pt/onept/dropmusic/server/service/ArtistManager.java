@@ -4,10 +4,7 @@ import com.google.gson.JsonSyntaxException;
 import pt.onept.dropmusic.common.communication.multicast.MulticastHandler;
 import pt.onept.dropmusic.common.communication.protocol.MessageBuilder;
 import pt.onept.dropmusic.common.communication.protocol.Operation;
-import pt.onept.dropmusic.common.exception.DuplicatedException;
-import pt.onept.dropmusic.common.exception.IncompleteException;
-import pt.onept.dropmusic.common.exception.NotFoundException;
-import pt.onept.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.dropmusic.common.exception.*;
 import pt.onept.dropmusic.common.server.contract.subcontract.ArtistManagerInterface;
 import pt.onept.dropmusic.common.server.contract.type.Artist;
 import pt.onept.dropmusic.common.communication.protocol.Message;
@@ -27,7 +24,7 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 	}
 
 	@Override
-	public void create(User self, Artist object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException {
+	public void create(User self, Artist object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException, DataServerException {
 		Message outgoing = MessageBuilder.build(Operation.CREATE, self)
 				.setData(object);
 
@@ -44,13 +41,13 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 					throw new RemoteException();
 			}
 		} catch (TimeoutException e) {
-			e.printStackTrace();
-			throw new RemoteException();
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
 		}
 	}
 
 	@Override
-	public Artist read(User self, Artist object) throws NotFoundException, UnauthorizedException, RemoteException {
+	public Artist read(User self, Artist object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException {
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.READ, self)
 				.setData(object);
@@ -60,15 +57,33 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 			if (artist == null) throw new NotFoundException();
 			return artist;
 		} catch (TimeoutException e) {
-			//TODO FAILOVER
-			e.printStackTrace();
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
 		}
-		throw new NotFoundException();
 	}
 
 	@Override
 	public void update(User self, Artist object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException {
-
+		Message incoming;
+		Message outgoing = MessageBuilder.build(Operation.UPDATE, self)
+				.setData(object);
+		try {
+			incoming = multicastHandler.sendAndWait(outgoing);
+			switch (incoming.getOperation()) {
+				case SUCCESS:
+					break;
+				case NO_PERMIT:
+					throw new UnauthorizedException();
+				case EXCEPTION:
+					throw new RemoteException();
+				case NOT_FOUND:
+					throw new NotFoundException();
+				case INCOMPLETE:
+					throw new IncompleteException();
+			}
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

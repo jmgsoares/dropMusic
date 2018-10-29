@@ -65,7 +65,6 @@ final class MessageHandler implements Runnable {
 	private void read(Message incoming, Message outgoing) {
 		DropmusicDataType data = incoming.getData();
 		Class tClass = TypeFactory.getSubtype(data);
-		System.out.println("READ: " + tClass.getName());
 		try {
 			outgoing.setData(this.dbManager.read(tClass, data.getId()))
 					.setOperation(Operation.SUCCESS);
@@ -117,8 +116,78 @@ final class MessageHandler implements Runnable {
 		}
 	}
 
+	private void search(Message incoming, Message outgoing) {
+		DropmusicDataType data = incoming.getData();
+		try {
+			outgoing.setDataList(this.dbManager.searchAlbum(incoming.getQuery()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
+		}
 
+	}
 
+	private void update(Message incoming, Message outgoing) {
+		if(!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		DropmusicDataType data = incoming.getData();
+		Class tClass = TypeFactory.getSubtype(data);
+		try {
+			this.dbManager.update(tClass, data);
+			outgoing.setOperation(Operation.SUCCESS);
+		} catch (SQLException | InvalidClassException e) {
+			outgoing.setOperation(Operation.EXCEPTION);
+			e.printStackTrace();
+		} catch (IncompleteException e) {
+			outgoing.setOperation(Operation.INCOMPLETE);
+			e.printStackTrace();
+		}
+	}
 
+	private void add_review(Message incoming, Message outgoing) {
+		DropmusicDataType data = incoming.getData();
 
+		try {
+			outgoing.setData(this.dbManager.insert(TypeFactory.getSubtype(data), data))
+					.setOperation(Operation.SUCCESS);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			if( e.getMessage().contains("not present")) outgoing.setOperation(Operation.INCOMPLETE);
+			else outgoing.setOperation(Operation.EXCEPTION);
+		} catch (InvalidClassException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
+		} catch (IncompleteException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.INCOMPLETE);
+		}
+	}
+
+	private void delete_notifications(Message incoming, Message outgoing) {
+		DropmusicDataType data = incoming.getData();
+		Class tClass = TypeFactory.getSubtype(data);
+		try {
+			dbManager.delete(tClass, incoming.getData());
+			System.out.println(tClass.toString());
+			outgoing.setOperation(Operation.SUCCESS);
+		} catch (SQLException | NotFoundException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
+		}
+	}
+
+	private void update_user(Message incoming, Message outgoing) {
+		if(!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		DropmusicDataType data = incoming.getTarget();
+		Class tClass = TypeFactory.getSubtype(data);
+		try {
+			this.dbManager.update(tClass, data);
+			outgoing.setOperation(Operation.SUCCESS);
+		} catch (SQLException | InvalidClassException e) {
+			outgoing.setOperation(Operation.EXCEPTION);
+			e.printStackTrace();
+		} catch (IncompleteException e) {
+			outgoing.setOperation(Operation.INCOMPLETE);
+			e.printStackTrace();
+		}
+	}
 }

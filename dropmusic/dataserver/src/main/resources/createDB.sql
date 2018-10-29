@@ -284,42 +284,42 @@ create  index ACCOUNT_UPLOADS2_FK on ACCOUNT_UPLOADS (
 alter table ARTIST_ALBUM
    add constraint FK_ARTIST_A_ARTIST_AL_ARTIST foreign key (ID)
 references ARTIST (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table ARTIST_ALBUM
    add constraint FK_ARTIST_A_ARTIST_AL_ALBUM foreign key (ALB_ID)
 references ALBUM (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table UPLOAD
    add constraint FK_UPLOAD_UPLOAD_MUSI_MUSIC foreign key (MUS_ID)
 references MUSIC (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table MUSIC
    add constraint FK_MUSIC_ALBUM_MUS_ALBUM foreign key (ALB_ID)
 references ALBUM (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table NOTIFICATION
    add constraint FK_NOTIFICA_ACCOUNT_NOTI_ACCOUNT foreign key (USE_ID)
 references ACCOUNT (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table review
    add constraint FK_review_ALBUM_REV_ALBUM foreign key (ALB_ID)
 references ALBUM (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table ACCOUNT_UPLOADS
    add constraint FK_ACCOUNT_FIL_ACCOUNT_UPLOAD_ACCOUNT foreign key (ID)
 references ACCOUNT (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table ACCOUNT_UPLOADS
    add constraint FK_ACCOUNT_FIL_ACCOUNT_UPLOAD_UPLOAD foreign key (FIL_ID)
 references UPLOAD (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 
 

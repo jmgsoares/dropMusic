@@ -6,6 +6,7 @@ public enum Operation {
 	CREATE,                 //Self, music | album | artist
 	READ,                   //Self, music | album | artist
 	UPDATE,                 //Self, music | album | artist
+	UPDATE_USER,
 	DELETE,                 //Self, music | album | artist
 	SEARCH,                 //Self,  search String -> List<DropmusicDataType>
 	ADD_REVIEW,             //Self, Review

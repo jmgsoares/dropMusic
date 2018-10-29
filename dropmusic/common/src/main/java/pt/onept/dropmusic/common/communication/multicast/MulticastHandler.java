@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.*;
 
+
 public class MulticastHandler {
+	private static int failOverTime;
 	private String txAddress;
 	private String rxAddress;
 	private int port;
@@ -18,7 +20,8 @@ public class MulticastHandler {
 	private BlockingQueue<Message> receivingQueue;
 	private BlockingQueue<byte[]> sendingQueue;
 
-	public MulticastHandler(String txAddress, String rxAddress, int port) {
+	public MulticastHandler(String txAddress, String rxAddress, int port, int failOverTime) {
+		this.failOverTime = failOverTime;
 		this.txAddress = txAddress;
 		this.rxAddress = rxAddress;
 		this.port = port;
@@ -45,11 +48,13 @@ public class MulticastHandler {
 
 	private Message receive(UUID messageId) throws JsonSyntaxException, TimeoutException{
 		Message response = null;
-
 		while(response == null) {
 			try {
-				response = this.routedReceivingQueues.get(messageId).poll(3, TimeUnit.SECONDS);
-				if (response == null) throw new TimeoutException();
+				response = this.routedReceivingQueues.get(messageId).poll(5, TimeUnit.SECONDS);
+				if (response == null) {
+					this.routedReceivingQueues.remove(messageId);
+					throw new TimeoutException();
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

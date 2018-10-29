@@ -5,6 +5,7 @@ pt/onept/dropmusic/server/service/AlbumManager.class
 pt/onept/dropmusic/server/service/ArtistManager.class
 pt/onept/dropmusic/server/service/UserManager.class
 pt/onept/dropmusic/server/service/AlbumManager$1.class
+pt/onept/dropmusic/server/service/ReviewManager$1.class
 pt/onept/dropmusic/server/service/NotificationManager.class
 pt/onept/dropmusic/server/service/MusicManager.class
 pt/onept/dropmusic/server/service/ReviewManager.class

@@ -16,8 +16,8 @@ public class Dataserver {
 	private static String txMultiCastAddress;
 	private static String rxMultiCastAddress;
 	private static int multiCastPort;
-
-
+	private static int failOverTime;
+	private static boolean cleanAndPopulate;
 
 	public static void main(String[] args) {
 		MulticastHandler multicastHandler;
@@ -32,13 +32,22 @@ public class Dataserver {
 		Dataserver.rxMultiCastAddress = appProps.getProperty("rxMultiCastAddress");
 		Dataserver.isMaster = Boolean.parseBoolean(appProps.getProperty("isMaster"));
 		Dataserver.multiCastPort = Integer.parseInt(appProps.getProperty("multiCastPort"));
+		Dataserver.failOverTime = Integer.parseInt(appProps.getProperty("failOverTime"));
+		Dataserver.cleanAndPopulate = Boolean.parseBoolean(appProps.getProperty("cleanAndPopulate"));
 
-		multicastHandler = new MulticastHandler(txMultiCastAddress, rxMultiCastAddress, multiCastPort);
+		if (isMaster) System.out.println("DataServer in primary mode");
+		else System.out.println("DataServer in backup mode");
+
 		databaseConnector = new DatabaseConnector("jdbc:postgresql://" + db, dbUser, dbUserPassword);
-		databaseManager = new DatabaseManager(databaseConnector);
-		databaseConnector.executeSqlScript("createDB.sql");
-		databaseConnector.executeSqlScript("dummy_data.sql");
-		new Thread(new MessageHandler(databaseManager, multicastHandler)).start();
 
+		if(cleanAndPopulate) {
+			System.out.println("Cleaning and populating db @ " + db);
+			databaseConnector.executeSqlScript("createDB.sql");
+			databaseConnector.executeSqlScript("dummy_data.sql");
+		}
+
+		multicastHandler = new MulticastHandler(txMultiCastAddress, rxMultiCastAddress, multiCastPort, failOverTime);
+		databaseManager = new DatabaseManager(databaseConnector);
+		new Thread(new MessageHandler(databaseManager, multicastHandler)).start();
 	}
 }

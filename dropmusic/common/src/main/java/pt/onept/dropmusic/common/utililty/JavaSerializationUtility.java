@@ -16,7 +16,6 @@ public final class JavaSerializationUtility {
 	}
 
 	public static Object deserialize(byte[] serializedObject) throws IOException, ClassNotFoundException {
-		Object object = null;
 		try (
 				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(serializedObject);
 				ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream)
