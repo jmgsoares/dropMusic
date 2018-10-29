@@ -11,12 +11,10 @@ public class CommunicationManager {
 	public static DropmusicServerInterface dropmusicServer;
 	private static String serverAddress;
 	private static int port;
-	private static long failOverTime;
 
 	static synchronized void getServerInterface(String serverAddress, int port, long failOverTime) {
 		CommunicationManager.serverAddress = serverAddress;
 		CommunicationManager.port = port;
-		CommunicationManager.failOverTime = failOverTime;
 		boolean retry = true;
 
 		long deadLine = System.currentTimeMillis() + Client.failOverTime;
