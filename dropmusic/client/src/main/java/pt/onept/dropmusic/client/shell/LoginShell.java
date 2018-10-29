@@ -35,7 +35,7 @@ public class LoginShell implements ShellDependent, ShellManageable {
 
 		long deadLine = System.currentTimeMillis() + Client.failOverTime;
 
-		while (retry & deadLine <= System.currentTimeMillis()) {
+		while (retry & deadLine >= System.currentTimeMillis()) {
 			try {
 				CommunicationManager.dropmusicServer.user().create(user, user);
 				retry = false;
