@@ -67,7 +67,7 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		String output =null;
 		boolean retry = true;
 
-		long deadLine = System.currentTimeMillis() + 5000;
+		long deadLine = System.currentTimeMillis() + 000;
 
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
