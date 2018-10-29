@@ -14,6 +14,7 @@ public final class PropertiesReaderUtility {
 		Properties appProps = new Properties();
 		try {
 			File external = new File(propertiesFile);
+
 			if (!external.exists()) {
 				Files.copy(
 						PropertiesReaderUtility.class.getClassLoader().getResourceAsStream(propertiesFile),

@@ -15,26 +15,32 @@ public class Server {
 	public static String rxMulticastAddress;
 	public static int multiCastPort;
 	public static int rmiServerPort;
+	public static int failOverTime;
 
 
 	public static void main(String[] args) {
 		Registry registry = null;
 		boolean boot = true;
 
-		Properties appProps = PropertiesReaderUtility.read("client.properties");
+		Properties appProps = PropertiesReaderUtility.read("server.properties");
+
+
 
 		txMultiCastAddress = appProps.getProperty("txMultiCastAddress");
 		rxMulticastAddress = appProps.getProperty("rxMulticastAddress");
 		multiCastPort = Integer.parseInt(appProps.getProperty("multiCastPort"));
-		rmiServerPort = Integer.parseInt(appProps.getProperty("failOverTime"));
+		rmiServerPort = Integer.parseInt(appProps.getProperty("rmiServerPort"));
+		failOverTime = Integer.parseInt(appProps.getProperty("failOverTime"));
+
 
 		while (registry == null){
 			try {
 				registry = LocateRegistry.createRegistry(rmiServerPort);
+				if(!boot) System.out.println("Fault detected. Switching...");
 			} catch (RemoteException e) {
 				registry = null;
 				if (boot) {
-					System.out.println("Server in backup mode");
+					System.out.println("RMI server in backup mode");
 					boot = false;
 				}
 				try {
@@ -44,10 +50,10 @@ public class Server {
 				}
 			}
 		}
-		System.out.println("Server in primary mode");
+		System.out.println("RMI server in primary mode");
 
 		try {
-			MulticastHandler multicastHandler = new MulticastHandler(txMultiCastAddress, rxMulticastAddress, multiCastPort);
+			MulticastHandler multicastHandler = new MulticastHandler(txMultiCastAddress, rxMulticastAddress, multiCastPort, failOverTime);
 			DropmusicServerInterface dropmusicServer = null;
 			dropmusicServer = new DropmusicServer(multicastHandler);
 			registry.rebind("Dropmusic", dropmusicServer);

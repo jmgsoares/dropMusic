@@ -12,6 +12,7 @@
 /home/soares/uni/dropmusic/dropmusic/common/src/main/java/pt/onept/dropmusic/common/server/contract/subcontract/AlbumManagerInterface.java
 /home/soares/uni/dropmusic/dropmusic/common/src/main/java/pt/onept/dropmusic/common/server/contract/type/Notification.java
 /home/soares/uni/dropmusic/dropmusic/common/src/main/java/pt/onept/dropmusic/common/utililty/JsonUtility.java
+/home/soares/uni/dropmusic/dropmusic/common/src/main/java/pt/onept/dropmusic/common/exception/DataServerException.java
 /home/soares/uni/dropmusic/dropmusic/common/src/main/java/pt/onept/dropmusic/common/server/contract/type/DropmusicDataType.java
 /home/soares/uni/dropmusic/dropmusic/common/src/main/java/pt/onept/dropmusic/common/server/contract/DropmusicServerInterface.java
 /home/soares/uni/dropmusic/dropmusic/common/src/main/java/pt/onept/dropmusic/common/server/contract/subcontract/NotificationManagerInterface.java

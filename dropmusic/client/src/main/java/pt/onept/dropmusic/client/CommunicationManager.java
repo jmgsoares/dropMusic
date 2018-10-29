@@ -18,18 +18,21 @@ public class CommunicationManager {
 		CommunicationManager.port = port;
 		CommunicationManager.failOverTime = failOverTime;
 		boolean retry = true;
-			while (retry) {
+
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+		while (retry & deadLine >= System.currentTimeMillis()) {
+
+			try {
+				CommunicationManager.lookupRemoteObject();
 				retry = false;
-				try {
-					CommunicationManager.lookupRemoteObject();
-				} catch (RemoteException | NotBoundException e) {
-					retry = handleFailOver();
-					if(!retry) {
-						System.out.println("Valid RMI registry hasn't been found @ " + serverAddress + ":" + port);
-						System.exit(0);
-					}
-				}
+			} catch (RemoteException | NotBoundException e) {
+				retry = handleFailOver();
 			}
+		}
+		if (retry) {
+			System.out.println("Valid RMI registry hasn't been found @ " + serverAddress + ":" + port);
+			System.exit(0);
+		}
 	}
 
 	private static synchronized void lookupRemoteObject() throws RemoteException, NotBoundException {
@@ -37,15 +40,18 @@ public class CommunicationManager {
 		CommunicationManager.dropmusicServer = (DropmusicServerInterface) registry.lookup("Dropmusic");
 	}
 
-	public static boolean handleFailOver()  {
-		long deadLine = System.currentTimeMillis() + CommunicationManager.failOverTime;
-		while (deadLine > System.currentTimeMillis()) {
+	public static boolean handleFailOver() {
+		try {
+			CommunicationManager.lookupRemoteObject();
+			return false;
+		} catch (RemoteException | NotBoundException e) {
 			try {
-				CommunicationManager.lookupRemoteObject();
-				return true;
-			} catch (RemoteException | NotBoundException e) { }
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 		}
-		return false;
+		return true;
 	}
 
 }

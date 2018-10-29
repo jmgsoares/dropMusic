@@ -1,7 +1,9 @@
 package pt.onept.dropmusic.client.shell;
 
 import asg.cliche.*;
+import pt.onept.dropmusic.client.Client;
 import pt.onept.dropmusic.client.CommunicationManager;
+import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.IncompleteException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
@@ -31,20 +33,27 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		String output = null;
 		boolean retry = true;
 
-		while (retry) {
-			retry = false;
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine <= System.currentTimeMillis()) {
 			try {
 				CommunicationManager.dropmusicServer.user().create(user, user);
+				retry = false;
 				output = "User " + user.getUsername() + " created successfully";
 			} catch (DuplicatedException e) {
+				retry = false;
 				output = "User " + user.getUsername() + " already exists";
 			} catch (UnauthorizedException e) {
+				retry = false;
 				output = "Unauthorized!";
 			} catch (RemoteException e) {
-				retry = CommunicationManager.handleFailOver();
-				if (!retry) output = "RMI SERVER FAIL";
+				CommunicationManager.handleFailOver();
+				output = "RMI SERVER FAIL";
 			} catch (IncompleteException e) {
+				retry = false;
 				output = "Incomplete request";
+			} catch (DataServerException e) {
+				output = "DATA SERVER FAIL";
 			}
 		}
 		return output;
@@ -58,17 +67,23 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		String output =null;
 		boolean retry = true;
 
-		while (retry) {
-			retry = false;
+		long deadLine = System.currentTimeMillis() + 5000;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+
 			try {
 				user = CommunicationManager.dropmusicServer.user().login(user);
+				retry = false;
 				createAppShell(user);
 				output = "";
 			} catch (RemoteException e) {
-				retry = CommunicationManager.handleFailOver();
-				if (!retry) output = "RMI SERVER FAIL";
+				CommunicationManager.handleFailOver();
+				output = "RMI SERVER FAIL";
 			} catch (UnauthorizedException e) {
 				output = "Wrong user name or password";
+				retry = false;
+			}catch (DataServerException e) {
+				output = "DATA SERVER FAIL";
 			}
 		}
 		return output;
