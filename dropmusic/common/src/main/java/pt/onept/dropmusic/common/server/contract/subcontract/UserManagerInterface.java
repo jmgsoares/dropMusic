@@ -1,5 +1,6 @@
 package pt.onept.dropmusic.common.server.contract.subcontract;
 
+import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.dropmusic.common.server.contract.Crudable;
 import pt.onept.dropmusic.common.server.contract.type.User;
@@ -16,5 +17,6 @@ import java.rmi.RemoteException;
  */
 public interface UserManagerInterface extends Remote, Crudable<User>, Serializable {
 
-	User login(User user) throws RemoteException, UnauthorizedException;
+	User login(User user) throws RemoteException, UnauthorizedException, DataServerException;
+
 }

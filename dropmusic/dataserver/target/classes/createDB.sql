@@ -74,6 +74,7 @@ create table ALBUM (
    NAME                 VARCHAR(64)          not null,
    DESCRIPTION          VARCHAR(1024)        not null,
    SCORE                FLOAT8               null,
+   UNIQUE (NAME, DESCRIPTION),
    constraint PK_ALBUM primary key (ID)
 );
 
@@ -164,6 +165,7 @@ create table MUSIC (
    ID                   SERIAL               not null,
    ALB_ID               INT4                 not null,
    NAME                 VARCHAR(32)          not null,
+   UNIQUE (ALB_ID, NAME),
    constraint PK_MUSIC primary key (ID)
 );
 
@@ -282,42 +284,62 @@ create  index ACCOUNT_UPLOADS2_FK on ACCOUNT_UPLOADS (
 alter table ARTIST_ALBUM
    add constraint FK_ARTIST_A_ARTIST_AL_ARTIST foreign key (ID)
 references ARTIST (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table ARTIST_ALBUM
    add constraint FK_ARTIST_A_ARTIST_AL_ALBUM foreign key (ALB_ID)
 references ALBUM (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table UPLOAD
    add constraint FK_UPLOAD_UPLOAD_MUSI_MUSIC foreign key (MUS_ID)
 references MUSIC (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table MUSIC
    add constraint FK_MUSIC_ALBUM_MUS_ALBUM foreign key (ALB_ID)
 references ALBUM (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table NOTIFICATION
    add constraint FK_NOTIFICA_ACCOUNT_NOTI_ACCOUNT foreign key (USE_ID)
 references ACCOUNT (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table review
    add constraint FK_review_ALBUM_REV_ALBUM foreign key (ALB_ID)
 references ALBUM (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table ACCOUNT_UPLOADS
    add constraint FK_ACCOUNT_FIL_ACCOUNT_UPLOAD_ACCOUNT foreign key (ID)
 references ACCOUNT (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 alter table ACCOUNT_UPLOADS
    add constraint FK_ACCOUNT_FIL_ACCOUNT_UPLOAD_UPLOAD foreign key (FIL_ID)
 references UPLOAD (ID)
-on delete restrict on update restrict;
+on delete cascade on update restrict;
 
 
-insert into ACCOUNT(name, password, editor) VALUES('soares', '123', true);
+
+
+
+
+
+DROP FUNCTION IF EXISTS add_album(artist_id SERIAL, name VARCHAR(64), description VARCHAR(1024));
+CREATE FUNCTION add_album(artist_id INT4, asname VARCHAR(64), descriptionz VARCHAR(1024)) RETURNS album AS $$
+DECLARE
+   new_album album %ROWTYPE;
+   t1 text;
+   t2 text;
+   c1 float;
+
+BEGIN
+   SELECT * FROM ALBUM A WHERE A.NAME LIKE ('%' || asname || '%')
+      INTO t1, t2, c1;
+   INSERT INTO album(name, description) VALUES(asname, descriptionz) RETURNING * INTO new_album;
+   INSERT INTO artist_album(id, alb_id) VALUES(artist_id, new_album.id);
+   RETURN new_album;
+END;
+$$ LANGUAGE plpgsql STRICT;

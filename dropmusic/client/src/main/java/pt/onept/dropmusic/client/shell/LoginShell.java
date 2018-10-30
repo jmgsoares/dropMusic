@@ -1,6 +1,9 @@
 package pt.onept.dropmusic.client.shell;
 
 import asg.cliche.*;
+import pt.onept.dropmusic.client.Client;
+import pt.onept.dropmusic.client.CommunicationManager;
+import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.IncompleteException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
@@ -11,11 +14,10 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class LoginShell implements ShellDependent, ShellManageable {
-	private DropmusicServerInterface dropmusicServer;
 	private Shell shell;
 
-	public LoginShell(DropmusicServerInterface dropmusicServer) {
-		this.dropmusicServer = dropmusicServer;
+	public LoginShell() {
+
 	}
 
 	@Command
@@ -28,22 +30,31 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		User user = new User()
 				.setUsername(name)
 				.setPassword(password);
-		String output;
+		String output = null;
+		boolean retry = true;
 
-		try {
-			this.dropmusicServer.user().create(user,null);
-			output = "User " + user.getUsername() + " created successfully";
-		} catch (DuplicatedException e) {
-			output = "User " + user.getUsername() + " already exists";
-		} catch (UnauthorizedException e) {
-			output = "Unauthorized!";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			e.printStackTrace();
-			output = e.getMessage();
-		} catch (IncompleteException e) {
-			e.printStackTrace();
-			output = "Incomplete request";
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+			try {
+				CommunicationManager.dropmusicServer.user().create(user, user);
+				retry = false;
+				output = "User " + user.getUsername() + " created successfully";
+			} catch (DuplicatedException e) {
+				retry = false;
+				output = "User " + user.getUsername() + " already exists";
+			} catch (UnauthorizedException e) {
+				retry = false;
+				output = "Unauthorized!";
+			} catch (RemoteException e) {
+				CommunicationManager.handleFailOver();
+				output = "RMI SERVER FAIL";
+			} catch (IncompleteException e) {
+				retry = false;
+				output = "Incomplete request";
+			} catch (DataServerException e) {
+				output = "DATA SERVER FAIL";
+			}
 		}
 		return output;
 	}
@@ -53,23 +64,33 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		User user = new User()
 				.setUsername(name)
 				.setPassword(password);
-		String output;
+		String output =null;
+		boolean retry = true;
 
-		try {
-			user = this.dropmusicServer.user().login(user);
-			createAppShell(user);
-			output = "";
-		} catch (RemoteException e) {
-			//TODO Handle failover
-			output = e.getMessage();
-		} catch (UnauthorizedException e) {
-			output = "Wrong user name or password";
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+
+			try {
+				user = CommunicationManager.dropmusicServer.user().login(user);
+				retry = false;
+				createAppShell(user);
+				output = "";
+			} catch (RemoteException e) {
+				CommunicationManager.handleFailOver();
+				output = "RMI SERVER FAIL";
+			} catch (UnauthorizedException e) {
+				output = "Wrong user name or password";
+				retry = false;
+			}catch (DataServerException e) {
+				output = "DATA SERVER FAIL";
+			}
 		}
 		return output;
 	}
 
 	private void createAppShell(User user) {
-		AppShell appShell = new AppShell(this.dropmusicServer, user);
+		AppShell appShell = new AppShell(user);
 
 		try {
 			ShellFactory.createSubshell(user.getUsername(), this.shell, "", appShell)

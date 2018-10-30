@@ -1,5 +1,6 @@
 package pt.onept.dropmusic.common.server.contract;
 
+import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.server.contract.subcontract.*;
 
 import java.io.Serializable;
@@ -15,15 +16,15 @@ import java.rmi.RemoteException;
 
 public interface DropmusicServerInterface extends Remote, Serializable {
 
-	UserManagerInterface user() throws RemoteException;
+	UserManagerInterface user() throws RemoteException, DataServerException;
 
-	AlbumManagerInterface album() throws RemoteException;
+	AlbumManagerInterface album() throws RemoteException, DataServerException;
 
-	MusicManagerInterface music() throws RemoteException;
+	MusicManagerInterface music() throws RemoteException, DataServerException;
 
-	ArtistManagerInterface artist() throws RemoteException;
+	ArtistManagerInterface artist() throws RemoteException, DataServerException;
 
-	NotificationManagerInterface notification() throws RemoteException;
+	NotificationManagerInterface notification() throws RemoteException, DataServerException;
 
-	ReviewManagerInterface review() throws RemoteException;
+	ReviewManagerInterface review() throws RemoteException, DataServerException;
 }

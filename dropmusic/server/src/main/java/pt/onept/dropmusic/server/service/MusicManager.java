@@ -4,10 +4,7 @@ import pt.onept.dropmusic.common.communication.multicast.MulticastHandler;
 import pt.onept.dropmusic.common.communication.protocol.Message;
 import pt.onept.dropmusic.common.communication.protocol.MessageBuilder;
 import pt.onept.dropmusic.common.communication.protocol.Operation;
-import pt.onept.dropmusic.common.exception.DuplicatedException;
-import pt.onept.dropmusic.common.exception.IncompleteException;
-import pt.onept.dropmusic.common.exception.NotFoundException;
-import pt.onept.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.dropmusic.common.exception.*;
 import pt.onept.dropmusic.common.server.contract.subcontract.MusicManagerInterface;
 import pt.onept.dropmusic.common.server.contract.type.Artist;
 import pt.onept.dropmusic.common.server.contract.type.Music;
@@ -26,7 +23,7 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 	}
 
 	@Override
-	public void create(User self, Music object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException {
+	public void create(User self, Music object) throws DuplicatedException, DataServerException, UnauthorizedException, RemoteException, IncompleteException {
 		Message outgoing = MessageBuilder.build(Operation.CREATE, self)
 				.setData(object);
 		try {
@@ -40,17 +37,17 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 					throw new IncompleteException();
 				case DUPLICATE:
 					throw new DuplicatedException();
-				case EXCEPTION:
+				default:
 					throw new RemoteException();
 			}
 		} catch (TimeoutException e) {
-			e.printStackTrace();
-			throw new RemoteException();
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
 		}
 	}
 
 	@Override
-	public Music read(User self, Music object) throws NotFoundException, UnauthorizedException, RemoteException {
+	public Music read(User self, Music object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException {
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.READ, self)
 				.setData(object);
@@ -60,10 +57,9 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 			if (music == null) throw new NotFoundException();
 			return music;
 		} catch (TimeoutException e) {
-			//TODO FAILOVER
-			e.printStackTrace();
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
 		}
-		throw new NotFoundException();
 	}
 
 

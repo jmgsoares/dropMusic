@@ -4,10 +4,7 @@ import pt.onept.dropmusic.common.communication.multicast.MulticastHandler;
 import pt.onept.dropmusic.common.communication.protocol.Message;
 import pt.onept.dropmusic.common.communication.protocol.MessageBuilder;
 import pt.onept.dropmusic.common.communication.protocol.Operation;
-import pt.onept.dropmusic.common.exception.DuplicatedException;
-import pt.onept.dropmusic.common.exception.IncompleteException;
-import pt.onept.dropmusic.common.exception.NotFoundException;
-import pt.onept.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.dropmusic.common.exception.*;
 import pt.onept.dropmusic.common.server.contract.subcontract.AlbumManagerInterface;
 import pt.onept.dropmusic.common.server.contract.type.Album;
 import pt.onept.dropmusic.common.server.contract.type.Album;
@@ -28,7 +25,7 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 	}
 
 	@Override
-	public void create(User self, Album object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException {
+	public void create(User self, Album object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException, DataServerException {
 		Message outgoing = MessageBuilder.build(Operation.CREATE, self)
 				.setData(object);
 		try {
@@ -46,13 +43,13 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 					throw new RemoteException();
 			}
 		} catch (TimeoutException e) {
-			e.printStackTrace();
-			throw new RemoteException();
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
 		}
 	}
 
 	@Override
-	public Album read(User self, Album object) throws NotFoundException, UnauthorizedException, RemoteException {
+	public Album read(User self, Album object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException {
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.READ, self)
 				.setData(object);
@@ -62,10 +59,9 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 			if (album == null) throw new NotFoundException();
 			return album;
 		} catch (TimeoutException e) {
-			//TODO FAILOVER
-			e.printStackTrace();
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
 		}
-		throw new NotFoundException();
 	}
 
 	@Override
@@ -79,7 +75,7 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 	}
 
 	@Override
-	public List<Album> search(User self, String query) throws RemoteException {
+	public List<Album> search(User self, String query) throws RemoteException, DataServerException {
 		List<Album> albums = new LinkedList<>();
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.SEARCH, self)
@@ -89,8 +85,8 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 			albums = (List<Album>) incoming.getDataList();
 
 		} catch (TimeoutException e) {
-			//TODO FAILOVER
-			e.printStackTrace();
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
 		}
 		return albums;
 	}

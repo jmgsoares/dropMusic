@@ -1,5 +1,6 @@
 package pt.onept.dropmusic.common.server.contract.subcontract;
 
+import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.server.contract.type.Notification;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
@@ -11,10 +12,10 @@ import java.util.List;
 
 public interface NotificationManagerInterface extends Remote, Serializable {
 
-	List<Notification> get(User self) throws RemoteException;
+	List<Notification> get(User self) throws RemoteException, DataServerException;
 
-	void notifyUser(User userToNotify, Notification notification) throws RemoteException;
+	void notifyUser(User userToNotify, Notification notification) throws RemoteException, DataServerException;
 
-	void delete(User self, Long lastSeenNotificationId) throws RemoteException;
+	void delete(User self, Long lastSeenNotificationId) throws RemoteException, DataServerException;
 
 }
