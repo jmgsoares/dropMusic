@@ -42,7 +42,7 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 	}
 
 	@Override
-	public void create(User self, User object) throws DuplicatedException, DataServerException, UnauthorizedException, RemoteException, IncompleteException {
+	public void create(User self, User object) throws DuplicatedException, DataServerException, RemoteException {
 		Message outgoing = MessageBuilder.build(Operation.REGISTER, self);
 		try {
 			Message incoming = multicastHandler.sendAndWait(outgoing);
@@ -61,7 +61,7 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 	}
 
 	@Override
-	public User read(User self, User object) throws NotFoundException, UnauthorizedException, RemoteException {
+	public User read(User self, User object) {
 		return null;
 	}
 
@@ -91,7 +91,7 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 	}
 
 	@Override
-	public void delete(User self, User object) throws NotFoundException, UnauthorizedException, RemoteException {
+	public void delete(User self, User object) {
 
 	}
 }

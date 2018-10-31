@@ -39,7 +39,7 @@ public class DatabaseManager {
 		queries.put(Review.class, "SELECT * FROM review r WHERE r.alb_id = ?");
 		queries.put(Music.class, "SELECT * FROM music m WHERE m.alb_id = ?");
 		queries.put(Notification.class, "SELECT * FROM notification n WHERE n.use_id = ?");
-		queries.put(Artist.class,"SELECT ar.* FROM artist_album AS aa LEFT JOIN artist ar ON aa.id = ar.id WHERE aa.alb_id = ?");
+		queries.put(Artist.class, "SELECT ar.* FROM artist_album AS aa LEFT JOIN artist ar ON aa.id = ar.id WHERE aa.alb_id = ?");
 		return queries;
 	}
 
@@ -180,7 +180,7 @@ public class DatabaseManager {
 		this.dbConnector = dbConnector;
 	}
 
-// THESE FUNCTIONS GET CALLED BY THE HANDLER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! LISADHJLA SHDLAS HDKLAJSHD OIASD
+// THESE FUNCTIONS GET CALLED BY THE HANDLER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	public User login(User user) throws UnauthorizedException, SQLException {
 		try(
@@ -240,7 +240,7 @@ public class DatabaseManager {
 		return list;
 	}
 
-	private  <T extends DropmusicDataType> void populate(Class<T> tClass, T object) throws SQLException, NotFoundException {
+	private  <T extends DropmusicDataType> void populate(Class<T> tClass, T object) throws SQLException {
 		if( object instanceof Artist ) {
 			Artist artist = (Artist) object;
 			artist.setAlbums(this.readList(Album.class, artist));
@@ -251,7 +251,7 @@ public class DatabaseManager {
 		}
 	}
 
-	public <T extends DropmusicDataType> void delete(Class<T> tClass, T object) throws SQLException, NotFoundException {
+	public <T extends DropmusicDataType> void delete(Class<T> tClass, T object) throws SQLException {
 		try (
 				Connection dbConnection = this.dbConnector.getConnection();
 				PreparedStatement ps = this.getDeleteStatement(dbConnection, tClass, object)

@@ -49,7 +49,7 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 	}
 
 	@Override
-	public Album read(User self, Album object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException {
+	public Album read(User self, Album object) throws NotFoundException, DataServerException {
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.READ, self)
 				.setData(object);
@@ -65,17 +65,17 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 	}
 
 	@Override
-	public void update(User self, Album object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException {
+	public void update(User self, Album object) {
 
 	}
 
 	@Override
-	public void delete(User self, Album object) throws NotFoundException, UnauthorizedException, RemoteException {
+	public void delete(User self, Album object) {
 
 	}
 
 	@Override
-	public List<Album> search(User self, String query) throws RemoteException, DataServerException {
+	public List<Album> search(User self, String query) throws DataServerException {
 		List<Album> albums = new LinkedList<>();
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.SEARCH, self)

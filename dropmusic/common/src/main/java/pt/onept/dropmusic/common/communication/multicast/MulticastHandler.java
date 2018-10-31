@@ -21,7 +21,7 @@ public class MulticastHandler {
 	private BlockingQueue<byte[]> sendingQueue;
 
 	public MulticastHandler(String txAddress, String rxAddress, int port, int failOverTime) {
-		this.failOverTime = failOverTime;
+		MulticastHandler.failOverTime = failOverTime;
 		this.txAddress = txAddress;
 		this.rxAddress = rxAddress;
 		this.port = port;
