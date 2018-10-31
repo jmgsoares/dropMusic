@@ -18,7 +18,6 @@ public interface Crudable<T> {
 
 	T read(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException;
 
-
 	void update(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException, DataServerException;
 
 

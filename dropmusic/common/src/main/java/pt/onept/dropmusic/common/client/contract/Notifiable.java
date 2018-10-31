@@ -1,5 +1,7 @@
 package pt.onept.dropmusic.common.client.contract;
 
+import pt.onept.dropmusic.common.server.contract.type.Notification;
+
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -12,12 +14,8 @@ import java.rmi.RemoteException;
  */
 public interface Notifiable extends Remote, Serializable {
 
-	/**
-	 * Notify client on real-time (Callback)
-	 *
-	 * @param msg the notification message
-	 * @return the sucess of the operation
-	 * @throws RemoteException if failed to execute the operation
-	 */
-	boolean notify(String msg) throws RemoteException;
+	//TODO check if client is still the same
+
+	boolean notify(Notification notification) throws RemoteException;
+
 }
