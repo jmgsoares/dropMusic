@@ -3,11 +3,9 @@ package pt.onept.dropmusic.client.shell;
 import asg.cliche.*;
 import pt.onept.dropmusic.client.Client;
 import pt.onept.dropmusic.client.CommunicationManager;
-import pt.onept.dropmusic.client.service.Notify;
-import pt.onept.dropmusic.common.client.contract.Notifiable;
+import pt.onept.dropmusic.client.service.NotificationService;
 import pt.onept.dropmusic.common.exception.*;
 import pt.onept.dropmusic.common.server.contract.Crudable;
-import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
 import pt.onept.dropmusic.common.server.contract.type.*;
 import pt.onept.dropmusic.common.utililty.JsonUtility;
 
@@ -15,12 +13,18 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AppShell implements ShellManageable, ShellDependent, Notifiable {
-	public static Shell shell;
+public class AppShell implements ShellManageable, ShellDependent {
+	private Shell shell;
 	private User user;
+	private NotificationService notification;
 
 	public AppShell(User user) {
 		this.user = user;
+		try {
+			this.notification = new NotificationService();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 	@Override
 	public void cliEnterLoop() {
@@ -28,9 +32,8 @@ public class AppShell implements ShellManageable, ShellDependent, Notifiable {
 			this.shell.processLine("message \"Welcome " + this.user.getUsername() + "\"");
 			this.shell.processLine("getnotifications");
 			try {
-				Notifiable client = new Notify();
 				//TODO Handle Failover
-				CommunicationManager.dropmusicServer.subscribe(this.user.getId(), client );
+				CommunicationManager.dropmusicServer.subscribe(this.user.getId(), this.notification);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
@@ -104,6 +107,8 @@ public class AppShell implements ShellManageable, ShellDependent, Notifiable {
 	@Override
 	public void cliSetShell(Shell theShell) {
 		this.shell = theShell;
+		this.notification.setShell(this.shell);
+
 	}
 
 	@Command
@@ -587,10 +592,5 @@ public class AppShell implements ShellManageable, ShellDependent, Notifiable {
 			}
 		}
 		return output;
-	}
-
-	@Override
-	public boolean notify(Notification notification) throws RemoteException {
-		return false;
 	}
 }
