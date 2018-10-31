@@ -47,7 +47,7 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 	}
 
 	@Override
-	public Music read(User self, Music object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException {
+	public Music read(User self, Music object) throws NotFoundException, DataServerException {
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.READ, self)
 				.setData(object);
@@ -64,12 +64,12 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 
 
 	@Override
-	public void update(User self, Music object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException {
+	public void update(User self, Music object) {
 
 	}
 
 	@Override
-	public void delete(User self, Music object) throws NotFoundException, UnauthorizedException, RemoteException {
+	public void delete(User self, Music object) {
 
 	}
 }

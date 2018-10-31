@@ -24,7 +24,7 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 	}
 
 	@Override
-	public void create(User self, Artist object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException, DataServerException {
+	public void create(User self, Artist object) throws DuplicatedException, UnauthorizedException, RemoteException, DataServerException {
 		Message outgoing = MessageBuilder.build(Operation.CREATE, self)
 				.setData(object);
 
@@ -47,7 +47,7 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 	}
 
 	@Override
-	public Artist read(User self, Artist object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException {
+	public Artist read(User self, Artist object) throws NotFoundException, DataServerException {
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.READ, self)
 				.setData(object);
@@ -87,7 +87,7 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 	}
 
 	@Override
-	public void delete(User self, Artist object) throws NotFoundException, UnauthorizedException, RemoteException {
+	public void delete(User self, Artist object) {
 
 	}
 }

@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
-final class MessageHandler implements Runnable {
+final class  MessageHandler implements Runnable {
 	private DatabaseManager dbManager;
 	private MulticastHandler multicastHandler;
 
@@ -77,7 +77,16 @@ final class MessageHandler implements Runnable {
 	}
 
 	private void create(Message incoming, Message outgoing) {
-		if(!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		User user = null;
+		try {
+			user = dbManager.read(User.class, incoming.getSelf().getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
+		} catch (NotFoundException e) {
+			outgoing.setOperation(Operation.NOT_FOUND);
+		}
+		if(!user.isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		else this.create_raw(incoming, outgoing);
 	}
 
@@ -169,7 +178,7 @@ final class MessageHandler implements Runnable {
 			dbManager.delete(tClass, incoming.getData());
 			System.out.println(tClass.toString());
 			outgoing.setOperation(Operation.SUCCESS);
-		} catch (SQLException | NotFoundException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			outgoing.setOperation(Operation.EXCEPTION);
 		}

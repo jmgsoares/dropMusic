@@ -545,7 +545,6 @@ public class AppShell implements ShellManageable, ShellDependent {
 		return output;
 	}
 
-	//TODO generify the mk mv rm
 	private <T> String cat(T objectId, Crudable<T> client) {
 		String output = null;
 		T object;
