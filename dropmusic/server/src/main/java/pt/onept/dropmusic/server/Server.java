@@ -16,11 +16,14 @@ public class Server {
 	public static int multiCastPort;
 	public static int rmiServerPort;
 	public static int failOverTime;
+	public static DropmusicServerInterface dropmusicServer;
 
 
 	public static void main(String[] args) {
 		Registry registry = null;
 		boolean boot = true;
+
+
 
 		Properties appProps = PropertiesReaderUtility.read("server.properties");
 
@@ -54,7 +57,6 @@ public class Server {
 
 		try {
 			MulticastHandler multicastHandler = new MulticastHandler(txMultiCastAddress, rxMulticastAddress, multiCastPort, failOverTime);
-			DropmusicServerInterface dropmusicServer = null;
 			dropmusicServer = new DropmusicServer(multicastHandler);
 			registry.rebind("Dropmusic", dropmusicServer);
 		} catch (RemoteException e) {

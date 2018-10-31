@@ -1,11 +1,13 @@
 package pt.onept.dropmusic.common.server.contract;
 
+import pt.onept.dropmusic.common.client.contract.Notifiable;
 import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.server.contract.subcontract.*;
 
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 /**
  * Manage the DropMusic platform
@@ -27,4 +29,11 @@ public interface DropmusicServerInterface extends Remote, Serializable {
 	NotificationManagerInterface notification() throws RemoteException, DataServerException;
 
 	ReviewManagerInterface review() throws RemoteException, DataServerException;
+
+	Map<Long, Notifiable> client() throws RemoteException;
+
+	void subscribe(long id, Notifiable client) throws RemoteException;
+
+	void unSubscribe(long id) throws RemoteException;
+
 }

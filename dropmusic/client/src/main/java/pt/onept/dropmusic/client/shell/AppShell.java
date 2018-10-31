@@ -3,6 +3,8 @@ package pt.onept.dropmusic.client.shell;
 import asg.cliche.*;
 import pt.onept.dropmusic.client.Client;
 import pt.onept.dropmusic.client.CommunicationManager;
+import pt.onept.dropmusic.client.service.Notify;
+import pt.onept.dropmusic.common.client.contract.Notifiable;
 import pt.onept.dropmusic.common.exception.*;
 import pt.onept.dropmusic.common.server.contract.Crudable;
 import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
@@ -13,8 +15,8 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AppShell implements ShellManageable, ShellDependent {
-	private Shell shell;
+public class AppShell implements ShellManageable, ShellDependent, Notifiable {
+	public static Shell shell;
 	private User user;
 
 	public AppShell(User user) {
@@ -25,6 +27,13 @@ public class AppShell implements ShellManageable, ShellDependent {
 		try {
 			this.shell.processLine("message \"Welcome " + this.user.getUsername() + "\"");
 			this.shell.processLine("getnotifications");
+			try {
+				Notifiable client = new Notify();
+				//TODO Handle Failover
+				CommunicationManager.dropmusicServer.subscribe(this.user.getId(), client );
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 		} catch (CLIException e) {
 			e.printStackTrace();
 		}
@@ -65,23 +74,29 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 		long deadLine = System.currentTimeMillis() + Client.failOverTime;
 
-		while (retry & deadLine >= System.currentTimeMillis()) {
-
-			try {
-				CommunicationManager.dropmusicServer.notification().delete(this.user,lastSeen);
-				retry = false;
-			} catch (RemoteException e) {
-				CommunicationManager.handleFailOver();
-			} catch (DataServerException e) {
-			}
-		}
+//		while (retry & deadLine >= System.currentTimeMillis()) {
+//
+//			try {
+//				//TODO Adapt function to use crudable delete, not custom one
+//				//CommunicationManager.dropmusicServer.notification().delete(this.user,lastSeen);
+//				retry = false;
+//			} catch (RemoteException e) {
+//				CommunicationManager.handleFailOver();
+//			} catch (DataServerException e) {
+//			}
+//		}
 	}
 
 	@Override
 	public void cliLeaveLoop() {
 		try {
 			this.shell.processLine("message \"User " + this.user.getUsername() + " logged out\"");
+			//TODO Handle Failover
+
+			CommunicationManager.dropmusicServer.unSubscribe(this.user.getId());
 		} catch (CLIException e) {
+			e.printStackTrace();
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
@@ -92,7 +107,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 	}
 
 	@Command
-	public String message(String message) {
+	public static String message(String message) {
 		return message;
 	}
 
@@ -572,5 +587,10 @@ public class AppShell implements ShellManageable, ShellDependent {
 			}
 		}
 		return output;
+	}
+
+	@Override
+	public boolean notify(Notification notification) throws RemoteException {
+		return false;
 	}
 }
