@@ -26,17 +26,32 @@ public class AppShell implements ShellManageable, ShellDependent {
 			e.printStackTrace();
 		}
 	}
+
+	@Command
+	public static String message(String message) {
+		return message;
+	}
+
 	@Override
 	public void cliEnterLoop() {
 		try {
 			this.shell.processLine("message \"Welcome " + this.user.getUsername() + "\"");
 			this.shell.processLine("getnotifications");
-			try {
-				//TODO Handle Failover
-				CommunicationManager.dropmusicServer.subscribe(this.user.getId(), this.notification);
-			} catch (RemoteException e) {
-				e.printStackTrace();
+			boolean retry = true;
+
+			long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+			while (retry & deadLine >= System.currentTimeMillis()) {
+
+				try {
+					CommunicationManager.dropmusicServer.subscribe(this.user.getId(), this.notification);
+					retry = false;
+				} catch (RemoteException e) {
+					CommunicationManager.handleFailOver();
+				}
 			}
+			this.shell.processLine("message \"RMI SERVER ERROR while subscribing\n" +
+									"You will not be able to receive live notifications\"");
 		} catch (CLIException e) {
 			e.printStackTrace();
 		}
@@ -58,8 +73,8 @@ public class AppShell implements ShellManageable, ShellDependent {
 				if (notifications != null && !notifications.isEmpty()) {
 					output = "You have " + notifications.size() + " new notifications\n" +
 							notifications.stream()
-							.map(Notification::getMessage)
-							.collect(Collectors.joining("\n"));
+									.map(Notification::getMessage)
+									.collect(Collectors.joining("\n"));
 					removeNotifications(notifications.size());
 				} else output = "No new notifications";
 			} catch (RemoteException e) {
@@ -92,15 +107,21 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	@Override
 	public void cliLeaveLoop() {
-		try {
-			this.shell.processLine("message \"User " + this.user.getUsername() + " logged out\"");
-			//TODO Handle Failover
+		boolean retry = true;
 
-			CommunicationManager.dropmusicServer.unSubscribe(this.user.getId());
-		} catch (CLIException e) {
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			e.printStackTrace();
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+
+			try {
+				CommunicationManager.dropmusicServer.unSubscribe(this.user.getId());
+				this.shell.processLine("message \"User " + this.user.getUsername() + " logged out\"");
+				retry = false;
+			} catch (CLIException e) {
+				e.printStackTrace();
+			} catch (RemoteException e) {
+				CommunicationManager.handleFailOver();
+			}
 		}
 	}
 
@@ -109,11 +130,6 @@ public class AppShell implements ShellManageable, ShellDependent {
 		this.shell = theShell;
 		this.notification.setShell(this.shell);
 
-	}
-
-	@Command
-	public static String message(String message) {
-		return message;
 	}
 
 	@Command(name = "mkartist", description = "Create a new artist. Usage: mkartist <artist-name>", abbrev = "mkart")
@@ -499,7 +515,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		return output;
 	}
 
-	@Command(name= "mkreview", description = "Write a review about an album. Usage: mkreview <alb-id> <score 1-5> <review>", abbrev = "mkrev")
+	@Command(name = "mkreview", description = "Write a review about an album. Usage: mkreview <alb-id> <score 1-5> <review>", abbrev = "mkrev")
 	public String mkReview(int id, float score, String reviewText) {
 		Review review = new Review()
 				.setAlbumId(id)

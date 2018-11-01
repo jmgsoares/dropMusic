@@ -16,6 +16,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+
 public class NotificationManager extends UnicastRemoteObject implements NotificationManagerInterface {
 	private MulticastHandler multicastHandler;
 
@@ -66,22 +67,26 @@ public class NotificationManager extends UnicastRemoteObject implements Notifica
 		}
 	}
 
-	@Override
+	@Override //TODO IMPLEMENT TO CREATE NOTIFICATIONS
 	public void create(User self, Notification object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException, DataServerException {
 
 	}
 
-	@Override
+	@Override //TODO IMPLEMENT TO REPLACE THE GET FUNCTION TO READ THE LIST OF NOTIFICATIONS
 	public Notification read(User self, Notification object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException {
 		return null;
 	}
 
-	@Override
+	/**
+	 * This method is not applied to notifications in the scope of this project
+	 * @deprecated
+	 */
+	@Deprecated
 	public void update(User self, Notification object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException, DataServerException {
 
 	}
 
-	@Override
+	@Override //TODO IMPLEMENT TO DELETE USER'S NOTIFICATIONS
 	public void delete(User self, Notification object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException {
 
 	}
