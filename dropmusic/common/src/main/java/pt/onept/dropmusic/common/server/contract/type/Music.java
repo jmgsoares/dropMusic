@@ -1,7 +1,5 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-import java.io.Serializable;
-
 public class Music extends DropmusicDataType<Music> {
 	private int albumId;
 	private String name;

@@ -3,7 +3,7 @@ package pt.onept.dropmusic.common.communication.protocol;
 import pt.onept.dropmusic.common.server.contract.type.DropmusicDataType;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
-import java.util.*;
+import java.util.UUID;
 
 public final class MessageBuilder {
 

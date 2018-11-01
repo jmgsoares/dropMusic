@@ -7,7 +7,6 @@ import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.exception.DuplicatedException;
 import pt.onept.dropmusic.common.exception.IncompleteException;
 import pt.onept.dropmusic.common.exception.UnauthorizedException;
-import pt.onept.dropmusic.common.server.contract.DropmusicServerInterface;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
 import java.io.IOException;
@@ -64,7 +63,7 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		User user = new User()
 				.setUsername(name)
 				.setPassword(password);
-		String output =null;
+		String output = null;
 		boolean retry = true;
 
 		long deadLine = System.currentTimeMillis() + Client.failOverTime;
@@ -82,7 +81,7 @@ public class LoginShell implements ShellDependent, ShellManageable {
 			} catch (UnauthorizedException e) {
 				output = "Wrong user name or password";
 				retry = false;
-			}catch (DataServerException e) {
+			} catch (DataServerException e) {
 				output = "DATA SERVER FAIL";
 			}
 		}

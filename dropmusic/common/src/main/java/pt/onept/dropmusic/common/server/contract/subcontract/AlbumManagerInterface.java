@@ -6,7 +6,6 @@ import pt.onept.dropmusic.common.server.contract.type.Album;
 
 import java.io.Serializable;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 
 /**
  * Manage platform Albums

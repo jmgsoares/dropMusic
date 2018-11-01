@@ -51,7 +51,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 				}
 			}
 			this.shell.processLine("message \"RMI SERVER ERROR while subscribing\n" +
-									"You will not be able to receive live notifications\"");
+					"You will not be able to receive live notifications\"");
 		} catch (CLIException e) {
 			e.printStackTrace();
 		}

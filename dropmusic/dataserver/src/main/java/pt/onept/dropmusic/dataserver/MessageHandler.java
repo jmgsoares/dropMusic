@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
-final class  MessageHandler implements Runnable {
+final class MessageHandler implements Runnable {
 	private DatabaseManager dbManager;
 	private MulticastHandler multicastHandler;
 
@@ -43,7 +43,7 @@ final class  MessageHandler implements Runnable {
 			method.setAccessible(true);
 			Message reply = MessageBuilder.buildReply(message, null);
 			method.invoke(this, message, reply);
-			if(reply != null & Dataserver.isMaster) this.multicastHandler.send(reply);
+			if (reply != null & Dataserver.isMaster) this.multicastHandler.send(reply);
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
@@ -86,7 +86,7 @@ final class  MessageHandler implements Runnable {
 		} catch (NotFoundException e) {
 			outgoing.setOperation(Operation.NOT_FOUND);
 		}
-		if(!user.isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		if (!user.isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		else this.create_raw(incoming, outgoing);
 	}
 
@@ -104,7 +104,7 @@ final class  MessageHandler implements Runnable {
 					.setOperation(Operation.SUCCESS);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			if( e.getMessage().contains("duplicate")) outgoing.setOperation(Operation.DUPLICATE);
+			if (e.getMessage().contains("duplicate")) outgoing.setOperation(Operation.DUPLICATE);
 			else outgoing.setOperation(Operation.INCOMPLETE);
 		} catch (InvalidClassException e) {
 			e.printStackTrace();
@@ -137,7 +137,7 @@ final class  MessageHandler implements Runnable {
 	}
 
 	private void update(Message incoming, Message outgoing) {
-		if(!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		if (!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		DropmusicDataType data = incoming.getData();
 		Class tClass = TypeFactory.getSubtype(data);
 		try {
@@ -160,7 +160,7 @@ final class  MessageHandler implements Runnable {
 					.setOperation(Operation.SUCCESS);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			if( e.getMessage().contains("not present")) outgoing.setOperation(Operation.INCOMPLETE);
+			if (e.getMessage().contains("not present")) outgoing.setOperation(Operation.INCOMPLETE);
 			else outgoing.setOperation(Operation.EXCEPTION);
 		} catch (InvalidClassException e) {
 			e.printStackTrace();
@@ -185,7 +185,7 @@ final class  MessageHandler implements Runnable {
 	}
 
 	private void update_user(Message incoming, Message outgoing) {
-		if(!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		if (!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		DropmusicDataType data = incoming.getTarget();
 		Class tClass = TypeFactory.getSubtype(data);
 		try {

@@ -1,6 +1,5 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class Album extends DropmusicDataType<Album> {

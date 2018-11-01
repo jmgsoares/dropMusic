@@ -16,5 +16,4 @@ public interface NotificationManagerInterface extends Remote, Serializable, Crud
 	List<Notification> get(User self) throws RemoteException, DataServerException;
 
 	void notifyUser(User userToNotify, Notification notification) throws RemoteException, DataServerException;
-
 }

@@ -12,6 +12,7 @@ import java.util.concurrent.*;
 
 
 public class MulticastHandler {
+	//TODO failOverTime value never used??
 	private static int failOverTime;
 	private String txAddress;
 	private String rxAddress;
@@ -46,9 +47,9 @@ public class MulticastHandler {
 		}
 	}
 
-	private Message receive(UUID messageId) throws JsonSyntaxException, TimeoutException{
+	private Message receive(UUID messageId) throws JsonSyntaxException, TimeoutException {
 		Message response = null;
-		while(response == null) {
+		while (response == null) {
 			try {
 				response = this.routedReceivingQueues.get(messageId).poll(5, TimeUnit.SECONDS);
 				if (response == null) {
@@ -65,7 +66,7 @@ public class MulticastHandler {
 	public Message receive() {
 		Message receivedMessage = null;
 
-		while(receivedMessage == null) {
+		while (receivedMessage == null) {
 			try {
 				receivedMessage = receivingQueue.take();
 			} catch (InterruptedException e) {

@@ -40,7 +40,7 @@ public class Dataserver {
 
 		databaseConnector = new DatabaseConnector("jdbc:postgresql://" + db, dbUser, dbUserPassword);
 
-		if(cleanAndPopulate) {
+		if (cleanAndPopulate) {
 			System.out.println("Cleaning and populating db @ " + db);
 			databaseConnector.executeSqlScript("createDB.sql");
 			databaseConnector.executeSqlScript("dummy_data.sql");

@@ -1,7 +1,6 @@
 package pt.onept.dropmusic.common.communication.multicast;
 
 import pt.onept.dropmusic.common.communication.protocol.Message;
-import pt.onept.dropmusic.common.server.contract.type.Artist;
 import pt.onept.dropmusic.common.utililty.JavaSerializationUtility;
 import pt.onept.dropmusic.common.utililty.JsonUtility;
 
@@ -51,7 +50,7 @@ public class Listener implements Runnable {
 					}
 					Message message = (Message) JavaSerializationUtility.deserialize(packet.getData());
 					BlockingQueue<Message> destinationQueue = routedReceivingQueues.get(message.getId());
-					if(destinationQueue == null) destinationQueue = this.receivingQueue;
+					if (destinationQueue == null) destinationQueue = this.receivingQueue;
 					//TODO add can lose messages if there is no space - IllegalStateException (no space)
 					destinationQueue.add(message);
 					System.out.println("R: " + JsonUtility.toJson(message));

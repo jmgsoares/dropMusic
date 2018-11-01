@@ -38,6 +38,5 @@ public class Sender implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

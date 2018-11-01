@@ -13,13 +13,11 @@ import java.rmi.RemoteException;
  */
 public interface Crudable<T> {
 
-
 	void create(User self, T object) throws DuplicatedException, UnauthorizedException, RemoteException, IncompleteException, DataServerException;
 
 	T read(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException;
 
 	void update(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException, DataServerException;
-
 
 	void delete(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException;
 }

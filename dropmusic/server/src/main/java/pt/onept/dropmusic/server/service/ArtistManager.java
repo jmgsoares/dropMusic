@@ -1,13 +1,12 @@
 package pt.onept.dropmusic.server.service;
 
-import com.google.gson.JsonSyntaxException;
 import pt.onept.dropmusic.common.communication.multicast.MulticastHandler;
+import pt.onept.dropmusic.common.communication.protocol.Message;
 import pt.onept.dropmusic.common.communication.protocol.MessageBuilder;
 import pt.onept.dropmusic.common.communication.protocol.Operation;
 import pt.onept.dropmusic.common.exception.*;
 import pt.onept.dropmusic.common.server.contract.subcontract.ArtistManagerInterface;
 import pt.onept.dropmusic.common.server.contract.type.Artist;
-import pt.onept.dropmusic.common.communication.protocol.Message;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
 import java.rmi.RemoteException;

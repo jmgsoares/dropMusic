@@ -23,11 +23,7 @@ public class Server {
 		Registry registry = null;
 		boolean boot = true;
 
-
-
 		Properties appProps = PropertiesReaderUtility.read("server.properties");
-
-
 
 		txMultiCastAddress = appProps.getProperty("txMultiCastAddress");
 		rxMulticastAddress = appProps.getProperty("rxMulticastAddress");
@@ -35,11 +31,10 @@ public class Server {
 		rmiServerPort = Integer.parseInt(appProps.getProperty("rmiServerPort"));
 		failOverTime = Integer.parseInt(appProps.getProperty("failOverTime"));
 
-
-		while (registry == null){
+		while (registry == null) {
 			try {
 				registry = LocateRegistry.createRegistry(rmiServerPort);
-				if(!boot) System.out.println("Fault detected. Switching...");
+				if (!boot) System.out.println("Fault detected. Switching...");
 			} catch (RemoteException e) {
 				registry = null;
 				if (boot) {
