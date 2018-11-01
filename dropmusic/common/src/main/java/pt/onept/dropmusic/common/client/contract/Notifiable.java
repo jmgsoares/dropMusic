@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
  */
 public interface Notifiable extends Remote, Serializable {
 
-	//TODO check if client is still the same
+	//TODO Implement function to check if logged client is still the same
 
 	boolean notify(Notification notification) throws RemoteException;
 

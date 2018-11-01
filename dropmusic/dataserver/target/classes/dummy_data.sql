@@ -31,4 +31,4 @@ INSERT INTO review(alb_id, text, score) VALUES(1, 'TO GREASY FOR ME', 0.2);
 INSERT INTO review(alb_id, text, score) VALUES(1, 'A Bit ON THE HEAVY SIDE', 1.2);
 INSERT INTO review(alb_id, text, score) VALUES(2, 'NOT MUCH TO GRAB', 2.0);
 INSERT INTO review(alb_id, text, score) VALUES(2, 'WHERE ARE YOU?', 3.0);
-INSERT INTO review(alb_id, text, score) VALUES(3, 'NOT GOOD! GO TO HELL, BEST SHIT - Devil', 2.0)
+INSERT INTO review(alb_id, text, score) VALUES(3, 'NOT GOOD! GO TO HELL, BEST SH*T - Devil', 2.0)
