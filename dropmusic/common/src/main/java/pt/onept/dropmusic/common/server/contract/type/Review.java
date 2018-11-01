@@ -1,7 +1,5 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-import java.io.Serializable;
-
 public class Review extends DropmusicDataType<Review> {
 	private int albumId;
 	private float score;

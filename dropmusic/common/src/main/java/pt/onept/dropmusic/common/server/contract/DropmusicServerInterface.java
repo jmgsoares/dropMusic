@@ -35,5 +35,4 @@ public interface DropmusicServerInterface extends Remote, Serializable {
 	void subscribe(long id, Notifiable client) throws RemoteException;
 
 	void unSubscribe(long id) throws RemoteException;
-
 }

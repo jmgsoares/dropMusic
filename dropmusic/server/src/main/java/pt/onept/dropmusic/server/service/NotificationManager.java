@@ -48,21 +48,20 @@ public class NotificationManager extends UnicastRemoteObject implements Notifica
 		System.out.println(notification.getMessage());
 		Notifiable client = null;
 		try {
-			client = Server.dropmusicServer.client().get((long)userToNotify.getId());
+			client = Server.dropmusicServer.client().get((long) userToNotify.getId());
 			System.out.println(client);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		boolean storeNotification = true;
-		if(client != null) {
+		if (client != null) {
 			try {
 				storeNotification = !client.notify(notification);
 			} catch (RemoteException e) {
 				storeNotification = true;
 				e.printStackTrace();
 			}
-		}
-		else if(storeNotification) {
+		} else if (storeNotification) {
 			//TODO STORE NOTIFICATION ON SERVER
 		}
 	}
@@ -79,6 +78,7 @@ public class NotificationManager extends UnicastRemoteObject implements Notifica
 
 	/**
 	 * This method is not applied to notifications in the scope of this project
+	 *
 	 * @deprecated
 	 */
 	@Deprecated

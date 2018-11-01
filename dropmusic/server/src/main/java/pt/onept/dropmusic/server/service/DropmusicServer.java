@@ -65,11 +65,13 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 	}
 
 	@Override
-	public Map<Long, Notifiable> client() { return this.client;}
+	public Map<Long, Notifiable> client() {
+		return this.client;
+	}
 
 	@Override
 	public void subscribe(long id, Notifiable client) throws RemoteException {
-		if(this.client.put(id,client) == null) System.out.println("Subscribing client with user id " + id);
+		if (this.client.put(id, client) == null) System.out.println("Subscribing client with user id " + id);
 	}
 
 	@Override

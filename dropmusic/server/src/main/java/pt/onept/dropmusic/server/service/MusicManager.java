@@ -6,7 +6,6 @@ import pt.onept.dropmusic.common.communication.protocol.MessageBuilder;
 import pt.onept.dropmusic.common.communication.protocol.Operation;
 import pt.onept.dropmusic.common.exception.*;
 import pt.onept.dropmusic.common.server.contract.subcontract.MusicManagerInterface;
-import pt.onept.dropmusic.common.server.contract.type.Artist;
 import pt.onept.dropmusic.common.server.contract.type.Music;
 import pt.onept.dropmusic.common.server.contract.type.User;
 

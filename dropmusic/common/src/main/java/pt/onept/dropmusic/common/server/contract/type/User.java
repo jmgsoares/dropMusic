@@ -1,7 +1,5 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-import java.io.Serializable;
-
 public class User extends DropmusicDataType<User> {
 	private String username;
 	private String password;

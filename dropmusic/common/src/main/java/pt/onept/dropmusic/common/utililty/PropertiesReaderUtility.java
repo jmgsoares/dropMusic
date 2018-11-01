@@ -8,7 +8,9 @@ import java.util.Properties;
 
 public final class PropertiesReaderUtility {
 
-	private PropertiesReaderUtility() {}
+	private PropertiesReaderUtility() {
+	}
+
 	public static Properties read(String propertiesFile) {
 
 		Properties appProps = new Properties();

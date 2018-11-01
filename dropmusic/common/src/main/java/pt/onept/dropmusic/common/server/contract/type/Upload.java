@@ -1,7 +1,5 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-import java.io.Serializable;
-
 public class Upload extends DropmusicDataType<Upload> {
 	private String ipAddress;
 	private String name;

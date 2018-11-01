@@ -7,7 +7,6 @@ import pt.onept.dropmusic.common.communication.protocol.Operation;
 import pt.onept.dropmusic.common.exception.*;
 import pt.onept.dropmusic.common.server.contract.subcontract.AlbumManagerInterface;
 import pt.onept.dropmusic.common.server.contract.type.Album;
-import pt.onept.dropmusic.common.server.contract.type.Album;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
 import java.rmi.RemoteException;

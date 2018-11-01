@@ -10,7 +10,6 @@ import pt.onept.dropmusic.common.server.contract.type.Notification;
 import pt.onept.dropmusic.common.server.contract.type.User;
 import pt.onept.dropmusic.server.Server;
 
-import javax.xml.crypto.Data;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.TimeoutException;
@@ -76,12 +75,12 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 			incoming = multicastHandler.sendAndWait(outgoing);
 			switch (incoming.getOperation()) {
 				case SUCCESS:
-					if(object.isEditor()) {
+					if (object.isEditor()) {
 						Notification notification = new Notification();
 						notification
 								.setUserId(object.getId())
 								.setMessage("You have been granted editor privileges");
-						Server.dropmusicServer.notification().notifyUser(object,notification);
+						Server.dropmusicServer.notification().notifyUser(object, notification);
 					}
 					break;
 				case NO_PERMIT:

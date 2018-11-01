@@ -6,8 +6,8 @@ public final class JavaSerializationUtility {
 
 	public static byte[] serialize(Serializable object) throws IOException {
 		try (
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)
 		) {
 			objectOutputStream.writeObject(object);
 			objectOutputStream.flush();

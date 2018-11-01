@@ -18,5 +18,4 @@ import java.rmi.RemoteException;
 public interface UserManagerInterface extends Remote, Crudable<User>, Serializable {
 
 	User login(User user) throws RemoteException, UnauthorizedException, DataServerException;
-
 }

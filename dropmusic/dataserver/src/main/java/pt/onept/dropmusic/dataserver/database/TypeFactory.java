@@ -4,49 +4,47 @@ import pt.onept.dropmusic.common.server.contract.type.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TypeFactory {
-	public static <T extends DropmusicDataType> T constructType(Class<T> tClass, ResultSet rs) throws SQLException{
+	public static <T extends DropmusicDataType> T constructType(Class<T> tClass, ResultSet rs) throws SQLException {
 		T object = null;
 		try {
 			object = tClass.newInstance();
-			if ( tClass.equals(Album.class)) {
+			if (tClass.equals(Album.class)) {
 				((Album) object)
 						.setId(rs.getInt("id"))
 						.setName(rs.getString("name"))
 						.setDescription(rs.getString("description"));
 
-			} else if( tClass.equals(Artist.class)) {
+			} else if (tClass.equals(Artist.class)) {
 				((Artist) object)
 						.setId(rs.getInt("id"))
 						.setName(rs.getString("name"));
 
-			} else if( tClass.equals(Upload.class)) {
+			} else if (tClass.equals(Upload.class)) {
 				((Upload) object)
 						.setId(rs.getInt("id"))
 						.setIpAddress(rs.getString("ip_address"))
 						.setName(rs.getString("name"));
 
-			} else if( tClass.equals(Music.class)) {
+			} else if (tClass.equals(Music.class)) {
 				((Music) object)
 						.setId(rs.getInt("id"))
 						.setName(rs.getString("name"))
 						.setAlbumId(rs.getInt("alb_id"));
 
-			} else if( tClass.equals(Notification.class)) {
+			} else if (tClass.equals(Notification.class)) {
 				((Notification) object)
 						.setId(rs.getInt("id"))
 						.setMessage(rs.getString("message"))
 						.setUserId(rs.getInt("use_id"));
 
-			} else if( tClass.equals(Review.class)) {
+			} else if (tClass.equals(Review.class)) {
 				((Review) object)
 						.setReview(rs.getString("text"))
 						.setScore(rs.getFloat("score"));
 
-			} else if( tClass.equals(User.class)) {
+			} else if (tClass.equals(User.class)) {
 				((User) object)
 						.setId(rs.getInt("id"))
 						.setUsername(rs.getString("name"))
@@ -61,16 +59,15 @@ public class TypeFactory {
 
 
 	public static <T extends DropmusicDataType> Class getSubtype(T object) {
-		if( object instanceof Album ) return Album.class;
-		if( object instanceof Artist ) return Artist.class;
-		if( object instanceof Upload ) return Upload.class;
-		if( object instanceof Music ) return Music.class;
-		if( object instanceof Notification ) return Notification.class;
-		if( object instanceof Review ) return Review.class;
-		if( object instanceof User ) return User.class;
+		if (object instanceof Album) return Album.class;
+		if (object instanceof Artist) return Artist.class;
+		if (object instanceof Upload) return Upload.class;
+		if (object instanceof Music) return Music.class;
+		if (object instanceof Notification) return Notification.class;
+		if (object instanceof Review) return Review.class;
+		if (object instanceof User) return User.class;
 		return DropmusicDataType.class;
 	}
-
 
 
 }
