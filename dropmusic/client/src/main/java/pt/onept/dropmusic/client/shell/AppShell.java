@@ -95,7 +95,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 //		while (retry & deadLine >= System.currentTimeMillis()) {
 //
 //			try {
-//				//TODO Adapt function to use crudable delete, not custom one
+//				//TODO Adapt function to use crudable delete, not the custom spaghetti one
 //				//CommunicationManager.dropmusicServer.notification().delete(this.user,lastSeen);
 //				retry = false;
 //			} catch (RemoteException e) {

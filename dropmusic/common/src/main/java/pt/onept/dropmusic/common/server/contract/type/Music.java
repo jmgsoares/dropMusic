@@ -1,6 +1,7 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
 public class Music extends DropmusicDataType<Music> {
+	//TODO add some more data fields because...
 	private int albumId;
 	private String name;
 
