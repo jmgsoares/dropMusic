@@ -13,6 +13,8 @@ import java.util.List;
 
 public interface NotificationManagerInterface extends Remote, Serializable, Crudable<Notification> {
 
+	//TODO replace by the crudable
+	//TODO extend the searchable interface needed?
 	List<Notification> get(User self) throws RemoteException, DataServerException;
 
 	void notifyUser(User userToNotify, Notification notification) throws RemoteException, DataServerException;

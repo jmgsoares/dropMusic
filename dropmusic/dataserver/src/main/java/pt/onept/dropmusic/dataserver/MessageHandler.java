@@ -136,6 +136,7 @@ final class MessageHandler implements Runnable {
 
 	}
 
+	//TODO can this update be generic for the update_user??
 	private void update(Message incoming, Message outgoing) {
 		if (!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		DropmusicDataType data = incoming.getData();
@@ -184,6 +185,7 @@ final class MessageHandler implements Runnable {
 		}
 	}
 
+	//TODO can the update be used for this?
 	private void update_user(Message incoming, Message outgoing) {
 		if (!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		DropmusicDataType data = incoming.getTarget();

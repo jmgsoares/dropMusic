@@ -29,7 +29,7 @@ public class DatabaseManager {
 		Map<Class, String> c2s = new HashMap<>();
 		c2s.put(Album.class, "album");
 		c2s.put(Artist.class, "artist");
-		c2s.put(Upload.class, "upload");
+		c2s.put(File.class, "upload");
 		c2s.put(Music.class, "music");
 		c2s.put(Notification.class, "notification");
 		c2s.put(Review.class, "review");
@@ -77,8 +77,8 @@ public class DatabaseManager {
 			Artist artist = (Artist) object;
 			ps = connection.prepareStatement("INSERT INTO artist(name) VALUES(?) RETURNING *;");
 			ps.setString(1, artist.getName());
-		} else if (object instanceof Upload) {
-			Upload upload = (Upload) object;
+		} else if (object instanceof File) {
+			File file = (File) object;
 			ps = connection.prepareStatement(""); //TODO
 		} else if (object instanceof Music) {
 			Music music = (Music) object;
@@ -152,8 +152,8 @@ public class DatabaseManager {
 //			Artist artist = (Artist) object;
 //			ps = connection.prepareStatement("INSERT INTO artist(name) VALUES(?) RETURNING *;");
 //			ps.setString(1, artist.getName());
-//		} else if( object instanceof Upload ) {
-//			Upload upload = (Upload) object;
+//		} else if( object instanceof File ) {
+//			File upload = (File) object;
 //			ps = connection.prepareStatement("");
 //		} else if( object instanceof Music ) {
 //			Music music = (Music) object;
