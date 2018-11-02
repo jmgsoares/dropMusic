@@ -23,6 +23,7 @@ public class Server {
 		Registry registry = null;
 		boolean boot = true;
 
+
 		Properties appProps = PropertiesReaderUtility.read("server.properties");
 
 		txMultiCastAddress = appProps.getProperty("txMultiCastAddress");

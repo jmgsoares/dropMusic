@@ -347,7 +347,6 @@ DECLARE
   t1        text;
   t2        text;
   c1        float;
-
 BEGIN
   SELECT * FROM ALBUM A WHERE A.NAME LIKE ('%' || asname || '%')
       INTO t1, t2, c1;
@@ -357,5 +356,4 @@ BEGIN
   RETURN new_album;
 END;
 $$
-LANGUAGE plpgsql
-STRICT;
+LANGUAGE plpgsql STRICT;
