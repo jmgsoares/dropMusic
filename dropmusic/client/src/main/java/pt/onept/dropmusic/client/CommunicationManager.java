@@ -7,10 +7,13 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class CommunicationManager {
+public final class CommunicationManager {
 	public static DropmusicServerInterface dropmusicServer;
 	private static String serverAddress;
 	private static int port;
+
+	private CommunicationManager() {
+	}
 
 	static synchronized void getServerInterface(String serverAddress, int port, long failOverTime) {
 		CommunicationManager.serverAddress = serverAddress;
