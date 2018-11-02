@@ -48,11 +48,10 @@ public class DatabaseConnector {
 
 	public void executeSqlScript(String filePath) {
 		try {
-			String createScript = getSqlScriptFromFile(filePath);
-
+			String script = getSqlScriptFromFile(filePath);
 			Connection connection = getConnection();
 			Statement statement = connection.createStatement();
-			statement.executeUpdate(createScript);
+			statement.executeUpdate(script);
 			statement.close();
 			connection.close();
 		} catch (SQLException e) {
