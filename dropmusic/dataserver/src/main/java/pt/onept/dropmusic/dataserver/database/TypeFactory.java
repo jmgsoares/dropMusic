@@ -25,8 +25,8 @@ public final class TypeFactory {
 						.setId(rs.getInt("id"))
 						.setName(rs.getString("name"));
 
-			} else if (tClass.equals(Upload.class)) {
-				((Upload) object)
+			} else if (tClass.equals(File.class)) {
+				((File) object)
 						.setId(rs.getInt("id"))
 						.setIpAddress(rs.getString("ip_address"))
 						.setName(rs.getString("name"));
@@ -65,7 +65,7 @@ public final class TypeFactory {
 	public static <T extends DropmusicDataType> Class getSubtype(T object) {
 		if (object instanceof Album) return Album.class;
 		if (object instanceof Artist) return Artist.class;
-		if (object instanceof Upload) return Upload.class;
+		if (object instanceof File) return File.class;
 		if (object instanceof Music) return Music.class;
 		if (object instanceof Notification) return Notification.class;
 		if (object instanceof Review) return Review.class;

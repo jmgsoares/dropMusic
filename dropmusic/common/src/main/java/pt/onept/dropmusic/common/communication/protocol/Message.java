@@ -16,6 +16,7 @@ public class Message<T extends DropmusicDataType> implements Serializable {
 	private T data;
 	private long dataId;
 	private String query;
+	//todo the target user can be passed on the T data parameter
 	private User target;
 	private List<T> dataList;
 
@@ -119,4 +120,3 @@ public class Message<T extends DropmusicDataType> implements Serializable {
 		return this;
 	}
 }
-

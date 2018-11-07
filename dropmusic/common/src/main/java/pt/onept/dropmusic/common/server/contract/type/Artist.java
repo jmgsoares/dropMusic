@@ -3,6 +3,7 @@ package pt.onept.dropmusic.common.server.contract.type;
 import java.util.List;
 
 public class Artist extends DropmusicDataType<Artist> {
+	//TODO add some more data fields because...
 	private String name;
 	private List<Album> albums;
 

@@ -2,8 +2,8 @@ package pt.onept.dropmusic.common.server.contract.subcontract;
 
 import pt.onept.dropmusic.common.exception.DataServerException;
 import pt.onept.dropmusic.common.exception.NotFoundException;
+import pt.onept.dropmusic.common.server.contract.type.File;
 import pt.onept.dropmusic.common.server.contract.type.Music;
-import pt.onept.dropmusic.common.server.contract.type.Upload;
 import pt.onept.dropmusic.common.server.contract.type.User;
 
 import java.io.Serializable;
@@ -18,7 +18,8 @@ import java.rmi.RemoteException;
  */
 public interface FileManagerInterface extends Remote, Serializable {
 
-	Upload add(User self, Upload file, Music music) throws NotFoundException, RemoteException, DataServerException;
+	//TODO replace the add with the crudable implementation?
+	File add(User self, File file, Music music) throws NotFoundException, RemoteException, DataServerException;
 
-	Upload download(User self, long fileId) throws NotFoundException, RemoteException, DataServerException;
+	File download(User self, long fileId) throws NotFoundException, RemoteException, DataServerException;
 }

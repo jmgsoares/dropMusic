@@ -45,7 +45,7 @@ public class Listener implements Runnable {
 					socket.receive(packet);
 					String serializedMessage = new String(packet.getData(), 0, packet.getLength());
 					if (!serializedMessage.contains(Message.getAPPID())) {
-						System.out.println("IM");
+						System.out.println("R: Invalid Message");
 						return;
 					}
 					Message message = (Message) JavaSerializationUtility.deserialize(packet.getData());

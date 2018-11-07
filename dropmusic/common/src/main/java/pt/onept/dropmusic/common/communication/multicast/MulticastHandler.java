@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 
 
 public class MulticastHandler {
-	//TODO failOverTime value never used??
+	//TODO failOverTime value never used?? - check if needed
 	private static int failOverTime;
 	private String txAddress;
 	private String rxAddress;

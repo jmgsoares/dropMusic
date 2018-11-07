@@ -1,13 +1,13 @@
 package pt.onept.dropmusic.common.server.contract.type;
 
-public class Upload extends DropmusicDataType<Upload> {
+public class File extends DropmusicDataType<File> {
 	private String ipAddress;
 	private String name;
 
-	public Upload() {
+	public File() {
 	}
 
-	public Upload(int id, String ipAddress, String name) {
+	public File(int id, String ipAddress, String name) {
 		super(id);
 		this.ipAddress = ipAddress;
 		this.name = name;
@@ -17,7 +17,7 @@ public class Upload extends DropmusicDataType<Upload> {
 		return ipAddress;
 	}
 
-	public Upload setIpAddress(String ipAddress) {
+	public File setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 		return this;
 	}
@@ -26,7 +26,7 @@ public class Upload extends DropmusicDataType<Upload> {
 		return name;
 	}
 
-	public Upload setName(String name) {
+	public File setName(String name) {
 		this.name = name;
 		return this;
 	}
