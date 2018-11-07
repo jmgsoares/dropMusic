@@ -5,7 +5,11 @@ import pt.onept.dropmusic.common.server.contract.type.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TypeFactory {
+public final class TypeFactory {
+
+	private TypeFactory() {
+	}
+
 	public static <T extends DropmusicDataType> T constructType(Class<T> tClass, ResultSet rs) throws SQLException {
 		T object = null;
 		try {
