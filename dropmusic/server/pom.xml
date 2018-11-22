@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>dropmusic</artifactId>
-        <groupId>pt.onept</groupId>
+        <groupId>pt.onept.sd1819.dropmusic</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,7 @@
     <artifactId>server</artifactId>
     <dependencies>
         <dependency>
-            <groupId>pt.onept</groupId>
+            <groupId>pt.onept.sd1819.dropmusic</groupId>
             <artifactId>common</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
@@ -63,7 +63,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>pt.onept.dropmusic.server.Server</mainClass>
+                                    <mainClass>pt.onept.sd1819.dropmusic.server.Server</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
