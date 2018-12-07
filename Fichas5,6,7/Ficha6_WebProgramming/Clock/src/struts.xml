@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+  <constant name="struts.devMode" value="true" />
+  <package name="clock" extends="struts-default">
+
+	<interceptors>
+		<interceptor name="clockInterceptor" class="clock.interceptor.ClockInterceptor" />
+		<interceptor-stack name="clockStack">
+			<interceptor-ref name="clockInterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</interceptor-stack>
+	</interceptors>
+	
+	<default-interceptor-ref name="clockStack" />
+
+	<default-action-ref name="index" />
+
+    <action name="index">
+      <result>/index.jsp</result>
+    </action>   <!-- this action just shows 'index.jsp' -->
+
+    <action name="clock" class="clock.action.ClockAction" method="execute">
+      <result name="success">/clock.jsp</result>
+      <result name="input">/frozen.jsp</result>
+    </action>   <!-- this action calls execute() in 'ClockAction' -->
+
+<action name="signin" class="clock.action.LoginAction" method="execute">
+		<interceptor-ref name="defaultStack" />
+		<result name="success" type="redirectAction">index</result>
+	</action>
+
+  </package>
+</struts>

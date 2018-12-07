@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="AgeRMIServer">
+    <output-path>$PROJECT_DIR$/out/artifacts/AgeRMIServer</output-path>
+    <root id="archive" name="AgeRMIServer.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Age_RMI_Server" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="Age_RMI_Server/web/Web" />
+    </root>
+  </artifact>
+</component>
