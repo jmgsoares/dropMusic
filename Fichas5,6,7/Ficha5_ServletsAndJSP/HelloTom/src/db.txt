@@ -1,5 +1,0 @@
-Shakira=33
-Eminem=38
-TinaTurner=71
-Bono=50
-Madonna=52
