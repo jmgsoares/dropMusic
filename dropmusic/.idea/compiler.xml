@@ -23,6 +23,7 @@
         <module name="common" />
         <module name="dataserver" />
         <module name="server" />
+        <module name="web" />
       </profile>
     </annotationProcessing>
   </component>
