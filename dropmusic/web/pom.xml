@@ -23,15 +23,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>pt.onept.sd1819.rest.dropbox</groupId>
-            <artifactId>dropbox</artifactId>
+            <groupId>pt.onept.sd1819.dropmusic</groupId>
+            <artifactId>common</artifactId>
             <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
