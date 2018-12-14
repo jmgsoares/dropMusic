@@ -86,7 +86,7 @@ final class MessageHandler implements Runnable {
 		} catch (NotFoundException e) {
 			outgoing.setOperation(Operation.NOT_FOUND);
 		}
-		if (!user.isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		if (!user.getEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		else this.create_raw(incoming, outgoing);
 	}
 
@@ -138,7 +138,7 @@ final class MessageHandler implements Runnable {
 
 	//TODO can this update be generic for the update_user??
 	private void update(Message incoming, Message outgoing) {
-		if (!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		if (!incoming.getSelf().getEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		DropmusicDataType data = incoming.getData();
 		Class tClass = TypeFactory.getSubtype(data);
 		try {
@@ -187,7 +187,7 @@ final class MessageHandler implements Runnable {
 
 	//TODO can the update be used for this?
 	private void update_user(Message incoming, Message outgoing) {
-		if (!incoming.getSelf().isEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		if (!incoming.getSelf().getEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		DropmusicDataType data = incoming.getTarget();
 		Class tClass = TypeFactory.getSubtype(data);
 		try {
