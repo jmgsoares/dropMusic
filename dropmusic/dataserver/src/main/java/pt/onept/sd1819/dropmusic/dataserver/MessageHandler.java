@@ -136,6 +136,18 @@ final class MessageHandler implements Runnable {
 
 	}
 
+	private void list(Message incoming, Message outgoing) {
+		DropmusicDataType data = incoming.getData();
+		Class tClass = TypeFactory.getSubtype(data);
+		try {
+			outgoing.setData(this.dbManager.read(tClass, data.getId()))
+					.setOperation(Operation.SUCCESS);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
+		}
+	}
+
 	//TODO can this update be generic for the update_user??
 	private void update(Message incoming, Message outgoing) {
 		if (!incoming.getSelf().getEditor()) outgoing.setOperation(Operation.NO_PERMIT);
