@@ -12,7 +12,6 @@
 <body>
 <s:i18n name="en-US">
 	<h1>Dashboard</h1>
-
 	<p><s:include value="template/header.jsp" /></p>
 
 	<a href="<s:url action="searchAction" />">Search</a>
