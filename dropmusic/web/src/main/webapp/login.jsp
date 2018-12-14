@@ -13,7 +13,7 @@
 <s:i18n name="en-US">
 	<h1>DROPMUSIC - LOGIN v0.0000001</h1>
 	<s:include value="template/header.jsp" />
-	<s:form action="LoginAction" method="POST">
+	<s:form action="loginAction" method="POST">
 		<p>
 			<s:text name="userName" />
 			<s:textfield name="model.username" />
@@ -25,6 +25,8 @@
 		<p><s:submit /></p>
 	</s:form>
 	<a href="<s:url value="register.jsp"/>">Register</a>
+
+	<a href="https://www.dropbox.com/1/oauth2/authorize?client_id=720jq03bm89t8fp&response_type=code&redirect_uri=https://onept.pt:8443/dropmusic/CallBackServlet">LogInDropBox</a>
 
 </s:i18n>
 </body>
