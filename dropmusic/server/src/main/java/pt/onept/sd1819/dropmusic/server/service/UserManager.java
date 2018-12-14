@@ -43,7 +43,8 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 	}
 
 	@Override
-	public void create(User self, User object) throws DuplicatedException, DataServerException, RemoteException {
+	public void create(User self, User object) throws DuplicatedException, DataServerException, RemoteException, IncompleteException {
+		if (self==null || (self.getUsername().equals("") || self.getPassword().equals(""))) throw new IncompleteException();
 		Message outgoing = MessageBuilder.build(Operation.REGISTER, self);
 		try {
 			Message incoming = multicastHandler.sendAndWait(outgoing);
@@ -52,6 +53,8 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 					break;
 				case DUPLICATE:
 					throw new DuplicatedException();
+				case INCOMPLETE:
+					throw new IncompleteException();
 				default:
 					throw new RemoteException();
 			}
