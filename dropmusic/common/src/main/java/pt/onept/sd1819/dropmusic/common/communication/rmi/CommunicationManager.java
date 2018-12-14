@@ -1,26 +1,27 @@
-package pt.onept.sd1819.dropmusic.client;
+package pt.onept.sd1819.dropmusic.common.communication.rmi;
 
 import pt.onept.sd1819.dropmusic.common.server.contract.DropmusicServerInterface;
 
+import java.awt.color.CMMException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public final class CommunicationManager {
-	public static DropmusicServerInterface dropmusicServer;
+	private static DropmusicServerInterface dropmusicServer = null;
 	private static String serverAddress;
 	private static int port;
+	private static long failOverTime;
 
-	private CommunicationManager() {
-	}
-
-	static synchronized void getServerInterface(String serverAddress, int port, long failOverTime) {
+	public static synchronized DropmusicServerInterface getServerInterface(String serverAddress, int port, long failOverTime)
+	throws RemoteException {
 		CommunicationManager.serverAddress = serverAddress;
 		CommunicationManager.port = port;
+		CommunicationManager.failOverTime = failOverTime;
 		boolean retry = true;
 
-		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+		long deadLine = System.currentTimeMillis() + failOverTime;
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
@@ -31,9 +32,18 @@ public final class CommunicationManager {
 			}
 		}
 		if (retry) {
-			System.out.println("Valid RMI registry hasn't been found @ " + serverAddress + ":" + port);
-			System.exit(0);
+			throw new RemoteException();
+		} else {
+			return CommunicationManager.dropmusicServer;
 		}
+	}
+
+	public static synchronized DropmusicServerInterface getServerInterface() throws RemoteException {
+		return getServerInterface(
+				CommunicationManager.serverAddress,
+				CommunicationManager.port,
+				CommunicationManager.failOverTime
+		);
 	}
 
 	private static synchronized void lookupRemoteObject() throws RemoteException, NotBoundException {
@@ -54,5 +64,4 @@ public final class CommunicationManager {
 		}
 		return true;
 	}
-
 }

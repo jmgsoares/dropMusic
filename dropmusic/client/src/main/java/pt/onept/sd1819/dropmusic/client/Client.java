@@ -2,6 +2,7 @@ package pt.onept.sd1819.dropmusic.client;
 
 import asg.cliche.ShellFactory;
 import pt.onept.sd1819.dropmusic.client.shell.LoginShell;
+import pt.onept.sd1819.dropmusic.common.communication.rmi.CommunicationManager;
 import pt.onept.sd1819.dropmusic.common.utililty.PropertiesReaderUtility;
 
 import java.io.IOException;

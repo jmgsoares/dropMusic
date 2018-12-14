@@ -2,7 +2,7 @@ package pt.onept.sd1819.dropmusic.client.shell;
 
 import asg.cliche.*;
 import pt.onept.sd1819.dropmusic.client.Client;
-import pt.onept.sd1819.dropmusic.client.CommunicationManager;
+import pt.onept.sd1819.dropmusic.common.communication.rmi.CommunicationManager;
 import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
 import pt.onept.sd1819.dropmusic.common.exception.DuplicatedException;
 import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
@@ -36,7 +36,7 @@ public class LoginShell implements ShellDependent, ShellManageable {
 
 		while (retry & deadLine >= System.currentTimeMillis()) {
 			try {
-				CommunicationManager.dropmusicServer.user().create(user, user);
+				CommunicationManager.getServerInterface().user().create(user, user);
 				retry = false;
 				output = "User " + user.getUsername() + " created successfully";
 			} catch (DuplicatedException e) {
@@ -71,7 +71,7 @@ public class LoginShell implements ShellDependent, ShellManageable {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				user = CommunicationManager.dropmusicServer.user().login(user);
+				user = CommunicationManager.getServerInterface().user().login(user);
 				retry = false;
 				createAppShell(user);
 				output = "";
