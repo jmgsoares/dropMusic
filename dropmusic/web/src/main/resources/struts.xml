@@ -12,7 +12,7 @@
 
     <constant name="struts.action.excludePattern" value="/CallBackServlet" />
 
-    <package name="dropmusic" extends="struts-default">
+    <package name="web" extends="struts-default">
 
         <default-action-ref name="index"/>
 
@@ -20,21 +20,32 @@
             <result>/login.jsp</result>
         </action>
 
-        <action name="RegisterAction" class="pt.onept.sd1819.dropmusic.web.action.RegisterAction">
+        <action name="registerAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="register">
             <result name="success">/login.jsp</result>
             <result name="error">/register.jsp</result>
         </action>
 
-        <action name="LoginAction" class="pt.onept.sd1819.dropmusic.web.action.LoginAction">
+        <action name="loginAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="login">
             <result name="success">/dashboard.jsp</result>
             <result name="error">/login.jsp</result>
         </action>
 
-        <action name="SearchAction" class="pt.onept.sd1819.dropmusic.web.action.SearchAction">
+        <action name="searchAction" class="pt.onept.sd1819.dropmusic.web.action.SearchAction">
             <result name="success">/WEB-INF/searchResults.jsp</result>
             <result name="error">/WEB-INF/search.jsp</result>
             <result name="input">/WEB-INF/search.jsp</result>
             <result name="login">login.jsp</result>
+        </action>
+
+        <action name="addArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="create">
+            <result name="success">dashboard.jsp</result>
+            <result name="error">WEB-INF/addArtist.jsp</result>
+            <result name="input">WEB-INF/addArtist.jsp</result>
+            <result name="login">login.jsp</result>
+        </action>
+
+        <action name="userLogoutAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="logout">
+            <result name="success">login.jsp</result>
         </action>
 
     </package>
