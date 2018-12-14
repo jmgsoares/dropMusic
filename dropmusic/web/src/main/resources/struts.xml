@@ -12,28 +12,29 @@
 
     <constant name="struts.action.excludePattern" value="/CallBackServlet" />
 
-    <package name="dbrestwebapp" extends="struts-default">
+    <package name="dropmusic" extends="struts-default">
 
         <default-action-ref name="index"/>
 
-        <global-results>
-            <result name="error">error.jsp</result>
-        </global-results>
-
-        <global-exception-mappings>
-            <exception-mapping exception="java.lang.Exception" result="error"/>
-        </global-exception-mappings>
-
         <action name="index">
-            <result>/index.jsp</result>
+            <result>/login.jsp</result>
         </action>
 
-        <action name="loginUserPass" class="pt.onept.sd1819.dropmusic.web.action.LoginAction" method="loginUserPass">
-            <result name="success">dashboard.jsp</result>
+        <action name="RegisterAction" class="pt.onept.sd1819.dropmusic.web.action.RegisterAction">
+            <result name="success">/login.jsp</result>
+            <result name="error">/register.jsp</result>
         </action>
 
-        <action name="loginDb" class="pt.onept.sd1819.dropmusic.web.action.LoginAction" method="loginDropBox">
-            <result name="success">WEB-INF/redirectDb.jsp</result>
+        <action name="LoginAction" class="pt.onept.sd1819.dropmusic.web.action.LoginAction">
+            <result name="success">/dashboard.jsp</result>
+            <result name="error">/login.jsp</result>
+        </action>
+
+        <action name="SearchAction" class="pt.onept.sd1819.dropmusic.web.action.SearchAction">
+            <result name="success">/WEB-INF/searchResults.jsp</result>
+            <result name="error">/WEB-INF/search.jsp</result>
+            <result name="input">/WEB-INF/search.jsp</result>
+            <result name="login">login.jsp</result>
         </action>
 
     </package>
