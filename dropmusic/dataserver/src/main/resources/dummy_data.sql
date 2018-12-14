@@ -21,11 +21,9 @@ VALUES ('sup', 'fork', 4.5);
 INSERT INTO artist_album (id, alb_id)
 VALUES (1, 1);
 INSERT INTO artist_album (id, alb_id)
-VALUES (1, 2);
+VALUES (2, 2);
 INSERT INTO artist_album (id, alb_id)
-VALUES (3, 2);
-INSERT INTO artist_album (id, alb_id)
-VALUES (2, 3);
+VALUES (3, 3);
 INSERT INTO music (alb_id, name)
 VALUES (1, 'THE TUBA SONG');
 INSERT INTO music (alb_id, name)
