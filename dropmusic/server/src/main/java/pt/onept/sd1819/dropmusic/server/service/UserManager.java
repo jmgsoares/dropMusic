@@ -75,7 +75,7 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 			incoming = multicastHandler.sendAndWait(outgoing);
 			switch (incoming.getOperation()) {
 				case SUCCESS:
-					if (object.isEditor()) {
+					if (object.getEditor()) {
 						Notification notification = new Notification();
 						notification
 								.setUserId(object.getId())
