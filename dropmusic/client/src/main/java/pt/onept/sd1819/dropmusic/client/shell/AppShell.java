@@ -2,7 +2,7 @@ package pt.onept.sd1819.dropmusic.client.shell;
 
 import asg.cliche.*;
 import pt.onept.sd1819.dropmusic.client.Client;
-import pt.onept.sd1819.dropmusic.client.CommunicationManager;
+import pt.onept.sd1819.dropmusic.common.communication.rmi.CommunicationManager;
 import pt.onept.sd1819.dropmusic.client.service.NotificationService;
 import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.Crudable;
@@ -44,7 +44,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 			while (retry & deadLine >= System.currentTimeMillis()) {
 
 				try {
-					CommunicationManager.dropmusicServer.subscribe(this.user.getId(), this.notification);
+					CommunicationManager.getServerInterface().subscribe(this.user.getId(), this.notification);
 					retry = false;
 				} catch (RemoteException e) {
 					CommunicationManager.handleFailOver();
@@ -68,7 +68,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				notifications = CommunicationManager.dropmusicServer.notification().get(this.user);
+				notifications = CommunicationManager.getServerInterface().notification().get(this.user);
 				retry = false;
 				if (notifications != null && !notifications.isEmpty()) {
 					output = "You have " + notifications.size() + " new notifications\n" +
@@ -114,7 +114,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.unSubscribe(this.user.getId());
+				CommunicationManager.getServerInterface().unSubscribe(this.user.getId());
 				this.shell.processLine("message \"User " + this.user.getUsername() + " logged out\"");
 				retry = false;
 			} catch (CLIException e) {
@@ -144,7 +144,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.artist().create(this.user, artist);
+				CommunicationManager.getServerInterface().artist().create(this.user, artist);
 				retry = false;
 				output = "Artist " + artist.getName() + " created successfully";
 			} catch (DuplicatedException e) {
@@ -178,7 +178,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.artist().delete(this.user, artist);
+				CommunicationManager.getServerInterface().artist().delete(this.user, artist);
 				retry = false;
 				output = "Artist " + artist.getName() + " deleted";
 			} catch (NotFoundException e) {
@@ -210,7 +210,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.artist().update(this.user, artist);
+				CommunicationManager.getServerInterface().artist().update(this.user, artist);
 				output = "Artist " + artist.getName() + " updated successfully";
 				retry = false;
 			} catch (NotFoundException e) {
@@ -246,7 +246,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.album().create(this.user, album);
+				CommunicationManager.getServerInterface().album().create(this.user, album);
 				output = "Album " + album.getName() + " created successfully";
 				retry = false;
 			} catch (DuplicatedException e) {
@@ -279,7 +279,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.album().delete(this.user, album);
+				CommunicationManager.getServerInterface().album().delete(this.user, album);
 				output = "Album " + album.getName() + " deleted";
 				retry = false;
 			} catch (NotFoundException e) {
@@ -311,7 +311,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 		while (retry & deadLine >= System.currentTimeMillis()) {
 			try {
-				CommunicationManager.dropmusicServer.album().update(this.user, album);
+				CommunicationManager.getServerInterface().album().update(this.user, album);
 				output = "Album " + album.getName() + " updated successfully";
 				retry = false;
 			} catch (NotFoundException e) {
@@ -345,7 +345,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 		while (retry & deadLine >= System.currentTimeMillis()) {
 			try {
-				CommunicationManager.dropmusicServer.music().create(this.user, music);
+				CommunicationManager.getServerInterface().music().create(this.user, music);
 				output = "Music " + music.getName() + " created successfully";
 				retry = false;
 			} catch (DuplicatedException e) {
@@ -379,7 +379,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.music().delete(this.user, music);
+				CommunicationManager.getServerInterface().music().delete(this.user, music);
 				output = "Music " + music.getName() + " deleted";
 				retry = false;
 			} catch (NotFoundException e) {
@@ -411,7 +411,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.music().update(this.user, music);
+				CommunicationManager.getServerInterface().music().update(this.user, music);
 				retry = false;
 				output = "Music " + music.getName() + " updated successfully";
 			} catch (NotFoundException e) {
@@ -441,7 +441,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 		while (retry & deadLine >= System.currentTimeMillis()) {
 			try {
-				output = cat(new Artist().setId(id), CommunicationManager.dropmusicServer.artist());
+				output = cat(new Artist().setId(id), CommunicationManager.getServerInterface().artist());
 				retry = false;
 			} catch (RemoteException e) {
 				CommunicationManager.handleFailOver();
@@ -461,7 +461,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 		while (retry & deadLine >= System.currentTimeMillis()) {
 			try {
-				output = cat(new Album().setId(id), CommunicationManager.dropmusicServer.album());
+				output = cat(new Album().setId(id), CommunicationManager.getServerInterface().album());
 				retry = false;
 			} catch (RemoteException e) {
 				CommunicationManager.handleFailOver();
@@ -481,7 +481,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 		while (retry & deadLine >= System.currentTimeMillis()) {
 			try {
-				output = cat(new Music().setId(id), CommunicationManager.dropmusicServer.music());
+				output = cat(new Music().setId(id), CommunicationManager.getServerInterface().music());
 				retry = false;
 			} catch (RemoteException e) {
 				CommunicationManager.handleFailOver();
@@ -502,7 +502,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				List<Album> albums = CommunicationManager.dropmusicServer.album().search(this.user, searchString);
+				List<Album> albums = CommunicationManager.getServerInterface().album().search(this.user, searchString);
 				output = JsonUtility.toPrettyJson(albums);
 				retry = false;
 			} catch (RemoteException e) {
@@ -528,7 +528,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 		while (retry & deadLine >= System.currentTimeMillis()) {
 			try {
-				CommunicationManager.dropmusicServer.review().add(this.user, review);
+				CommunicationManager.getServerInterface().review().add(this.user, review);
 				output = "Review added successfully";
 				retry = false;
 			} catch (RemoteException e) {
@@ -559,7 +559,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.dropmusicServer.user().update(this.user, user);
+				CommunicationManager.getServerInterface().user().update(this.user, user);
 				output = "User updated successfully";
 				retry = false;
 			} catch (NotFoundException e) {
