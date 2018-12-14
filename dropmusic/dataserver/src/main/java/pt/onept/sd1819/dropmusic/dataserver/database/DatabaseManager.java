@@ -19,6 +19,8 @@ public class DatabaseManager {
 	private static final Object lock = new Object();
 	private static Map<Class, String> objectTable = null;
 	private static Map<Class, String> popTable = null;
+	private static Map<Class, String> listTable = null;
+
 	private DatabaseConnector dbConnector;
 
 	public DatabaseManager(DatabaseConnector dbConnector) {
@@ -45,6 +47,26 @@ public class DatabaseManager {
 		queries.put(Notification.class, "SELECT * FROM notification n WHERE n.use_id = ?");
 		queries.put(Artist.class, "SELECT ar.* FROM artist_album AS aa LEFT JOIN artist ar ON aa.id = ar.id WHERE aa.alb_id = ?");
 		return queries;
+	}
+
+	private static Map<Class, String> initListTable() {
+		Map<Class, String> queries = new HashMap<>();
+		queries.put(Album.class, "SELECT * FROM album");
+		queries.put(Review.class, "SELECT * FROM review");
+		queries.put(Music.class, "SELECT * FROM music");
+		queries.put(Notification.class, "SELECT * FROM notification");
+		queries.put(Artist.class, "SELECT * FROM artist");
+		queries.put(User.class, "SELECT * FROM account");
+		return queries;
+	}
+
+	public static String getListQuery(Class cls) {
+		if (listTable == null) {
+			synchronized (lock) {
+				if (listTable == null) DatabaseManager.listTable = DatabaseManager.initListTable();
+			}
+		}
+		return listTable.get(cls);
 	}
 
 	public static String getTable(Class cls) {
@@ -235,6 +257,18 @@ public class DatabaseManager {
 				PreparedStatement ps = connection.prepareStatement(DatabaseManager.getPopQuery(tClass))
 		) {
 			ps.setInt(1, object.getId());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) list.add(TypeFactory.constructType(tClass, rs));
+		}
+		return list;
+	}
+
+	public <T extends DropmusicDataType> List<T> list(Class<T> tClass, DropmusicDataType object) throws SQLException {
+		List<T> list = new LinkedList<>();
+		try (
+				Connection connection = dbConnector.getConnection();
+				PreparedStatement ps = connection.prepareStatement(DatabaseManager.getListQuery(tClass))
+		) {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) list.add(TypeFactory.constructType(tClass, rs));
 		}
