@@ -1,44 +1,18 @@
 package pt.onept.sd1819.dropmusic.common.server.contract.type;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+@Data
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review extends DropmusicDataType<Review> {
 	private int albumId;
 	private float score;
 	private String review;
-
-	public Review() {
-	}
-
-	public Review(int id, int albumId, float score, String review) {
-		super(id);
-		this.albumId = albumId;
-		this.score = score;
-		this.review = review;
-	}
-
-	public float getScore() {
-		return score;
-	}
-
-	public Review setScore(float score) {
-		this.score = score;
-		return this;
-	}
-
-	public String getReview() {
-		return review;
-	}
-
-	public Review setReview(String review) {
-		this.review = review;
-		return this;
-	}
-
-	public int getAlbumId() {
-		return albumId;
-	}
-
-	public Review setAlbumId(int albumId) {
-		this.albumId = albumId;
-		return this;
-	}
 }
