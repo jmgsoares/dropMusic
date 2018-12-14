@@ -14,3 +14,12 @@
 		<s:actionmessage/>
 	</div>
 </s:if>
+
+<s:if test="%{#session.logged}">
+	<nav>
+		<a href="searchAction.action">Search</a> |
+		<a href="addArtistAction.action">Add Artist</a> |
+		<a href="addAlbumAction.action">Add Album</a> |
+		<a href="userLogoutAction.action">Logout</a>
+	</nav>
+</s:if>
