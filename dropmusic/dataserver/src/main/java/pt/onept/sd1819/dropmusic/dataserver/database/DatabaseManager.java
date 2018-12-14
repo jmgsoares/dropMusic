@@ -129,7 +129,7 @@ public class DatabaseManager {
 		} else if (object instanceof User) {
 			User user = (User) object;
 			ps = connection.prepareStatement("UPDATE account SET editor = ? WHERE id = ?;");
-			ps.setBoolean(1, user.isEditor());
+			ps.setBoolean(1, user.getEditor());
 			ps.setInt(2, user.getId());
 
 		} else {
