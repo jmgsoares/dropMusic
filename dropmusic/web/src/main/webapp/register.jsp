@@ -13,7 +13,7 @@
 <s:i18n name="en-US">
 	<h1>Register</h1>
 	<s:include value="template/header.jsp" />
-	<s:form action="RegisterAction" method="POST">
+	<s:form action="registerAction" method="POST">
 		<p>
 			<s:text name="userName" />
 			<s:textfield name="model.username" />
