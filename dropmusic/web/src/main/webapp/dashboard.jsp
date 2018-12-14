@@ -13,9 +13,13 @@
 <s:i18n name="en-US">
 	<h1>Dashboard</h1>
 
-	<s:include value="template/header.jsp" />
+	<p><s:include value="template/header.jsp" /></p>
 
-	<a href="<s:url action='SearchAction'/>">Search</a>
+	<a href="<s:url action="searchAction" />">Search</a>
+
+	<a href="<s:url action="addArtistAction" />">Add Artist</a>
+
+	<s:include value="/template/footer.jsp"/>
 </s:i18n>
 </body>
 </html>

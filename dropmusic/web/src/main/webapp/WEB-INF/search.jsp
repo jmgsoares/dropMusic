@@ -13,7 +13,7 @@
 <s:i18n name="en-US">
 	<h1>Search</h1>
 	<s:include value="../template/header.jsp" />
-	<s:form action="SearchAction" method="POST">
+	<s:form action="searchAction" method="POST">
 		<p>
 			<s:text name="search" />
 			<s:textfield name="query" />
@@ -22,6 +22,7 @@
 		<p><s:submit /></p>
 	</s:form>
 
+	<s:include value="../template/footer.jsp"/>
 </s:i18n>
 </body>
 </html>

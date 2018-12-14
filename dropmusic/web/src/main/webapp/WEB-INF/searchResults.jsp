@@ -36,6 +36,7 @@
 		</s:iterator>
 
 	</table>
+	<s:include value="../template/footer.jsp"/>
 </s:i18n>
 </body>
 </html>
