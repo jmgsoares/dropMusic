@@ -18,8 +18,8 @@ public final class TypeFactory {
 				((Album) object)
 						.setId(rs.getInt("id"))
 						.setName(rs.getString("name"))
-						.setDescription(rs.getString("description"));
-
+						.setDescription(rs.getString("description"))
+						.setScore(rs.getFloat("score"));
 			} else if (tClass.equals(Artist.class)) {
 				((Artist) object)
 						.setId(rs.getInt("id"))
