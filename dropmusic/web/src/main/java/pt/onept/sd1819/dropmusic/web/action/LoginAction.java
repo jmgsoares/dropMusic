@@ -36,6 +36,7 @@ public class LoginAction extends ActionSupport implements SessionAware, ModelDri
 		return Action.ERROR;
 	}
 
+
 	public User getModel() {
 		return this.user;
 	}
