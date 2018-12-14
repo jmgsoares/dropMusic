@@ -1,16 +1,21 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: soares
-  Date: 11-12-2018
-  Time: 16:21
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>SUP</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Dashboard</title>
+	<s:include value="template/scripts.jsp" />
 </head>
 <body>
-<h1>YOU'RE IN MF</h1>
+<s:i18n name="en-US">
+	<h1>Dashboard</h1>
+
+	<s:include value="template/header.jsp" />
+
+	<a href="<s:url action='SearchAction'/>">Search</a>
+</s:i18n>
 </body>
 </html>
