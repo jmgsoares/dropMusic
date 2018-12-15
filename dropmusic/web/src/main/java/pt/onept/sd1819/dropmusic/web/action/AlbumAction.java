@@ -3,20 +3,15 @@ package pt.onept.sd1819.dropmusic.web.action;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
-import pt.onept.sd1819.dropmusic.common.exception.DuplicatedException;
-import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
-import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.AlbumManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.ArtistManagerInterface;
-import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.MusicManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Album;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Artist;
 import pt.onept.sd1819.dropmusic.web.LoginAware;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +44,22 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 	}
 
 	public String read() throws Exception {
-		return Action.SUCCESS;
+		if (album.getId()==0) return Action.INPUT;
+		try {
+			AlbumManagerInterface albumManager = CommunicationManager.getServerInterface().album();
+			album = albumManager.read(this.getUser(), album);
+			return Action.SUCCESS;
+		} catch (RemoteException | DataServerException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		} catch (NotFoundException e) {
+			addActionError("Album not found");
+			return Action.ERROR;
+		} catch (UnauthorizedException e) {
+			addActionError("You lack the permissions to perform the operation");
+			return Action.ERROR;
+		}
 	}
 
 	public String update() throws Exception {
