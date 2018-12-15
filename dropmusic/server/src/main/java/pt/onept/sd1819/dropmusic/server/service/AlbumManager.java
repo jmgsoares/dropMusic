@@ -11,7 +11,6 @@ import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
