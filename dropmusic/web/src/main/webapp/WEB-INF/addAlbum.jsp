@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>LogIn</title>
+	<title>Add Album</title>
 	<s:include value="../template/scripts.jsp"/>
 	<script type="text/javascript" src="template/scripts/addMusics.js"></script>
 

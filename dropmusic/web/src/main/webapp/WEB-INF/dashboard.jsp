@@ -7,16 +7,16 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Dashboard</title>
-	<s:include value="template/scripts.jsp" />
+	<s:include value="../template/scripts.jsp" />
 </head>
 <body>
 <s:i18n name="en-US">
 	<h1>Dashboard</h1>
-	<p><s:include value="template/header.jsp" /></p>
+	<p><s:include value="../template/header.jsp" /></p>
 
 
 
-	<s:include value="/template/footer.jsp"/>
+	<s:include value="../template/footer.jsp"/>
 </s:i18n>
 </body>
 </html>

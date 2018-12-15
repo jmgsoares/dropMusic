@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>LogIn</title>
+	<title>Add Artist</title>
 	<s:include value="../template/scripts.jsp"/>
 </head>
 <body>

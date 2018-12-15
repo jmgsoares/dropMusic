@@ -12,7 +12,7 @@
     <artifactId>web</artifactId>
     <packaging>war</packaging>
 
-    <name>web</name>
+    <name>DropMusic WEB App</name>
     <url>https://onept.pt:8443/dropmusic</url>
 
     <properties>
