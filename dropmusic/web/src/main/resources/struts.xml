@@ -72,18 +72,24 @@
             <result name="login">/login.jsp</result>
         </action>
 
-        <action name="readArtist" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="read">
+        <action name="readArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="read">
             <result name="success">/WEB-INF/artist.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
             <result name="login">/login.jsp</result>
         </action>
 
-        <action name="readAlbum" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="read">
+        <action name="readAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="read">
             <result name="success">/WEB-INF/album.jsp</result>
-            <result name="error">WEB-INF/dashboard.jsp</result>
+
             <result name="input">WEB-INF/dashboard.jsp</result>
             <result name="login">/login.jsp</result>
+        </action>
+
+        <action name="reviewAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="review">
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
         </action>
 
     </package>

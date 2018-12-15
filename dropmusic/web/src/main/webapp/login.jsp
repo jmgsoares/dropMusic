@@ -22,7 +22,7 @@
 			<s:text name="passWord" />
 			<s:password name="model.password" /><br>
 		</p>
-		<p><s:submit /></p>
+		<p><s:submit value="Login"/></p>
 	</s:form>
 	<a href="<s:url value="register.jsp"/>">Register</a>
 
