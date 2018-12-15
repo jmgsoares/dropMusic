@@ -14,45 +14,62 @@
 
     <package name="web" extends="struts-default">
 
+        <interceptors>
+            <interceptor name="AuthenticationInterceptor" class="pt.onept.sd1819.dropmusic.web.interceptor.AuthenticationInterceptor" />
+            <interceptor-stack name="AuthenticatedStack">
+                <interceptor-ref name="AuthenticationInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="AuthenticatedStack" />
+
         <default-action-ref name="index"/>
 
         <action name="index">
+            <interceptor-ref name="defaultStack" />
             <result>/login.jsp</result>
         </action>
 
+
         <action name="registerAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="register">
+            <interceptor-ref name="defaultStack" />
             <result name="success">/login.jsp</result>
             <result name="error">/register.jsp</result>
+
         </action>
 
-        <action name="loginAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="login">
+        <action name="loginAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="userLogin">
+            <interceptor-ref name="defaultStack" />
             <result name="success">/dashboard.jsp</result>
             <result name="error">/login.jsp</result>
+            <result name="login">/login.jsp</result>
         </action>
 
         <action name="searchAction" class="pt.onept.sd1819.dropmusic.web.action.SearchAction">
             <result name="success">/WEB-INF/searchResults.jsp</result>
             <result name="error">/WEB-INF/search.jsp</result>
             <result name="input">/WEB-INF/search.jsp</result>
-            <result name="login">login.jsp</result>
+            <result name="login">/login.jsp</result>
         </action>
 
         <action name="addArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="create">
-            <result name="success">dashboard.jsp</result>
-            <result name="error">WEB-INF/addArtist.jsp</result>
-            <result name="input">WEB-INF/addArtist.jsp</result>
-            <result name="login">login.jsp</result>
+            <result name="success">/dashboard.jsp</result>
+            <result name="error">/WEB-INF/addArtist.jsp</result>
+            <result name="input">/WEB-INF/addArtist.jsp</result>
+            <result name="login">/login.jsp</result>
         </action>
 
-        <action name="userLogoutAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="logout">
-            <result name="success">login.jsp</result>
+        <action name="userLogoutAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="userLogout">
+            <result name="success">/login.jsp</result>
+            <result name="login">/login.jsp</result>
         </action>
 
-        <action name="addAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="create">
+        <action name="addAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="create">
             <result name="success">dashboard.jsp</result>
             <result name="error">WEB-INF/addAlbum.jsp</result>
             <result name="input">WEB-INF/addAlbum.jsp</result>
-            <result name="login">login.jsp</result>
+            <result name="login">/login.jsp</result>
         </action>
 
     </package>
