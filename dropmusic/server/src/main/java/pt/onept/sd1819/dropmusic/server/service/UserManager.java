@@ -5,6 +5,7 @@ import pt.onept.sd1819.dropmusic.common.communication.protocol.Message;
 import pt.onept.sd1819.dropmusic.common.communication.protocol.MessageBuilder;
 import pt.onept.sd1819.dropmusic.common.communication.protocol.Operation;
 import pt.onept.sd1819.dropmusic.common.exception.*;
+import pt.onept.sd1819.dropmusic.common.server.contract.Listable;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.UserManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Notification;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
@@ -12,9 +13,10 @@ import pt.onept.sd1819.dropmusic.server.Server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-public class UserManager extends UnicastRemoteObject implements UserManagerInterface {
+public class UserManager extends UnicastRemoteObject implements UserManagerInterface, Listable<User> {
 	private MulticastHandler multicastHandler;
 
 	public UserManager(MulticastHandler multicastHandler) throws RemoteException {
@@ -65,8 +67,19 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 	}
 
 	@Override
-	public User read(User self, User object) {
-		return null;
+	public User read(User self, User object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException{
+		Message incoming;
+		Message outgoing = MessageBuilder.build(Operation.READ, self)
+				.setData(object);
+		try {
+			incoming = this.multicastHandler.sendAndWait(outgoing);
+			User user = (User) incoming.getData();
+			if (user == null) throw new NotFoundException();
+			return user;
+		} catch (TimeoutException e) {
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
+		}
 	}
 
 	@Override
@@ -104,5 +117,29 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 	@Override
 	public void delete(User self, User object) {
 
+	}
+
+	@Override
+	public List<User> list(User self) throws RemoteException, DataServerException {
+		List<User> userList;
+		Message incoming;
+		Message outgoing = MessageBuilder.build(Operation.LIST, self)
+				.setData(new User());
+
+		try {
+			incoming = multicastHandler.sendAndWait(outgoing);
+			userList = incoming.getDataList();
+			switch (incoming.getOperation()) {
+				case SUCCESS:
+					break;
+				case EXCEPTION:
+					throw new RemoteException();
+
+			}
+		} catch (TimeoutException e) {
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
+		}
+		return userList;
 	}
 }
