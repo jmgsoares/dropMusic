@@ -8,6 +8,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>LogIn</title>
 	<s:include value="../template/scripts.jsp"/>
+	<script type="text/javascript" src="template/scripts/addMusics.js"></script>
+
 </head>
 <body>
 <s:i18n name="en-US">
@@ -19,11 +21,18 @@
 			<s:textfield name="model.name"/>
 		</p>
 		<p>
-			<s:select label="What's your favor search engine"
-			          headerKey="-1" headerValue="Select Search Engines"
-			          list="searchEngine"
-			          name="yourSearchEngine" />
+			<s:select list="artistList" listKey="id" listValue="name" name="model.artist.id" />
 		</p>
+		<p>
+			<s:text name="description"/>
+			<s:textarea name="model.description"/>
+		</p>
+		<div id="list">
+
+		</div>
+		<button id="addButton" type="button">Add</button>
+
+
 
 
 		<p><s:submit/></p>
