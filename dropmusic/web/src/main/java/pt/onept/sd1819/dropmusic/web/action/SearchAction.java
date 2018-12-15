@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class SearchAction extends ActionSupport implements LoginAware {
 	private String query = "";
-	Map<String, Object> session;
-	List<Album> albums;
+	private Map<String, Object> session;
+	private List<Album> albums;
 
 	@Override
 	public String execute() throws Exception {
