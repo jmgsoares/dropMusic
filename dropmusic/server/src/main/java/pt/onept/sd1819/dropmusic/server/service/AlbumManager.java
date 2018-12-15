@@ -75,7 +75,7 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 
 	@Override
 	public List<Album> search(User self, String query) throws DataServerException {
-		List<Album> albums = new LinkedList<>();
+		List<Album> albums;
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.SEARCH, self)
 				.setQuery(query);
