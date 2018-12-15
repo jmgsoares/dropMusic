@@ -1,14 +1,13 @@
 package pt.onept.sd1819.dropmusic.common.server.contract;
 
 import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
-import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
-import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface Listable<T> {
 
-	T list(User self, T object) throws NotFoundException, UnauthorizedException, RemoteException, DataServerException;
+	List<T> list(User self) throws RemoteException, DataServerException;
 
 }
