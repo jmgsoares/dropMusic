@@ -22,15 +22,18 @@
 		<s:iterator value="albums">
 			<tr>
 				<td>
-					<a>
-						<s:property value="name"/>
+					<a href=" <s:url action="readAlbum"> <s:param name="model.id" value="id"/> </s:url>">
+						<s:property value="name" />
+					</a>
+				</td>
+
+				<td>
+					<a href=" <s:url action="readArtist"> <s:param name="model.id" value="artist.id"/> </s:url>">
+						<s:property value="artist.name" />
 					</a>
 				</td>
 				<td>
-					<s:property value="artist.name"/>
-				</td>
-				<td>
-					<s:property value="score"/>
+					<s:property value="score" />
 				</td>
 			</tr>
 		</s:iterator>
