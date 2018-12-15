@@ -11,7 +11,7 @@
 </head>
 <body>
 <s:i18n name="en-US">
-	<h1>DROPMUSIC - LOGIN v0.0000001</h1>
+	<h1>DROPMUSIC - LOGIN v1e-1024</h1>
 	<s:include value="template/header.jsp" />
 	<s:form action="loginAction" method="POST">
 		<p>
