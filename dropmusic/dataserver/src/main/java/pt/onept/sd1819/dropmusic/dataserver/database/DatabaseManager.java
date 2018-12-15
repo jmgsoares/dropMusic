@@ -282,6 +282,7 @@ public class DatabaseManager {
 		} else if (object instanceof Album) {
 			Album album = (Album) object;
 			album.setReviews(this.readList(Review.class, album))
+					.setArtist(this.readList(Artist.class, album).get(0))
 					.setMusics(this.readList(Music.class, album));
 		}
 	}
