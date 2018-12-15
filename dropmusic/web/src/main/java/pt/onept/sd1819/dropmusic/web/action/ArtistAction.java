@@ -3,14 +3,9 @@ package pt.onept.sd1819.dropmusic.web.action;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import org.apache.struts2.interceptor.SessionAware;
-import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
-import pt.onept.sd1819.dropmusic.common.exception.DuplicatedException;
-import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
-import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.ArtistManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Artist;
-import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 import pt.onept.sd1819.dropmusic.web.LoginAware;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
@@ -36,6 +31,7 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 			return Action.INPUT;
 		} catch (RemoteException | DataServerException e) {
 			e.printStackTrace();
+			addActionError("There was an error around here");
 			return Action.ERROR;
 		} catch (UnauthorizedException e) {
 			addActionError("You lack the permissions to perform the operation");
@@ -44,7 +40,22 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 	}
 
 	public String read() throws Exception {
-		return Action.SUCCESS;
+		if (artist.getId()==0) return Action.INPUT;
+		try {
+			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
+			artist = artistManager.read(this.getUser(), artist);
+			return Action.SUCCESS;
+		} catch (RemoteException | DataServerException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		} catch (NotFoundException e) {
+			addActionError("Artist not found");
+			return Action.ERROR;
+		} catch (UnauthorizedException e) {
+			addActionError("You lack the permissions to perform the operation");
+			return Action.ERROR;
+		}
 	}
 
 	public String update() throws Exception {
