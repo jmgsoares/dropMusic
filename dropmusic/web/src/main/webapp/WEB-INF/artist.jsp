@@ -25,7 +25,7 @@
 		<s:iterator value="model.albums">
 			<tr>
 				<td>
-					<a href=" <s:url action="readAlbum"> <s:param name="model.id" value="id"/> </s:url>">
+					<a href=" <s:url action="readAlbumAction"> <s:param name="model.id" value="id"/> </s:url>">
 						<s:property value="name"/>
 					</a>
 				</td>
