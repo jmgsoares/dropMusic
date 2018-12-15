@@ -21,16 +21,18 @@
 			<s:textfield name="model.name"/>
 		</p>
 		<p>
+			<s:text name="artist" />
 			<s:select list="artistList" listKey="id" listValue="name" name="model.artist.id" />
 		</p>
 		<p>
 			<s:text name="description"/>
 			<s:textarea name="model.description"/>
 		</p>
+		<p><s:text name="musics" /></p>
 		<div id="list">
 
 		</div>
-		<button id="addButton" type="button">Add</button>
+		<button id="addButton" type="button">Add Music</button>
 
 
 

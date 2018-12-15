@@ -19,7 +19,7 @@
 			<s:textfield name="query" />
 		</p>
 
-		<p><s:submit /></p>
+		<p><s:submit value="Search"/></p>
 	</s:form>
 
 	<s:include value="../template/footer.jsp"/>

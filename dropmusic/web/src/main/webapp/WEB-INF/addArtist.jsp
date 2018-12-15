@@ -19,7 +19,7 @@
 			<s:textfield name="model.name"/>
 		</p>
 
-		<p><s:submit/></p>
+		<p><s:submit value="Insert Artist"/></p>
 	</s:form>
 
 	<s:include value="../template/footer.jsp"/>
