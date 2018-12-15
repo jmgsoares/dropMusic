@@ -41,7 +41,7 @@
 
         <action name="loginAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="userLogin">
             <interceptor-ref name="defaultStack" />
-            <result name="success">/dashboard.jsp</result>
+            <result name="success">/WEB-INF/dashboard.jsp</result>
             <result name="error">/login.jsp</result>
             <result name="login">/login.jsp</result>
         </action>
@@ -54,7 +54,7 @@
         </action>
 
         <action name="addArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="create">
-            <result name="success">/dashboard.jsp</result>
+            <result name="success">/WEB-INF/dashboard.jsp</result>
             <result name="error">/WEB-INF/addArtist.jsp</result>
             <result name="input">/WEB-INF/addArtist.jsp</result>
             <result name="login">/login.jsp</result>
@@ -66,9 +66,23 @@
         </action>
 
         <action name="addAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="create">
-            <result name="success">dashboard.jsp</result>
+            <result name="success">/WEB-INF/dashboard.jsp</result>
             <result name="error">WEB-INF/addAlbum.jsp</result>
             <result name="input">WEB-INF/addAlbum.jsp</result>
+            <result name="login">/login.jsp</result>
+        </action>
+
+        <action name="readArtist" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="read">
+            <result name="success">/WEB-INF/artist.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login">/login.jsp</result>
+        </action>
+
+        <action name="readAlbum" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="read">
+            <result name="success">/WEB-INF/album.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
             <result name="login">/login.jsp</result>
         </action>
 
