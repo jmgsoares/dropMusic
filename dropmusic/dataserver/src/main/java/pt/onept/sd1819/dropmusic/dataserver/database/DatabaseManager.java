@@ -298,6 +298,7 @@ public class DatabaseManager {
 		}
 	}
 
+	//TODO populate the albums returned by this
 	public List<Album> searchAlbum(String queryString) throws SQLException {
 		List<Album> list = new LinkedList<>();
 		try (
@@ -314,6 +315,7 @@ public class DatabaseManager {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Album album = TypeFactory.constructType(Album.class, rs);
+				populate(Album.class, album);
 				list.add(album);
 				List<Artist> artistList = this.readList(Artist.class, album);
 				album.setArtist(artistList.get(0));
