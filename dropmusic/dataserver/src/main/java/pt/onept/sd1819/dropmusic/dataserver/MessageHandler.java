@@ -7,9 +7,7 @@ import pt.onept.sd1819.dropmusic.common.communication.protocol.Operation;
 import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
 import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
 import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
-import pt.onept.sd1819.dropmusic.common.server.contract.type.DropmusicDataType;
-import pt.onept.sd1819.dropmusic.common.server.contract.type.Notification;
-import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
+import pt.onept.sd1819.dropmusic.common.server.contract.type.*;
 import pt.onept.sd1819.dropmusic.dataserver.database.DatabaseManager;
 import pt.onept.sd1819.dropmusic.dataserver.database.TypeFactory;
 
@@ -17,6 +15,8 @@ import java.io.InvalidClassException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 final class MessageHandler implements Runnable {
 	private DatabaseManager dbManager;
@@ -98,9 +98,20 @@ final class MessageHandler implements Runnable {
 
 	private void create_raw(Message incoming, Message outgoing) {
 		DropmusicDataType data = incoming.getData();
-
 		try {
-			outgoing.setData(this.dbManager.insert(TypeFactory.getSubtype(data), data))
+			DropmusicDataType createdObject = this.dbManager.insert(TypeFactory.getSubtype(data), data);
+			if(TypeFactory.getSubtype(data).equals(Album.class)) {
+				Album createdAlbum = (Album) createdObject;
+				Album dataAlbum = (Album) data;
+				if(dataAlbum.getMusics() != null) {
+					List<Music> musicList = new LinkedList<>();
+					for (Music m : dataAlbum.getMusics()) {
+						musicList.add(dbManager.insert(Music.class, m.setAlbumId(createdAlbum.getId())));
+					}
+					if(!musicList.isEmpty()) createdAlbum.setMusics(musicList);
+				}
+			}
+			outgoing.setData(createdObject)
 					.setOperation(Operation.SUCCESS);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -140,7 +151,7 @@ final class MessageHandler implements Runnable {
 		DropmusicDataType data = incoming.getData();
 		Class tClass = TypeFactory.getSubtype(data);
 		try {
-			outgoing.setData(this.dbManager.read(tClass, data.getId()))
+			outgoing.setDataList(this.dbManager.list(tClass, data))
 					.setOperation(Operation.SUCCESS);
 		} catch (SQLException e) {
 			e.printStackTrace();
