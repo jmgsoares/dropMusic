@@ -6,8 +6,10 @@ import com.opensymphony.xwork2.ModelDriven;
 import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.AlbumManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.ArtistManagerInterface;
+import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.ReviewManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Album;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Artist;
+import pt.onept.sd1819.dropmusic.common.server.contract.type.Review;
 import pt.onept.sd1819.dropmusic.web.LoginAware;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
@@ -20,6 +22,7 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 	private Album album = new Album();
 	private Map<String, Object> session;
 	private List<Artist> artistList;
+	private Review review = new Review();
 
 	public String create() throws Exception {
 		if (album.getName()==null) return Action.INPUT;
@@ -70,6 +73,26 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		return Action.SUCCESS;
 	}
 
+	public String review()  {
+		if(review.getReview()==null | review.getReview().equals("") | review.getScore()<0 | review.getScore()>5 ) {
+			addActionError("Some data fields where improperly set (Review score 0-5 + Text)");
+			return Action.INPUT;
+		}
+		try {
+			ReviewManagerInterface reviewManager = CommunicationManager.getServerInterface().review();
+			reviewManager.add(this.getUser(), review);
+			addActionMessage("Review added successfully");
+			return Action.SUCCESS;
+		} catch (DataServerException | RemoteException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		} catch (IncompleteException e) {
+			addActionError("Some data fields where improperly set (Review score 0-5 + Text)");
+			return Action.INPUT;
+		}
+	}
+
 	public List<Artist> getArtistList() {
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
@@ -93,5 +116,9 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 	@Override
 	public Map<String, Object> getSession() {
 		return this.session;
+	}
+
+	public Review getReview() {
+		return this.review;
 	}
 }
