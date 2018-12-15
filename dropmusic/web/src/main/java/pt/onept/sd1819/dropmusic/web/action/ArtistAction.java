@@ -11,12 +11,13 @@ import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.ArtistManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Artist;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
+import pt.onept.sd1819.dropmusic.web.LoginAware;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public class ArtistAction extends ActionSupport implements SessionAware, ModelDriven<Artist> {
+public class ArtistAction extends ActionSupport implements LoginAware, ModelDriven<Artist> {
 	private Artist artist = new Artist();
 	private Map<String, Object> session;
 
@@ -24,7 +25,7 @@ public class ArtistAction extends ActionSupport implements SessionAware, ModelDr
 		if (artist.getName()==null) return Action.INPUT;
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
-			artistManager.create((User)session.get("user"), artist);
+			artistManager.create(this.getUser(), artist);
 			addActionMessage("Artist created successfully");
 			return Action.SUCCESS;
 		} catch (DuplicatedException e) {
@@ -62,5 +63,10 @@ public class ArtistAction extends ActionSupport implements SessionAware, ModelDr
 	@Override
 	public void setSession(Map<String, Object> map) {
 		this.session = map;
+	}
+
+	@Override
+	public Map<String, Object> getSession() {
+		return this.session;
 	}
 }

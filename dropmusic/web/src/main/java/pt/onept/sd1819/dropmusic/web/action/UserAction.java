@@ -10,21 +10,21 @@ import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
 import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.UserManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
+import pt.onept.sd1819.dropmusic.web.LoginAware;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
 import java.rmi.RemoteException;
 import java.util.Map;
 
-public class UserAction extends ActionSupport implements SessionAware, ModelDriven<User> {
+public class UserAction extends ActionSupport implements LoginAware, ModelDriven<User> {
 	private User user = new User();
 	private Map<String, Object> session;
 
-	public String login() throws Exception {
+	public String userLogin() throws Exception {
 		try {
 			UserManagerInterface userManager = CommunicationManager.getServerInterface().user();
-			this.user = userManager.login(this.user);
-			this.session.put("user", this.user);
-			this.session.put("logged", true);
+			User loggedUser = userManager.login(this.user);
+			this.login(loggedUser);
 			addActionMessage("Welcome " + user.getUsername());
 			return Action.SUCCESS;
 		} catch (RemoteException | DataServerException e) {
@@ -33,13 +33,11 @@ public class UserAction extends ActionSupport implements SessionAware, ModelDriv
 		} catch (UnauthorizedException e) {
 			addActionError("Wrong credentials");
 		}
-		this.session.remove("user");
-		this.session.put("logged", false);
 		return Action.ERROR;
 	}
 
-	public String logout() throws Exception {
-		this.session.clear();
+	public String userLogout() throws Exception {
+		this.logout();
 		return Action.SUCCESS;
 	}
 
@@ -67,5 +65,10 @@ public class UserAction extends ActionSupport implements SessionAware, ModelDriv
 	@Override
 	public void setSession(Map<String, Object> map) {
 		this.session = map;
+	}
+
+	@Override
+	public Map<String, Object> getSession() {
+		return this.session;
 	}
 }
