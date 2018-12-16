@@ -3,13 +3,11 @@ package pt.onept.sd1819.dropmusic.web.action;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import org.apache.struts2.interceptor.SessionAware;
 import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.UserManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 import pt.onept.sd1819.dropmusic.web.LoginAware;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
-import pt.onept.sd1819.dropmusic.web.rest.dropbox.DropBoxRestService;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -132,6 +130,13 @@ public class UserAction extends ActionSupport implements LoginAware, ModelDriven
 	}
 
 	public String getoAuthUrl() {
-		return DropBoxRestService.getAuthorizationUrl();
+		try {
+			return CommunicationManager.getServerInterface().dropBoxAPI().getAuthorizationUrl();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		}
 	}
 }
