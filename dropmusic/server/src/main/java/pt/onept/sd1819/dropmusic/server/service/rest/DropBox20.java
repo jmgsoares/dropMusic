@@ -44,9 +44,9 @@ public class DropBox20 {
 	/**
 	 * APP Callback URL
 	 */
-	//private static final String CALLBACK = "http://localhost:8080/dropmusic/dropBoxOA20";
-	private static final boolean LOCAL = false;
-	private static final String CALLBACK = "https://onept.pt:8443/dropmusic/dropBoxOA20";
+	private static final String CALLBACK = "http://localhost:8080/dropmusic/dropBoxOA20";
+	private static final boolean LOCAL = true;
+	//private static final String CALLBACK = "https://onept.pt:8443/dropmusic/dropBoxOA20";
 
 	/**
 	 * User API APP Token

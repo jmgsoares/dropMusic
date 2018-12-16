@@ -11,6 +11,7 @@ import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class MusicManager extends UnicastRemoteObject implements MusicManagerInterface {
@@ -61,7 +62,6 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 		}
 	}
 
-
 	@Override
 	public void update(User self, Music object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException {
 		Message incoming;
@@ -88,6 +88,27 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 
 	@Override
 	public void delete(User self, Music object) {
+	}
 
+	@Override
+	public List<Music> list(User self) throws RemoteException, DataServerException {
+		List<Music> artistList;
+		Message incoming;
+		Message outgoing = MessageBuilder.build(Operation.LIST, self)
+				.setData(new Music());
+		try {
+			incoming = multicastHandler.sendAndWait(outgoing);
+			artistList = incoming.getDataList();
+			switch (incoming.getOperation()) {
+				case SUCCESS:
+					break;
+				case EXCEPTION:
+					throw new RemoteException();
+			}
+		} catch (TimeoutException e) {
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
+		}
+		return artistList;
 	}
 }

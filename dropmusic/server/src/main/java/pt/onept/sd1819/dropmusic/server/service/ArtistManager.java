@@ -111,7 +111,6 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.LIST, self)
 				.setData(new Artist());
-
 		try {
 			incoming = multicastHandler.sendAndWait(outgoing);
 			artistList = incoming.getDataList();

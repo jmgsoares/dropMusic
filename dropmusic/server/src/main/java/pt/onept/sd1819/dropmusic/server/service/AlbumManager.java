@@ -123,4 +123,27 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 		}
 		return albums;
 	}
+
+	@Override
+	public List<Album> list(User self) throws RemoteException, DataServerException {
+		List<Album> artistList;
+		Message incoming;
+		Message outgoing = MessageBuilder.build(Operation.LIST, self)
+				.setData(new Album());
+		try {
+			incoming = multicastHandler.sendAndWait(outgoing);
+			artistList = incoming.getDataList();
+			switch (incoming.getOperation()) {
+				case SUCCESS:
+					break;
+				case EXCEPTION:
+					throw new RemoteException();
+
+			}
+		} catch (TimeoutException e) {
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
+		}
+		return artistList;
+	}
 }
