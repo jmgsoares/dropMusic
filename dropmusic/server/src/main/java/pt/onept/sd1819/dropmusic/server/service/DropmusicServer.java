@@ -1,14 +1,12 @@
 package pt.onept.sd1819.dropmusic.server.service;
 
-import pt.onept.sd1819.dropmusic.common.client.contract.Notifiable;
 import pt.onept.sd1819.dropmusic.common.communication.multicast.MulticastHandler;
 import pt.onept.sd1819.dropmusic.common.server.contract.DropmusicServerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class DropmusicServer extends UnicastRemoteObject implements DropmusicServerInterface {
 	private MulticastHandler multicastHandler;
@@ -20,6 +18,7 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 	private ArtistManagerInterface artistManager;
 	private NotificationManagerInterface notificationManager;
 	private ReviewManagerInterface reviewManager;
+	private DropBoxRestManagerInterface dropBoxRestManager;
 
 	public DropmusicServer(MulticastHandler multicastHandler) throws RemoteException {
 		super();
@@ -30,6 +29,7 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 		this.artistManager = new ArtistManager(this.multicastHandler);
 		this.notificationManager = new NotificationManager(this.multicastHandler);
 		this.reviewManager = new ReviewManager(this.multicastHandler);
+		this.dropBoxRestManager = new DropBoxManager();
 	}
 
 	@Override
@@ -62,6 +62,9 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 		return this.reviewManager;
 	}
 
-
+	@Override
+	public DropBoxRestManagerInterface dropBoxAPI() {
+		return this.dropBoxRestManager;
+	}
 
 }
