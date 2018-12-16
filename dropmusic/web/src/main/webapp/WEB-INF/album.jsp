@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Album</title>
 	<s:include value="../template/scripts.jsp"/>
-	<script type="text/javascript" src="template/scripts/toggleReview.js"></script>
+	<script type="text/javascript" src="template/scripts/toggleDiv.js"></script>
 </head>
 <body>
 <s:i18n name="en-US">
@@ -68,9 +68,9 @@
 
 	<br>
 
-	<button onclick="showFunction()">Toggle Review</button>
+	<button onclick="toggleDiv()">Toggle Review</button>
 
-	<div id="review">
+	<div id="toggleableDiv">
 
 	<s:form action="reviewAlbumAction" method="POST">
 		<s:hidden name="model.id" value="%{model.id}" />

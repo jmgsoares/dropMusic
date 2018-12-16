@@ -113,6 +113,12 @@ final class MessageHandler implements Runnable {
 			}
 			outgoing.setData(createdObject)
 					.setOperation(Operation.SUCCESS);
+			accountabilityHandler(MessageBuilder.buildReply(
+					incoming,
+					outgoing.getOperation())
+						.setData(outgoing.getData())
+						.setSelf(incoming.getSelf())
+			);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			if (e.getMessage().contains("duplicate")) outgoing.setOperation(Operation.DUPLICATE);
@@ -159,13 +165,16 @@ final class MessageHandler implements Runnable {
 		}
 	}
 
-	//TODO can this update be generic for the update_user??
 	private void update(Message incoming, Message outgoing) {
-		if (!incoming.getSelf().getEditor()) outgoing.setOperation(Operation.NO_PERMIT);
+		if (!incoming.getSelf().getEditor()) {
+			outgoing.setOperation(Operation.NO_PERMIT);
+			return;
+		}
 		DropmusicDataType data = incoming.getData();
 		Class tClass = TypeFactory.getSubtype(data);
 		try {
 			this.dbManager.update(tClass, data);
+			accountabilityHandler(incoming);
 			outgoing.setOperation(Operation.SUCCESS);
 		} catch (SQLException | InvalidClassException e) {
 			outgoing.setOperation(Operation.EXCEPTION);
@@ -223,5 +232,13 @@ final class MessageHandler implements Runnable {
 			outgoing.setOperation(Operation.INCOMPLETE);
 			e.printStackTrace();
 		}
+	}
+
+	public void accountabilityHandler (Message incoming) {
+		User user = incoming.getSelf();
+		DropmusicDataType data = incoming.getData();
+		if (user == null || data == null) return;
+		Class cls = TypeFactory.getSubtype(data);
+		if(cls.equals(Album.class) || cls.equals(Artist.class)) this.dbManager.logInsert(cls, data, user.getId());
 	}
 }

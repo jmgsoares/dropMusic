@@ -63,8 +63,27 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 	}
 
 	@Override
-	public void update(User self, Album object) {
-
+	public void update(User self, Album object) throws NotFoundException, UnauthorizedException, RemoteException, IncompleteException  {
+		Message incoming;
+		Message outgoing = MessageBuilder.build(Operation.UPDATE, self)
+				.setData(object);
+		try {
+			incoming = multicastHandler.sendAndWait(outgoing);
+			switch (incoming.getOperation()) {
+				case SUCCESS:
+					break;
+				case NO_PERMIT:
+					throw new UnauthorizedException();
+				case EXCEPTION:
+					throw new RemoteException();
+				case NOT_FOUND:
+					throw new NotFoundException();
+				case INCOMPLETE:
+					throw new IncompleteException();
+			}
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

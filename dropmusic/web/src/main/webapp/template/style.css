@@ -29,3 +29,7 @@ a:visited {
     color: #0A0;
     font-weight: bold;
 }
+
+#toggleableDiv {
+    display: none;
+}

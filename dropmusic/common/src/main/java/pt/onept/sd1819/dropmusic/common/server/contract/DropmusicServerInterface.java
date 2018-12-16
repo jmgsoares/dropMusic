@@ -30,9 +30,4 @@ public interface DropmusicServerInterface extends Remote, Serializable {
 
 	ReviewManagerInterface review() throws RemoteException, DataServerException;
 
-	Map<Long, Notifiable> client() throws RemoteException;
-
-	void subscribe(long id, Notifiable client) throws RemoteException;
-
-	void unSubscribe(long id) throws RemoteException;
 }

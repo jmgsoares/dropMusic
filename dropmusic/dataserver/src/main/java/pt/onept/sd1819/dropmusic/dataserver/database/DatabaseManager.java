@@ -334,4 +334,22 @@ public class DatabaseManager {
 		}
 
 	}
+
+	public <T extends DropmusicDataType> void logInsert(Class<T> tClass, T object, int id) {
+		String tableName;
+		if (tClass.equals(Album.class)) tableName = "ACCOUNT_ALBUM_CHANGES";
+		else if (tClass.equals(Artist.class)) tableName = "ACCOUNT_ARTIST_CHANGES";
+		else return;
+		try (
+				Connection dbConnection = this.dbConnector.getConnection();
+				PreparedStatement ps = dbConnection.prepareStatement("INSERT INTO " + tableName + " VALUES(?,?)")
+		) {
+			ps.setInt(1, id);
+			ps.setInt(2, object.getId());
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 }

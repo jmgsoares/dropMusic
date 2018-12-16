@@ -21,5 +21,8 @@
 		<a href="addArtistAction.action">Add Artist</a> |
 		<a href="addAlbumAction.action">Add Album</a> |
 		<a href="userLogoutAction.action">Logout</a>
+		<s:if test="%{#session.user.editor}">
+			| <a href="listUsersAction.action">List Users</a>
+		</s:if>
 	</nav>
 </s:if>
