@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <!DOCTYPE struts PUBLIC
         "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
         "http://struts.apache.org/dtds/struts-2.0.dtd">
@@ -74,6 +73,14 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <action name="updateArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="update">
+            <interceptor-ref name="EditorStack" />
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="input">/WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
         <action name="userLogoutAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="userLogout">
             <result name="success" type="chain">index</result>
             <result name="login" type="chain">index</result>
@@ -87,9 +94,10 @@
         </action>
 
         <action name="updateAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="update">
+            <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
-            <result name="error">WEB-INF/updateAlbum.jsp</result>
-            <result name="input">WEB-INF/updateAlbum.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="input">/WEB-INF/dashboard.jsp</result>
             <result name="login" type="chain">index</result>
         </action>
 
@@ -97,6 +105,14 @@
             <result name="success">/WEB-INF/listMusics.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="updateMusicAction" class="pt.onept.sd1819.dropmusic.web.action.MusicAction" method="update">
+            <interceptor-ref name="EditorStack" />
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="input">/WEB-INF/dashboard.jsp</result>
             <result name="login" type="chain">index</result>
         </action>
 

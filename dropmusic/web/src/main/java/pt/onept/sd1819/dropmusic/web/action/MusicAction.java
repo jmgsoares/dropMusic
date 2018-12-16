@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
+import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
 import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
 import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.MusicManagerInterface;
@@ -32,6 +33,29 @@ public class MusicAction extends ActionSupport implements LoginAware, ModelDrive
 			return Action.ERROR;
 		} catch (NotFoundException e) {
 			addActionError("Artist not found");
+			return Action.ERROR;
+		} catch (UnauthorizedException e) {
+			addActionError("You lack the permissions to perform the operation");
+			return Action.ERROR;
+		}
+	}
+
+	public String update() {
+		if (music.getId() == 0) return Action.INPUT;
+		try {
+			MusicManagerInterface musicManager = CommunicationManager.getServerInterface().music();
+			musicManager.update(this.getUser(), music);
+			addActionMessage("Music updated successfully");
+			return Action.SUCCESS;
+		} catch (NotFoundException e) {
+			addActionError("The Music already exists");
+			return Action.INPUT;
+		} catch (IncompleteException e) {
+			addActionError("Some data fields where left empty");
+			return Action.INPUT;
+		} catch (RemoteException | DataServerException e) {
+			e.printStackTrace();
+			addActionError("An error happened around here");
 			return Action.ERROR;
 		} catch (UnauthorizedException e) {
 			addActionError("You lack the permissions to perform the operation");

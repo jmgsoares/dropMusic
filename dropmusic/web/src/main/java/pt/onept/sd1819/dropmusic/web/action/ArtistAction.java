@@ -62,7 +62,26 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 	}
 
 	public String update() throws Exception {
-		return Action.SUCCESS;
+		if (artist.getId() == 0) return Action.INPUT;
+		try {
+			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
+			artistManager.update(this.getUser(), artist);
+			addActionMessage("Artist updated successfully");
+			return Action.SUCCESS;
+		} catch (NotFoundException e) {
+			addActionError("The Artist wasn't found");
+			return Action.INPUT;
+		} catch (IncompleteException e) {
+			addActionError("Some data fields where left empty");
+			return Action.INPUT;
+		} catch (RemoteException | DataServerException e) {
+			e.printStackTrace();
+			addActionError("An error happened around here");
+			return Action.ERROR;
+		} catch (UnauthorizedException e) {
+			addActionError("You lack the permissions to perform the operation");
+			return Action.ERROR;
+		}
 	}
 
 	public String delete() throws Exception {

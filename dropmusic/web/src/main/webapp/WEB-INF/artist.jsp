@@ -36,6 +36,29 @@
 		</s:iterator>
 
 	</table>
+
+	<br>
+
+	<s:if test="%{#session.user.editor}">
+
+		<button onclick="$('#toggleableAdminDiv').toggle()">Edit Artist</button>
+
+		<div id="toggleableAdminDiv">
+
+			<s:form action="updateArtistAction" method="post">
+
+				<s:hidden name="model.id" value="%{model.id}" />
+
+				<p><s:text name="artistName" /> : <s:textfield name="model.name" placeholder="model.name" /></p>
+
+				<s:submit value="Update" />
+
+			</s:form>
+
+		</div>
+
+	</s:if>
+
 	<s:include value="../template/footer.jsp"/>
 </s:i18n>
 </body>
