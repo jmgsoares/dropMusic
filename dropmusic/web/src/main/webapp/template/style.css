@@ -33,3 +33,7 @@ a:visited {
 #toggleableDiv {
     display: none;
 }
+
+#toggleableAdminDiv {
+    display: none;
+}

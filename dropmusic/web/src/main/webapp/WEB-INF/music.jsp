@@ -16,6 +16,25 @@
 
 	<p><s:text name="musicName" /> : <s:property value="model.name" /></p>
 
+	<s:if test="%{#session.user.editor}">
+
+		<button onclick="$('#toggleableAdminDiv').toggle()">Edit Music</button>
+
+		<div id="toggleableAdminDiv">
+
+			<s:form action="updateMusicAction" method="post">
+				<s:hidden name="model.id" value="%{model.id}" />
+
+				<p><s:text name="musicName" /> : <s:textfield name="model.name" placeholder="model.name" /></p>
+
+				<s:submit value="Update" />
+
+			</s:form>
+
+		</div>
+
+	</s:if>
+
 </s:i18n>
 </body>
 </html>

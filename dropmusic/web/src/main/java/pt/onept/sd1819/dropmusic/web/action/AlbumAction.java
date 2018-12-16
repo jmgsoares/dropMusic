@@ -40,6 +40,7 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 			return Action.INPUT;
 		} catch (RemoteException | DataServerException e) {
 			e.printStackTrace();
+			addActionError("An error happened around here");
 			return Action.ERROR;
 		} catch (UnauthorizedException e) {
 			addActionError("You lack the permissions to perform the operation");
@@ -78,9 +79,27 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
-	public String update() throws Exception {
-		if (album.getId()==0) return Action.INPUT;
-		return Action.SUCCESS;
+	public String update() {
+		if (album.getId() == 0) return Action.INPUT;
+		try {
+			AlbumManagerInterface albumManager = CommunicationManager.getServerInterface().album();
+			albumManager.update(this.getUser(), album);
+			addActionMessage("Album updated successfully");
+			return Action.SUCCESS;
+		} catch (NotFoundException e) {
+			addActionError("The album already exists");
+			return Action.INPUT;
+		} catch (IncompleteException e) {
+			addActionError("Some data fields where left empty");
+			return Action.INPUT;
+		} catch (RemoteException | DataServerException e) {
+			e.printStackTrace();
+			addActionError("An error happened around here");
+			return Action.ERROR;
+		} catch (UnauthorizedException e) {
+			addActionError("You lack the permissions to perform the operation");
+			return Action.ERROR;
+		}
 	}
 
 	public String delete() throws Exception {

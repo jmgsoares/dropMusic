@@ -24,6 +24,7 @@
 	</p>
 
 	<p>
+		<s:text name="description" /> :
 		<s:property value="model.description" />
 	</p>
 
@@ -32,7 +33,8 @@
 		<s:iterator value="model.musics">
 			<tr>
 				<td>
-					<a>
+
+					<a href=" <s:url action="readMusicAction"> <s:param name="model.id" value="id"/> </s:url>">
 						<s:property value="name"/>
 					</a>
 				</td>
@@ -65,6 +67,30 @@
 		</s:iterator>
 
 	</table>
+
+	<br>
+
+	<s:if test="%{#session.user.editor}">
+
+		<button onclick="$('#toggleableAdminDiv').toggle()">Edit Album</button>
+
+		<div id="toggleableAdminDiv">
+
+			<s:form action="updateAlbumAction" method="post">
+				<s:hidden name="model.id" value="%{model.id}" />
+
+				<p><s:text name="albumName" /> : <s:textfield name="model.name" placeholder="model.name" /></p>
+
+				<p>
+					<s:text name="description" /> : <s:textarea name="model.description" placeholder="model.description"  />
+				</p>
+				<s:submit value="Update" />
+
+			</s:form>
+
+		</div>
+
+	</s:if>
 
 	<br>
 
