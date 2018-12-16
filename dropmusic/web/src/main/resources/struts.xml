@@ -36,68 +36,74 @@
 
         <default-action-ref name="index"/>
 
-        <action name="index">
+        <action name="index" class="pt.onept.sd1819.dropmusic.web.action.IndexAction" method="execute">
             <interceptor-ref name="defaultStack" />
             <result>/login.jsp</result>
         </action>
 
+        <action name="goToDashBoard">
+            <result name="error" type="chain">index</result>
+            <result name="login" type="chain">index</result>
+            <result>/WEB-INF/dashboard.jsp</result>
+        </action>
+
         <action name="registerAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="create">
             <interceptor-ref name="defaultStack" />
-            <result name="success">/login.jsp</result>
+            <result name="success" type="chain">index</result>
             <result name="error">/register.jsp</result>
         </action>
 
         <action name="loginAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="userLogin">
             <interceptor-ref name="defaultStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
-            <result name="error">/login.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="error" type="chain">index</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="searchAction" class="pt.onept.sd1819.dropmusic.web.action.SearchAction">
             <result name="success">/WEB-INF/searchResults.jsp</result>
             <result name="error">/WEB-INF/search.jsp</result>
             <result name="input">/WEB-INF/search.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="addArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="create">
             <result name="success">/WEB-INF/dashboard.jsp</result>
             <result name="error">/WEB-INF/addArtist.jsp</result>
             <result name="input">/WEB-INF/addArtist.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="userLogoutAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="userLogout">
-            <result name="success">/login.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="success" type="chain">index</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="addAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="create">
             <result name="success">/WEB-INF/dashboard.jsp</result>
             <result name="error">WEB-INF/addAlbum.jsp</result>
             <result name="input">WEB-INF/addAlbum.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="readArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="read">
             <result name="success">/WEB-INF/artist.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="readAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="read">
             <result name="success">/WEB-INF/album.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="reviewAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="review">
             <result name="success">/WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="listUsersAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="list">
@@ -105,7 +111,7 @@
             <result name="success">/WEB-INF/users.jsp</result>
             <result name="error">/WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="readUserAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="read">
@@ -113,7 +119,14 @@
             <result name="success">/WEB-INF/user.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="getAccountAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="read">
+            <result name="success">/WEB-INF/account.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
         <action name="updateUserAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="update">
@@ -121,7 +134,7 @@
             <result name="success">/WEB-INF/dashboard.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
-            <result name="login">/login.jsp</result>
+            <result name="login" type="chain">index</result>
         </action>
 
     </package>

@@ -11,6 +11,12 @@
 </head>
 <body>
 <s:i18n name="en-US">
+
+
+	<s:if test="%{#session.logged}">
+		<c:redirect url="goToDashBoard.action" />
+	</s:if>
+
 	<h1>DROPMUSIC - LOGIN v1e-1024</h1>
 	<s:include value="template/header.jsp" />
 	<s:form action="loginAction" method="POST">
@@ -26,7 +32,7 @@
 	</s:form>
 	<a href="<s:url value="register.jsp"/>">Register</a>
 
-	<a href="https://www.dropbox.com/1/oauth2/authorize?client_id=720jq03bm89t8fp&response_type=code&redirect_uri=https://onept.pt:8443/dropmusic/CallBackServlet">LogInDropBox</a>
+	<a href="<s:property value="oAuthUrl" />">LogIn with DropBox</a>
 
 </s:i18n>
 </body>

@@ -17,12 +17,13 @@
 
 <s:if test="%{#session.logged}">
 	<nav>
-		<a href="searchAction.action">Search</a> |
-		<a href="addArtistAction.action">Add Artist</a> |
-		<a href="addAlbumAction.action">Add Album</a> |
-		<a href="userLogoutAction.action">Logout</a>
+		<a href="<s:url action="getAccountAction"><s:param name="model.id" value="%{#session.user.id}"/></s:url>">Account</a> |
+		<a href="<s:url action="searchAction"/>">Search</a> |
+		<a href="<s:url action="userLogoutAction"/>">Logout</a>
 		<s:if test="%{#session.user.editor}">
-			| <a href="listUsersAction.action">List Users</a>
+			| <a href="<s:url action="addArtistAction"/>">Add Artist</a> |
+			<a href="<s:url action="addAlbumAction"/>">Add Album</a> |
+			<a href="<s:url action="listUsersAction"/>">List Users</a>
 		</s:if>
 	</nav>
 </s:if>

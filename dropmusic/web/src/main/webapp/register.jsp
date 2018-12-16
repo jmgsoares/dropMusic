@@ -11,6 +11,9 @@
 </head>
 <body>
 <s:i18n name="en-US">
+	<s:if test="%{#session.logged}">
+		<c:redirect url="goToDashBoard.action" />
+	</s:if>
 	<h1>Register</h1>
 	<s:include value="template/header.jsp" />
 	<s:form action="registerAction" method="POST">
