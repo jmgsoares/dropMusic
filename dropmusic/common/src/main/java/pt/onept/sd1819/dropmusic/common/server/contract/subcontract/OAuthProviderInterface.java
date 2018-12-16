@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface DropBoxRestManagerInterface extends Remote, Serializable {
+public interface OAuthProviderInterface extends Remote, Serializable {
 
 	Boolean getLocal() throws RemoteException;
 
