@@ -9,6 +9,7 @@ import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.UserManagerI
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 import pt.onept.sd1819.dropmusic.web.LoginAware;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
+import pt.onept.sd1819.dropmusic.web.rest.dropbox.DropBoxRestService;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -59,6 +60,7 @@ public class UserAction extends ActionSupport implements LoginAware, ModelDriven
 
 	public String read() throws Exception {
 		if (user.getId()==0) return Action.INPUT;
+		if (!this.getUser().getEditor() && ( user.getId() != this.getUser().getId() ) ) return Action.INPUT;
 		try {
 			UserManagerInterface userManager = CommunicationManager.getServerInterface().user();
 			user = userManager.read(this.getUser(), user);
@@ -127,5 +129,9 @@ public class UserAction extends ActionSupport implements LoginAware, ModelDriven
 	@Override
 	public Map<String, Object> getSession() {
 		return this.session;
+	}
+
+	public String getoAuthUrl() {
+		return DropBoxRestService.getAuthorizationUrl();
 	}
 }
