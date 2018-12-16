@@ -263,6 +263,23 @@ public class DatabaseManager {
 		return list;
 	}
 
+	public <T extends DropmusicDataType> List<User> getEditors(Class<T> tClass, DropmusicDataType object) throws SQLException {
+		List<User> list = new LinkedList<>();
+		String query;
+		if (tClass.equals(Album.class)) query = "SELECT account_id FROM ACCOUNT_ALBUM_CHANGES WHERE album_id = ?";
+		else if (tClass.equals(Artist.class)) query = "SELECT account_id FROM ACCOUNT_ARTIST_CHANGES WHERE artist_id = ?";
+		else return list;
+		try (
+				Connection dbConnection = this.dbConnector.getConnection();
+				PreparedStatement ps = dbConnection.prepareStatement(query);
+		) {
+			ps.setInt(1, object.getId());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) list.add(new User().setId(rs.getInt(1)));
+		}
+		return list;
+	}
+
 	public <T extends DropmusicDataType> List<T> list(Class<T> tClass, DropmusicDataType object) throws SQLException {
 		List<T> list = new LinkedList<>();
 		try (
