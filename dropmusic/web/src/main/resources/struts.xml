@@ -86,6 +86,13 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <action name="updateAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="update">
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="error">WEB-INF/updateAlbum.jsp</result>
+            <result name="input">WEB-INF/updateAlbum.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
         <action name="readArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="read">
             <result name="success">/WEB-INF/artist.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
@@ -137,6 +144,18 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <action name="cleanArtistsAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="clean">
+            <interceptor-ref name="EditorStack" />
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="showArtistCleanPage">
+            <interceptor-ref name="EditorStack" />
+            <result>/WEB-INF/artistClean.jsp</result>
+        </action>
     </package>
 
 </struts>

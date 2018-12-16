@@ -29,7 +29,7 @@
 			<s:hidden name="model.id" value="%{model.id}" />
 			<s:hidden name="model.username" value="%{model.username}" />
 
-			<s:text name="newEditoStatus" /> <s:checkbox name="model.editor" value="model.editor" />
+			<s:text name="newEditorStatus" /> <s:checkbox name="model.editor" value="model.editor" />
 
 			<p><s:submit value="Update"/></p>
 

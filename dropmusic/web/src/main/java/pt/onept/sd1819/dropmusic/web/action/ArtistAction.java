@@ -44,6 +44,7 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
 			artist = artistManager.read(this.getUser(), artist);
+			addActionMessage("Artists without albums & songs where cleaned");
 			return Action.SUCCESS;
 		} catch (RemoteException | DataServerException e) {
 			e.printStackTrace();
@@ -64,6 +65,19 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 
 	public String delete() throws Exception {
 		return Action.SUCCESS;
+	}
+
+	public String clean() {
+		try {
+			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
+			artistManager.clean(this.getUser());
+			addActionMessage("Artists cleaned successfully");
+			return Action.SUCCESS;
+		} catch (DataServerException | RemoteException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		}
 	}
 
 	@Override
