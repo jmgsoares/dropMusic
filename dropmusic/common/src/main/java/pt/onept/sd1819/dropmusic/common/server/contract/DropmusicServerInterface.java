@@ -28,6 +28,6 @@ public interface DropmusicServerInterface extends Remote, Serializable {
 
 	ReviewManagerInterface review() throws RemoteException, DataServerException;
 
-	OAuthProviderInterface dropBoxAPI() throws RemoteException;
+	OAuthProviderInterface oAuthProvider() throws RemoteException;
 
 }
