@@ -15,4 +15,7 @@ public class User extends DropmusicDataType<User> {
 	private String username;
 	private String password;
 	private Boolean editor;
+	private String dropBoxUid;
+	private String dropBoxToken;
+	private String dropBoxEmail;
 }

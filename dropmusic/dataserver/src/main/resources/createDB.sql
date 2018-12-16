@@ -261,9 +261,9 @@ create table ACCOUNT (
                        NAME     VARCHAR(32) unique not null,
                        PASSWORD VARCHAR(32)        not null,
                        EDITOR   BOOL               not null default false,
-                       DROPBOX_UID VARCHAR(1024) null,
-                       DROPBOX_TOKEN VARCHAR(1024) null,
-                       DROPBOX_EMAIL VARCHAR(1024) null,
+                       DROPBOX_UID VARCHAR(1024) unique null,
+                       DROPBOX_TOKEN VARCHAR(1024) unique null,
+                       DROPBOX_EMAIL VARCHAR(1024) unique null,
                        constraint PK_ACCOUNT primary key (ID)
 );
 
@@ -281,7 +281,7 @@ create unique index ACCOUNT_PK
 create table ACCOUNT_UPLOADS (
                                ID     INT4 not null,
                                FIL_ID INT4 not null,
-                               DROPBOX_FILE_ID VARCHAR(1024) null,
+                               DROPBOX_FILE_ID VARCHAR(1024) unique null,
                                constraint PK_ACCOUNT_UPLOADS primary key (ID, FIL_ID)
 );
 

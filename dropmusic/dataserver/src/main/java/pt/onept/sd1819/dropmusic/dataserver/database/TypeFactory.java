@@ -53,6 +53,8 @@ public final class TypeFactory {
 						.setId(rs.getInt("id"))
 						.setUsername(rs.getString("name"))
 						.setPassword(rs.getString("password"))
+						.setDropBoxUid(rs.getString("dropbox_uid"))
+						.setDropBoxToken(rs.getString("dropbox_token"))
 						.setEditor(rs.getBoolean("editor"));
 			}
 		} catch (InstantiationException | IllegalAccessException e) {
