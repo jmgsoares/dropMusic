@@ -49,6 +49,16 @@ final class MessageHandler implements Runnable {
 		}
 	}
 
+	private void get_editors(Message incoming, Message outgoing) {
+		try {
+			outgoing.setDataList(this.dbManager.getEditors(TypeFactory.getSubtype(incoming.getData()), incoming.getData()))
+					.setOperation(Operation.SUCCESS);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
+		}
+	}
+
 	private void login(Message incoming, Message outgoing) {
 		User user;
 		try {
