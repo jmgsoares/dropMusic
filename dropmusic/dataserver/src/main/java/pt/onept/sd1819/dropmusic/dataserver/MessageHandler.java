@@ -66,9 +66,20 @@ final class MessageHandler implements Runnable {
 			outgoing.setOperation(Operation.SUCCESS)
 					.setSelf(user);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			outgoing.setOperation(Operation.EXCEPTION);
 		} catch (UnauthorizedException e) {
 			outgoing.setOperation(Operation.NO_PERMIT);
+		}
+	}
+
+	private void clean(Message incoming, Message outgoing) {
+		try {
+			this.dbManager.clean();
+			outgoing.setOperation(Operation.SUCCESS);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
 		}
 	}
 

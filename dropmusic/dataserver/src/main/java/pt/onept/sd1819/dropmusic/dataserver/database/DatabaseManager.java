@@ -326,6 +326,17 @@ public class DatabaseManager {
 		}
 	}
 
+	public void clean() throws SQLException {
+		try (
+				Connection dbConnection = this.dbConnector.getConnection();
+				PreparedStatement ps = dbConnection.prepareStatement(
+						"DELETE FROM artist art WHERE art.id NOT IN (SELECT art_al.id FROM artist_album art_al);"
+				)
+		) {
+			ps.executeUpdate();
+		}
+	}
+
 	//TODO populate the albums returned by this
 	public List<Album> searchAlbum(String queryString) throws SQLException {
 		List<Album> list = new LinkedList<>();
