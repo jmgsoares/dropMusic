@@ -30,4 +30,6 @@ public interface DropmusicServerInterface extends Remote, Serializable {
 
 	ReviewManagerInterface review() throws RemoteException, DataServerException;
 
+	DropBoxRestManagerInterface dropBoxAPI() throws RemoteException;
+
 }
