@@ -1,13 +1,11 @@
 package pt.onept.sd1819.dropmusic.common.server.contract;
 
-import pt.onept.sd1819.dropmusic.common.client.contract.Notifiable;
 import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.*;
 
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.Map;
 
 /**
  * Manage the DropMusic platform
@@ -30,6 +28,6 @@ public interface DropmusicServerInterface extends Remote, Serializable {
 
 	ReviewManagerInterface review() throws RemoteException, DataServerException;
 
-	DropBoxRestManagerInterface dropBoxAPI() throws RemoteException;
+	OAuthProviderInterface dropBoxAPI() throws RemoteException;
 
 }
