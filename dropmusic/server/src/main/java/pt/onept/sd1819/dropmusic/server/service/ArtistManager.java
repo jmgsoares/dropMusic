@@ -7,7 +7,9 @@ import pt.onept.sd1819.dropmusic.common.communication.protocol.Operation;
 import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.ArtistManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Artist;
+import pt.onept.sd1819.dropmusic.common.server.contract.type.Notification;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
+import pt.onept.sd1819.dropmusic.server.Server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -71,6 +73,20 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 			incoming = multicastHandler.sendAndWait(outgoing);
 			switch (incoming.getOperation()) {
 				case SUCCESS:
+					Message incomingEditorList = multicastHandler.sendAndWait(MessageBuilder.build(Operation.GET_EDITORS, self).setData(object));
+					List<User> editorList = incomingEditorList.getDataList();
+					if (editorList != null) editorList.forEach(e -> {
+						try {
+							Server.dropmusicServer.notification().notifyUser(
+									e,
+									new Notification().setMessage(
+											"The artist " + object.getId() + " - " + object.getName() + " was updated"
+									)
+							);
+						} catch (RemoteException | DataServerException e1) {
+							e1.printStackTrace();
+						}
+					});
 					break;
 				case NO_PERMIT:
 					throw new UnauthorizedException();
