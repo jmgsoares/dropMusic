@@ -10,10 +10,13 @@ import pt.onept.sd1819.dropmusic.web.LoginAware;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
 import java.rmi.RemoteException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class ArtistAction extends ActionSupport implements LoginAware, ModelDriven<Artist> {
 	private Artist artist = new Artist();
+	private List<Artist> artists;
 	private Map<String, Object> session;
 
 	public String create() throws Exception{
@@ -44,7 +47,6 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
 			artist = artistManager.read(this.getUser(), artist);
-			addActionMessage("Artists without albums & songs where cleaned");
 			return Action.SUCCESS;
 		} catch (RemoteException | DataServerException e) {
 			e.printStackTrace();
@@ -78,6 +80,22 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 			addActionError("There was an error around here");
 			return Action.ERROR;
 		}
+	}
+
+	public String list() {
+		try {
+			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
+			this.artists = artistManager.list(this.getUser());
+			return Action.SUCCESS;
+		} catch (DataServerException | RemoteException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		}
+	}
+
+	public List<Artist> getArtists() {
+		return artists;
 	}
 
 	@Override

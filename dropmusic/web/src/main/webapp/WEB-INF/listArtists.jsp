@@ -6,35 +6,24 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Search Results</title>
+	<title>Artist List</title>
 	<s:include value="../template/scripts.jsp"/>
 </head>
 <body>
 <s:i18n name="en-US">
-	<h1>Search Results</h1>
+	<h1>Artist List</h1>
 	<s:include value="../template/header.jsp"/>
+
 	<br>
+
 	<table>
-		<tr>
-			<td><s:text name="albumName" /></td>
-			<td><s:text name="artistName" /></td>
-			<td><s:text name="score" /></td>
-		</tr>
-		<s:iterator value="albums">
+
+		<s:iterator value="artists">
 			<tr>
 				<td>
-					<a href=" <s:url action="readAlbumAction"> <s:param name="model.id" value="id"/> </s:url>">
-						<s:property value="name" />
+					<a href=" <s:url action="readArtistAction"> <s:param name="model.id" value="id"/> </s:url>">
+						<s:property value="name"/>
 					</a>
-				</td>
-
-				<td>
-					<a href=" <s:url action="readArtistAction"> <s:param name="model.id" value="artist.id"/> </s:url>">
-						<s:property value="artist.name" />
-					</a>
-				</td>
-				<td>
-					<s:property value="score" />
 				</td>
 			</tr>
 		</s:iterator>

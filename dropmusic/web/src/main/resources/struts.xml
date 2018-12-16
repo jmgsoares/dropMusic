@@ -93,8 +93,36 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <action name="listMusicsAction" class="pt.onept.sd1819.dropmusic.web.action.MusicAction" method="list">
+            <result name="success">/WEB-INF/listMusics.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="readMusicAction" class="pt.onept.sd1819.dropmusic.web.action.MusicAction" method="read">
+            <result name="success">/WEB-INF/music.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
         <action name="readArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="read">
             <result name="success">/WEB-INF/artist.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="listArtistsAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="list">
+            <result name="success">/WEB-INF/listArtists.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="listAlbumsAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="list">
+            <result name="success">/WEB-INF/listAlbums.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
             <result name="login" type="chain">index</result>
