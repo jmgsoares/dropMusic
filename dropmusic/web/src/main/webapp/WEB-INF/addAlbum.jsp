@@ -37,7 +37,7 @@
 
 
 
-		<p><s:submit/></p>
+		<p><s:submit value="Add Album"/></p>
 	</s:form>
 
 	<s:include value="../template/footer.jsp"/>
