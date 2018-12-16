@@ -42,11 +42,12 @@ public class DropBoxRestService {
 	 */
 	private static final String AUTHORIZATION_URI = "https://www.dropbox.com/1/oauth2/authorize";
 
-	//TODO CALLBACK needs to be implemented in project
 	/**
 	 * APP Callback URL
 	 */
-	private static String CALLBACK;
+	private static final String CALLBACK = "http://localhost:8080/dropmusic/dropBoxOA20";
+	private static final boolean LOCAL = true;
+	//private static final String CALLBACK = "https://onept.pt:8443/dropmusic/dropBoxOA20";
 
 	/**
 	 * User API APP Token
@@ -59,34 +60,11 @@ public class DropBoxRestService {
 	private String USER_DBID;
 
 	/**
-	 * Basic class constructor, in this case we need to retrieve the user token and uid from dropbox
-	 * @param callBackUrl App CallBack URL
-	 */
-	public DropBoxRestService(String callBackUrl) {
-
-		DropBoxRestService.CALLBACK = callBackUrl;
-		//TODO this needs to happen with the jsp
-		/*
-		Scanner in = new Scanner(System.in);
-		System.out.println("Access link below and retrieve authorization code\n"
-				+ getAuthorizationUrl()
-				+ "\nPaste authorization code here");
-		JSONObject accessTokenResponse = getAccessTokenResponse(in.nextLine());
-		assert accessTokenResponse != null;
-		USER_API_TOKEN = accessTokenResponse.getString("access_token");
-		USER_DBID = accessTokenResponse.getString("account_id");
-		*/
-
-	}
-
-	/**
 	 * Service constructor.
-	 * @param callBackUrl App CallBack URL
 	 * @param userAccessToken The user access token
 	 * @param userDbId The user DropBoxRestServiceTester Id
 	 */
-	public DropBoxRestService(String callBackUrl, String userAccessToken, String userDbId) {
-		DropBoxRestService.CALLBACK = callBackUrl;
+	public DropBoxRestService(String userAccessToken, String userDbId) {
 		this.USER_API_TOKEN = userAccessToken;
 		this.USER_DBID = userDbId;
 	}
@@ -216,6 +194,11 @@ public class DropBoxRestService {
 		}
 	}
 
+	/**
+	 * Gets the meta data of a shared file
+	 * @param fileId Dropbox file Id
+	 * @return A JsonObject with the shared file information
+	 */
 	public JSONObject getSharedFileMetaData(String fileId) {
 		try {
 			JSONObject filePath = new JSONObject();
@@ -331,7 +314,7 @@ public class DropBoxRestService {
 	 * Authorization URL builder function
 	 * @return The authorization URL
 	 */
-	public String getAuthorizationUrl() {
+	public static String getAuthorizationUrl() {
 		return DropBoxRestService.AUTHORIZATION_URI
 				+ "?client_id="
 				+ DropBoxRestService.API_APP_KEY
@@ -385,5 +368,7 @@ public class DropBoxRestService {
 			e.printStackTrace();
 		}
 	}
+
+	public static boolean getLocal() { return DropBoxRestService.LOCAL; }
 }
 
