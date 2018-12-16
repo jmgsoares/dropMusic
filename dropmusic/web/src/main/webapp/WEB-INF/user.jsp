@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>User</title>
 	<s:include value="../template/scripts.jsp"/>
-	<script type="text/javascript" src="template/scripts/toggleDiv.js"></script>
+
 </head>
 <body>
 <s:i18n name="en-US">
@@ -18,7 +18,7 @@
 	<p><s:text name="userName" /> : <s:property value="model.userName" /></p>
 	<p><s:text name="editorPermissions" /> : <s:property value="model.editor" /> </p>
 
-	<button onclick="toggleDiv()">Change Editor Status</button>
+	<button onclick="$('#toggleableDiv').toggle()">Change Permissions</button>
 
 	<br><br>
 
@@ -31,7 +31,7 @@
 
 			<s:text name="newEditoStatus" /> <s:checkbox name="model.editor" value="model.editor" />
 
-			<p><s:submit/></p>
+			<p><s:submit value="Update"/></p>
 
 		</s:form>
 
