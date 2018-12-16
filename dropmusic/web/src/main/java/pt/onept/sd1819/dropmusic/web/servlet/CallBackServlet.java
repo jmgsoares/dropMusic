@@ -5,10 +5,10 @@ import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
 import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
 import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
 import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.DropBoxRestManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.UserManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
-import pt.onept.sd1819.dropmusic.web.rest.dropbox.DropBoxRestService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,39 +24,49 @@ public class CallBackServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
 		String code = req.getParameter("code");
 		HttpSession session = req.getSession(true);
 		User user = (User) session.getAttribute("user");
 		Boolean isLogged = (Boolean) session.getAttribute("logged");
+		DropBoxRestManagerInterface dropBoxRestManager;
+		try {
+			dropBoxRestManager = CommunicationManager.getServerInterface().dropBoxAPI();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			writeAndSendResponse(resp, ResposeType.ERROR);
+			return;
+		}
 
 		if (code == null) {
 			this.writeAndSendResponse(resp, ResposeType.WRONG_CALL);
 			return;
 		}
-		JSONObject codeToTokenResponse = DropBoxRestService.getAccessTokenResponse(code);
+		String codeToTokenResponse = dropBoxRestManager.getAccessTokenResponse(code);
 
-		if ( !codeToTokenResponse.has("access_token")) {
+		JSONObject codeToTokenResponseJson = new JSONObject(codeToTokenResponse);
+
+
+		if ( !codeToTokenResponseJson.has("access_token")) {
 			this.writeAndSendResponse(resp, ResposeType.WRONG_CODE);
 			return;
 		}
 
 		if(user != null && isLogged) {
 			if (user.getDropBoxUid() == null) {
-				user.setDropBoxToken(codeToTokenResponse.getString("access_token"));
-				user.setDropBoxUid(codeToTokenResponse.getString("account_id"));
+				user.setDropBoxToken(codeToTokenResponseJson.getString("access_token"));
+				user.setDropBoxUid(codeToTokenResponseJson.getString("account_id"));
 				try {
 					UserManagerInterface userManager = CommunicationManager.getServerInterface().user();
 					userManager.update(new User().setEditor(true), user);
 				} catch (DataServerException | IncompleteException | NotFoundException | UnauthorizedException e) {
 					e.printStackTrace();
 				} finally {
-					this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME);
+					this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME, dropBoxRestManager);
 				}
 			}
-			this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME);
+			this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME, dropBoxRestManager);
 		} else {
-			String tokenUserId = codeToTokenResponse.getString("account_id");
+			String tokenUserId = codeToTokenResponseJson.getString("account_id");
 			try {
 				UserManagerInterface userManager = CommunicationManager.getServerInterface().user();
 				User loggingUser = userManager.login(new User().setDropBoxUid(tokenUserId));
@@ -65,9 +75,16 @@ public class CallBackServlet extends HttpServlet {
 			} catch (DataServerException | RemoteException | UnauthorizedException e) {
 				e.printStackTrace();
 			} finally {
-				this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME);
+				this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME, dropBoxRestManager);
 			}
 		}
+	}
+
+	private void writeAndSendResponse(HttpServletResponse resp, ResposeType type, DropBoxRestManagerInterface dropBoxRestManager) throws IOException {
+		PrintWriter writer = resp.getWriter();
+		if(dropBoxRestManager.getLocal()) writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=http://localhost:8080/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"http://localhost:8080/dropmusic\">\">this page</a></p></body></html>");
+		else writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=https://onept.pt:8443/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"https://onept.pt:8443/dropmusic\">\">this page</a></p></body></html>");
+		writer.flush();
 	}
 
 	private void writeAndSendResponse(HttpServletResponse resp, ResposeType type) throws IOException {
@@ -79,11 +96,11 @@ public class CallBackServlet extends HttpServlet {
 			case WRONG_CODE:
 				writer.println("<html><head></head><body></h1>Wrong Authorization Code</h1><br><a href=\"login.jsp\">Go Back</a></body></html>");
 				break;
-			case REDIRECT_HOME:
-				if(DropBoxRestService.getLocal()) writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=http://localhost:8080/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"http://localhost:8080/dropmusic\">\">this page</a></p></body></html>");
-				else writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=https://onept.pt:8443/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"https://onept.pt:8443/dropmusic\">\">this page</a></p></body></html>");
+			case ERROR:
+				writer.println("<html><head></head><body></h1>There was an error processing the request</h1></body></html>");
 				break;
 		}
 		writer.flush();
 	}
+
 }
