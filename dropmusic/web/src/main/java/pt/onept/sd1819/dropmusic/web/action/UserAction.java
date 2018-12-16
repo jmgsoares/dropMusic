@@ -131,7 +131,7 @@ public class UserAction extends ActionSupport implements LoginAware, ModelDriven
 
 	public String getoAuthUrl() {
 		try {
-			return CommunicationManager.getServerInterface().dropBoxAPI().getAuthorizationUrl();
+			return CommunicationManager.getServerInterface().oAuthProvider().getAuthorizationUrl();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			e.printStackTrace();
