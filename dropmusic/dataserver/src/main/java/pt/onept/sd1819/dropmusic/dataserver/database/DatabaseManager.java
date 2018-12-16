@@ -150,10 +150,13 @@ public class DatabaseManager {
 			ps.setInt(2, music.getId());
 		} else if (object instanceof User) {
 			User user = (User) object;
-			ps = connection.prepareStatement("UPDATE account SET editor = ? WHERE id = ?;");
+			ps = connection.prepareStatement(
+					"UPDATE account SET editor = ?, dropbox_uid = ?, dropbox_token = ? WHERE id = ?;"
+			);
 			ps.setBoolean(1, user.getEditor());
-			ps.setInt(2, user.getId());
-
+			ps.setString(2, user.getDropBoxUid());
+			ps.setString(3, user.getDropBoxToken());
+			ps.setInt(4, user.getId());
 		} else {
 			System.out.println("###" + TypeFactory.getSubtype(object).toString());
 			throw new InvalidClassException("");
@@ -206,12 +209,19 @@ public class DatabaseManager {
 // THESE FUNCTIONS GET CALLED BY THE HANDLER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	public User login(User user) throws UnauthorizedException, SQLException {
+		String sqlStatement;
+		if( user.getDropBoxUid() != null ) sqlStatement = "SELECT * FROM account WHERE dropbox_uid LIKE ?;";
+		else sqlStatement = "SELECT * FROM account WHERE name = ? AND password = ?";
+
 		try (
 				Connection dbConnection = this.dbConnector.getConnection();
-				PreparedStatement ps = dbConnection.prepareStatement("SELECT * FROM account WHERE name = ? AND password = ?")
+				PreparedStatement ps = dbConnection.prepareStatement(sqlStatement)
 		) {
-			ps.setString(1, user.getUsername());
-			ps.setString(2, user.getPassword());
+			if( user.getDropBoxUid() != null ) ps.setString(1, user.getDropBoxUid());
+			else {
+				ps.setString(1, user.getUsername());
+				ps.setString(2, user.getPassword());
+			}
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				return TypeFactory.constructType(User.class, rs);
