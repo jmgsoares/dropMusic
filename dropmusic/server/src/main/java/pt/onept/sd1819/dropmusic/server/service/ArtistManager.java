@@ -103,9 +103,7 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 	}
 
 	@Override
-	public void delete(User self, Artist object) {
-
-	}
+	public void delete(User self, Artist object) {	}
 
 	@Override
 	public List<Artist> list(User self) throws RemoteException, DataServerException {
@@ -129,5 +127,18 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 			throw new DataServerException();
 		}
 		return artistList;
+	}
+
+	@Override
+	public void clean(User self) throws RemoteException, DataServerException {
+		Message incoming;
+		Message outgoing = MessageBuilder.build(Operation.CLEAN, self);
+		try {
+			incoming = this.multicastHandler.sendAndWait(outgoing);
+			if (incoming.getOperation() == Operation.EXCEPTION) throw new DataServerException();
+		} catch (TimeoutException e) {
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
+		}
 	}
 }
