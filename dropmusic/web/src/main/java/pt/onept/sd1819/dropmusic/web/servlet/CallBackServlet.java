@@ -30,7 +30,7 @@ public class CallBackServlet extends HttpServlet {
 		Boolean isLogged = (Boolean) session.getAttribute("logged");
 		OAuthProviderInterface dropBoxRestManager;
 		try {
-			dropBoxRestManager = CommunicationManager.getServerInterface().dropBoxAPI();
+			dropBoxRestManager = CommunicationManager.getServerInterface().oAuthProvider();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			writeAndSendResponse(resp, ResposeType.ERROR);
