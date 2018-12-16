@@ -18,7 +18,7 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 	private ArtistManagerInterface artistManager;
 	private NotificationManagerInterface notificationManager;
 	private ReviewManagerInterface reviewManager;
-	private OAuthProviderInterface dropBoxRestManager;
+	private OAuthProviderInterface oAuthProvider;
 
 	public DropmusicServer(MulticastHandler multicastHandler) throws RemoteException {
 		super();
@@ -29,7 +29,7 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 		this.artistManager = new ArtistManager(this.multicastHandler);
 		this.notificationManager = new NotificationManager(this.multicastHandler);
 		this.reviewManager = new ReviewManager(this.multicastHandler);
-		this.dropBoxRestManager = new OAuthProvider();
+		this.oAuthProvider = new OAuthProvider();
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 	}
 
 	@Override
-	public OAuthProviderInterface dropBoxAPI() {
-		return this.dropBoxRestManager;
+	public OAuthProviderInterface oAuthProvider() {
+		return this.oAuthProvider;
 	}
 
 }
