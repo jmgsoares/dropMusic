@@ -36,6 +36,13 @@
 				<td>
 					<s:property value="score" />
 				</td>
+				<td>
+					<s:if test="%{#session.user.editor}">
+
+						<a href=" <s:url action="updateAlbumAction"
+
+					</s:if>
+				</td>
 			</tr>
 		</s:iterator>
 

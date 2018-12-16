@@ -5,7 +5,7 @@ import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
 import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
 import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
 import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
-import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.DropBoxRestManagerInterface;
+import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.OAuthProviderInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.UserManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
@@ -28,7 +28,7 @@ public class CallBackServlet extends HttpServlet {
 		HttpSession session = req.getSession(true);
 		User user = (User) session.getAttribute("user");
 		Boolean isLogged = (Boolean) session.getAttribute("logged");
-		DropBoxRestManagerInterface dropBoxRestManager;
+		OAuthProviderInterface dropBoxRestManager;
 		try {
 			dropBoxRestManager = CommunicationManager.getServerInterface().dropBoxAPI();
 		} catch (RemoteException e) {
@@ -80,7 +80,7 @@ public class CallBackServlet extends HttpServlet {
 		}
 	}
 
-	private void writeAndSendResponse(HttpServletResponse resp, ResposeType type, DropBoxRestManagerInterface dropBoxRestManager) throws IOException {
+	private void writeAndSendResponse(HttpServletResponse resp, ResposeType type, OAuthProviderInterface dropBoxRestManager) throws IOException {
 		PrintWriter writer = resp.getWriter();
 		if(dropBoxRestManager.getLocal()) writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=http://localhost:8080/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"http://localhost:8080/dropmusic\">\">this page</a></p></body></html>");
 		else writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=https://onept.pt:8443/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"https://onept.pt:8443/dropmusic\">\">this page</a></p></body></html>");

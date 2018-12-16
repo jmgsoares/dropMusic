@@ -22,6 +22,7 @@
 		<a href="<s:url action="userLogoutAction"/>">Logout</a>
 		<s:if test="%{#session.user.editor}">
 			| <a href="<s:url action="addArtistAction"/>">Add Artist</a> |
+			<a href="<s:url action="showArtistCleanPage"/>">Clean Artists</a> |
 			<a href="<s:url action="addAlbumAction"/>">Add Album</a> |
 			<a href="<s:url action="listUsersAction"/>">List Users</a>
 		</s:if>

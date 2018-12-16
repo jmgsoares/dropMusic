@@ -66,6 +66,7 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 	}
 
 	public String update() throws Exception {
+		if (album.getId()==0) return Action.INPUT;
 		return Action.SUCCESS;
 	}
 
