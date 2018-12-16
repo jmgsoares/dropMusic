@@ -22,22 +22,22 @@ public class NotificationServlet {
 	}
 
 	@OnOpen
-	public void open(Session sessionInput) {
-		this.user = getUser(sessionInput);
+	public void open(Session session) {
+		this.user = getUser(session);
 
 		if(user == null) {
 			close();
 			return;
 		}
-		this.endpoint = sessionInput.getBasicRemote();
-
+		this.endpoint = session.getBasicRemote();
 		try {
-			subscriptionId = CommunicationManager.getServerInterface().notification().subscribe(this.user.getId(), new ClientNotifier(this));
+			subscriptionId = CommunicationManager.getServerInterface().notification().subscribe(
+					this.user.getId(),
+					new ClientNotifier(this)
+			);
 		} catch (IOException | DataServerException e) {
 			e.printStackTrace();
 		}
-
-
 	}
 
 	@OnClose
@@ -52,11 +52,11 @@ public class NotificationServlet {
 
 	@OnMessage
 	public void message(String message) {
-
 	}
 
 	@OnError
 	public void handleError(Throwable t) {
+		close();
 		t.printStackTrace();
 	}
 
