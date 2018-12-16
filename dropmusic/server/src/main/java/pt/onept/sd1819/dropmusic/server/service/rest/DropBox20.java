@@ -1,4 +1,4 @@
-package pt.onept.sd1819.dropmusic.web.rest.dropbox;
+package pt.onept.sd1819.dropmusic.server.service.rest;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -13,14 +13,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Scanner;
 
 /**
  * DropBox rest service to handle all the calls to the API
  * @author João Soares
  * @version 1.0
  */
-public class DropBoxRestService {
+public class DropBox20 {
 
 	/**
 	 * DropBox API APP Key
@@ -64,7 +63,7 @@ public class DropBoxRestService {
 	 * @param userAccessToken The user access token
 	 * @param userDbId The user DropBoxRestServiceTester Id
 	 */
-	public DropBoxRestService(String userAccessToken, String userDbId) {
+	public DropBox20(String userAccessToken, String userDbId) {
 		this.USER_API_TOKEN = userAccessToken;
 		this.USER_DBID = userDbId;
 	}
@@ -76,7 +75,7 @@ public class DropBoxRestService {
 	public JSONArray listUserFiles() {
 		try {
 			JSONObject bodyParams = new JSONObject();
-			bodyParams.put("path", DropBoxRestService.APP_FOLDER);
+			bodyParams.put("path", DropBox20.APP_FOLDER);
 			bodyParams.put("recursive", false);
 			bodyParams.put("include_media_info", false);
 			bodyParams.put("include_deleted", false);
@@ -172,7 +171,7 @@ public class DropBoxRestService {
 	public JSONObject getFile(String pathToLocalAppFolder, String fileName) {
 		try {
 			JSONObject filePath = new JSONObject();
-			filePath.put("path", DropBoxRestService.APP_FOLDER + "/" + fileName);
+			filePath.put("path", DropBox20.APP_FOLDER + "/" + fileName);
 			HttpResponse<InputStream> response = Unirest.post(
 					"https://content.dropboxapi.com/2/files/download")
 					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
@@ -182,7 +181,7 @@ public class DropBoxRestService {
 			JSONObject responseApiResult = new JSONObject(
 					response.getHeaders().getFirst("dropbox-api-result"));
 
-			DropBoxRestService.saveFileLocally(
+			DropBox20.saveFileLocally(
 					response.getRawBody(),
 					pathToLocalAppFolder,
 					responseApiResult.get("name").toString());
@@ -235,7 +234,7 @@ public class DropBoxRestService {
 			JSONObject responseApiResult = new JSONObject(
 					response.getHeaders().getFirst("dropbox-api-result"));
 
-			DropBoxRestService.saveFileLocally(
+			DropBox20.saveFileLocally(
 					response.getRawBody(),
 					pathToLocalAppFolder,
 					responseApiResult.get("name").toString());
@@ -315,11 +314,11 @@ public class DropBoxRestService {
 	 * @return The authorization URL
 	 */
 	public static String getAuthorizationUrl() {
-		return DropBoxRestService.AUTHORIZATION_URI
+		return DropBox20.AUTHORIZATION_URI
 				+ "?client_id="
-				+ DropBoxRestService.API_APP_KEY
+				+ DropBox20.API_APP_KEY
 				+ "&response_type=code&redirect_uri="
-				+ DropBoxRestService.CALLBACK;
+				+ DropBox20.CALLBACK;
 	}
 
 	/**
@@ -333,8 +332,8 @@ public class DropBoxRestService {
 					.header("Content-Type", "application/x-www-form-urlencoded")
 					.field("code", authorizationCode)
 					.field("grant_type", "authorization_code")
-					.field("redirect_uri", DropBoxRestService.CALLBACK)
-					.basicAuth(DropBoxRestService.API_APP_KEY, DropBoxRestService.API_APP_SECRET)
+					.field("redirect_uri", DropBox20.CALLBACK)
+					.basicAuth(DropBox20.API_APP_KEY, DropBox20.API_APP_SECRET)
 					.asJson();
 			return response.getBody().getObject();
 		} catch (UnirestException e) {
@@ -360,7 +359,7 @@ public class DropBoxRestService {
 	private static void saveFileLocally(InputStream inputStream, String pathToLocalAppFolder, String fileName) {
 		try {
 
-			File file = new File(pathToLocalAppFolder + DropBoxRestService.APP_FOLDER + "/" + fileName);
+			File file = new File(pathToLocalAppFolder + DropBox20.APP_FOLDER + "/" + fileName);
 
 			Files.copy(inputStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
@@ -369,6 +368,6 @@ public class DropBoxRestService {
 		}
 	}
 
-	public static boolean getLocal() { return DropBoxRestService.LOCAL; }
+	public static boolean getLocal() { return DropBox20.LOCAL; }
 }
 
