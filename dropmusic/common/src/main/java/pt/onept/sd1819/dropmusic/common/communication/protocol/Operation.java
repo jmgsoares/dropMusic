@@ -10,6 +10,7 @@ public enum Operation {
 	UPDATE_USER,
 	//TODO delete operation needed?
 	DELETE,                 //Self, music | album | artist
+	CLEAN,                  //Self,
 	SEARCH,                 //Self,  search String -> List<DropmusicDataType>
 	LIST,                   //Self, music | album | artist
 	ADD_REVIEW,             //Self, Review
