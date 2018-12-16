@@ -19,12 +19,23 @@
 	<nav>
 		<a href="<s:url action="getAccountAction"><s:param name="model.id" value="%{#session.user.id}"/></s:url>">Account</a> |
 		<a href="<s:url action="searchAction"/>">Search</a> |
+		<a href="<s:url action="listArtistsAction"/>">List Artists</a> |
+		<a href="<s:url action="listAlbumsAction"/>">List Albums</a> |
+		<a href="<s:url action="listMusicsAction"/>">List Musics</a> |
 		<a href="<s:url action="userLogoutAction"/>">Logout</a>
-		<s:if test="%{#session.user.editor}">
-			| <a href="<s:url action="addArtistAction"/>">Add Artist</a> |
-			<a href="<s:url action="showArtistCleanPage"/>">Clean Artists</a> |
-			<a href="<s:url action="addAlbumAction"/>">Add Album</a> |
-			<a href="<s:url action="listUsersAction"/>">List Users</a>
-		</s:if>
 	</nav>
+
+	<br>
+
+	<s:if test="%{#session.user.editor}">
+	<nav>
+
+		<a href="<s:url action="addArtistAction"/>">Add Artist</a> |
+		<a href="<s:url action="showArtistCleanPage"/>">Clean Artists</a> |
+		<a href="<s:url action="addAlbumAction"/>">Add Album</a> |
+		<a href="<s:url action="listUsersAction"/>">List Users</a>
+
+	</nav>
+	</s:if>
+
 </s:if>

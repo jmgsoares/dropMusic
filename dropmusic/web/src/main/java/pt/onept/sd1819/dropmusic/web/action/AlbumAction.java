@@ -20,6 +20,7 @@ import java.util.Map;
 
 public class AlbumAction extends ActionSupport implements LoginAware, ModelDriven<Album> {
 	private Album album = new Album();
+	private List<Album> albums;
 	private Map<String, Object> session;
 	private List<Artist> artistList;
 	private Review review = new Review();
@@ -65,6 +66,18 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
+	public String list() {
+		try {
+			AlbumManagerInterface albumManager  = CommunicationManager.getServerInterface().album();
+			this.albums = albumManager.list(this.getUser());
+			return Action.SUCCESS;
+		} catch (DataServerException | RemoteException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		}
+	}
+
 	public String update() throws Exception {
 		if (album.getId()==0) return Action.INPUT;
 		return Action.SUCCESS;
@@ -102,6 +115,10 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 			e.printStackTrace();
 		}
 		return new LinkedList<>();
+	}
+
+	public List<Album> getAlbums() {
+		return albums;
 	}
 
 	@Override
