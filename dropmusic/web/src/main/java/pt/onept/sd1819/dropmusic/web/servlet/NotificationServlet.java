@@ -42,6 +42,7 @@ public class NotificationServlet {
 
 	@OnClose
 	public void close() {
+		if (this.user == null) return;
 		try {
 			CommunicationManager.getServerInterface().notification().unSubscribe(this.user.getId(), this.subscriptionId);
 		} catch (RemoteException | DataServerException e) {
