@@ -10,16 +10,26 @@
     <constant name="struts.devMode" value="true"/>
     <constant name="struts.ui.theme" value="simple"/>
 
-    <constant name="struts.action.excludePattern" value="/CallBackServlet" />
+    <constant name="struts.action.excludePattern" value="/notification, /CallBackServlet" />
 
     <package name="web" extends="struts-default">
 
         <interceptors>
             <interceptor name="AuthenticationInterceptor" class="pt.onept.sd1819.dropmusic.web.interceptor.AuthenticationInterceptor" />
+
+            <interceptor name="EditorInterceptor" class="pt.onept.sd1819.dropmusic.web.interceptor.EditorInterceptor" />
+
             <interceptor-stack name="AuthenticatedStack">
                 <interceptor-ref name="AuthenticationInterceptor" />
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>
+
+            <interceptor-stack name="EditorStack">
+                <interceptor-ref name="AuthenticationInterceptor" />
+                <interceptor-ref name="EditorInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+
         </interceptors>
 
         <default-interceptor-ref name="AuthenticatedStack" />
@@ -31,12 +41,10 @@
             <result>/login.jsp</result>
         </action>
 
-
-        <action name="registerAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="register">
+        <action name="registerAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="create">
             <interceptor-ref name="defaultStack" />
             <result name="success">/login.jsp</result>
             <result name="error">/register.jsp</result>
-
         </action>
 
         <action name="loginAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="userLogin">
@@ -81,7 +89,6 @@
 
         <action name="readAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="read">
             <result name="success">/WEB-INF/album.jsp</result>
-
             <result name="input">WEB-INF/dashboard.jsp</result>
             <result name="login">/login.jsp</result>
         </action>
@@ -90,6 +97,31 @@
             <result name="success">/WEB-INF/dashboard.jsp</result>
             <result name="input">WEB-INF/dashboard.jsp</result>
             <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="login">/login.jsp</result>
+        </action>
+
+        <action name="listUsersAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="list">
+            <interceptor-ref name="EditorStack" />
+            <result name="success">/WEB-INF/users.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login">/login.jsp</result>
+        </action>
+
+        <action name="readUserAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="read">
+            <interceptor-ref name="EditorStack" />
+            <result name="success">/WEB-INF/user.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login">/login.jsp</result>
+        </action>
+
+        <action name="updateUserAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="update">
+            <interceptor-ref name="EditorStack" />
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="error">WEB-INF/dashboard.jsp</result>
+            <result name="input">WEB-INF/dashboard.jsp</result>
+            <result name="login">/login.jsp</result>
         </action>
 
     </package>

@@ -11,12 +11,14 @@ import pt.onept.sd1819.dropmusic.common.utililty.JsonUtility;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AppShell implements ShellManageable, ShellDependent {
 	private Shell shell;
 	private User user;
 	private NotificationService notification;
+	private UUID subscriptionId;
 
 	public AppShell(User user) {
 		this.user = user;
@@ -44,9 +46,9 @@ public class AppShell implements ShellManageable, ShellDependent {
 			while (retry & deadLine >= System.currentTimeMillis()) {
 
 				try {
-					CommunicationManager.getServerInterface().subscribe(this.user.getId(), this.notification);
+					this.subscriptionId = CommunicationManager.getServerInterface().notification().subscribe(this.user.getId(), this.notification);
 					retry = false;
-				} catch (RemoteException e) {
+				} catch (RemoteException | DataServerException e) {
 					CommunicationManager.handleFailOver();
 				}
 			}
@@ -114,12 +116,12 @@ public class AppShell implements ShellManageable, ShellDependent {
 		while (retry & deadLine >= System.currentTimeMillis()) {
 
 			try {
-				CommunicationManager.getServerInterface().unSubscribe(this.user.getId());
+				CommunicationManager.getServerInterface().notification().unSubscribe(this.user.getId(), subscriptionId);
 				this.shell.processLine("message \"User " + this.user.getUsername() + " logged out\"");
 				retry = false;
 			} catch (CLIException e) {
 				e.printStackTrace();
-			} catch (RemoteException e) {
+			} catch (RemoteException | DataServerException e) {
 				CommunicationManager.handleFailOver();
 			}
 		}
@@ -398,10 +400,10 @@ public class AppShell implements ShellManageable, ShellDependent {
 		return output;
 	}
 
-	@Command(name = "mvmusic", description = "Update a music. Usage: mvmusic <album-id> <music-name>", abbrev = "mvmus")
+	@Command(name = "mvmusic", description = "Update a music. Usage: mvmusic <music-id> <music-name>", abbrev = "mvmus")
 	public String updateMusic(int id, String musicName) {
 		Music music = new Music()
-				.setAlbumId(id)
+				.setId(id)
 				.setName(musicName);
 		String output = null;
 		boolean retry = true;
