@@ -19,7 +19,7 @@ import java.nio.file.StandardCopyOption;
  * @author João Soares
  * @version 1.0
  */
-public class DropBox20 {
+public final class DropBox20 {
 
 	/**
 	 * DropBox API APP Key
@@ -44,35 +44,17 @@ public class DropBox20 {
 	/**
 	 * APP Callback URL
 	 */
-	private static final String CALLBACK = "http://localhost:8080/dropmusic/dropBoxOA20";
-	private static final boolean LOCAL = true;
-	//private static final String CALLBACK = "https://onept.pt:8443/dropmusic/dropBoxOA20";
+	//private static final String CALLBACK = "http://localhost:8080/dropmusic/dropBoxOA20";
+	private static final boolean LOCAL = false;
+	private static final String CALLBACK = "https://onept.pt:8443/dropmusic/dropBoxOA20";
 
-	/**
-	 * User API APP Token
-	 */
-	private String USER_API_TOKEN;
-
-	/**
-	 * DropBox User ID Corresponding to the API APP Token
-	 */
-	private String USER_DBID;
-
-	/**
-	 * Service constructor.
-	 * @param userAccessToken The user access token
-	 * @param userDbId The user DropBoxRestServiceTester Id
-	 */
-	public DropBox20(String userAccessToken, String userDbId) {
-		this.USER_API_TOKEN = userAccessToken;
-		this.USER_DBID = userDbId;
-	}
+	private DropBox20( ) { }
 
 	/**
 	 * Lists the file the user has inside the "App" folder.
 	 * @return An array with all the files in the folder
 	 */
-	public JSONArray listUserFiles() {
+	public static JSONArray listUserFiles(String userToken) {
 		try {
 			JSONObject bodyParams = new JSONObject();
 			bodyParams.put("path", DropBox20.APP_FOLDER);
@@ -83,7 +65,7 @@ public class DropBox20 {
 			bodyParams.put("include_mounted_folders", true);
 
 			HttpResponse<JsonNode> response = Unirest.post("https://api.dropboxapi.com/2/files/list_folder")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Content-Type", "application/json")
 					.body(bodyParams)
 					.asJson();
@@ -98,14 +80,14 @@ public class DropBox20 {
 	 * Lists the files other users shared with the user
 	 * @return An array with all the files other users shared with the user
 	 */
-	public JSONArray listSharedFiles() {
+	public static JSONArray listSharedFiles(String userToken) {
 		try {
 			JSONObject bodyParams = new JSONObject();
 			bodyParams.put("limit", 100);
 
 			HttpResponse<JsonNode> response = Unirest.post(
 					"https://api.dropboxapi.com/2/sharing/list_received_files")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Content-Type", "application/json")
 					.body(bodyParams)
 					.asJson();
@@ -122,13 +104,13 @@ public class DropBox20 {
 	 * @param fileName Name of the file to upload
 	 * @return A JsonObject with the uploaded file information
 	 */
-	public JSONObject uploadFile(String pathToAppFolder, String fileName) {
+	public static JSONObject uploadFile(String pathToAppFolder, String fileName, String userToken) {
 		try {
 			JSONObject filePath = new JSONObject();
 			filePath.put("path", APP_FOLDER + "/" + fileName);
 			File file = new File(pathToAppFolder + APP_FOLDER + "/" + fileName);
 			HttpResponse<JsonNode> response = Unirest.post("https://content.dropboxapi.com/2/files/upload")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Content-Type", "application/octet-stream")
 					.header("Dropbox-API-Arg", filePath.toString())
 					.body(Files.readAllBytes(file.toPath()))
@@ -145,13 +127,13 @@ public class DropBox20 {
 	 * @param fileName Name of the file to delete
 	 * @return The success of the operation
 	 */
-	public boolean deleteFile(String fileName) {
+	public static boolean deleteFile(String fileName, String userToken) {
 		try {
 			JSONObject filePath = new JSONObject();
 			filePath.put("path", APP_FOLDER + "/" + fileName);
 
 			HttpResponse<JsonNode> response = Unirest.post("https://api.dropboxapi.com/2/files/delete_v2")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Content-Type", "application/json")
 					.body(filePath)
 					.asJson();
@@ -168,13 +150,13 @@ public class DropBox20 {
 	 * @param fileName Name of the file to download
 	 * @return A JsonObject with the downloaded file information
 	 */
-	public JSONObject getFile(String pathToLocalAppFolder, String fileName) {
+	public static JSONObject getFile(String pathToLocalAppFolder, String fileName, String userToken) {
 		try {
 			JSONObject filePath = new JSONObject();
 			filePath.put("path", DropBox20.APP_FOLDER + "/" + fileName);
 			HttpResponse<InputStream> response = Unirest.post(
 					"https://content.dropboxapi.com/2/files/download")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Content-Type", "application/octet-stream")
 					.header("Dropbox-API-Arg", filePath.toString())
 					.asBinary();
@@ -198,13 +180,13 @@ public class DropBox20 {
 	 * @param fileId Dropbox file Id
 	 * @return A JsonObject with the shared file information
 	 */
-	public JSONObject getSharedFileMetaData(String fileId) {
+	public static JSONObject getSharedFileMetaData(String fileId, String userToken) {
 		try {
 			JSONObject filePath = new JSONObject();
 			filePath.put("file", fileId);
 
 			HttpResponse<JsonNode> response = Unirest.post("https://api.dropboxapi.com/2/sharing/get_file_metadata")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Content-Type", "application/json")
 					.body(filePath)
 					.asJson();
@@ -221,13 +203,13 @@ public class DropBox20 {
 	 * @param fileUrl Dropbox preview url
 	 * @return A JsonObject with the downloaded file information
 	 */
-	public JSONObject getSharedFile(String pathToLocalAppFolder, String fileUrl) {
+	public static JSONObject getSharedFile(String pathToLocalAppFolder, String fileUrl, String userToken) {
 		try {
 			JSONObject dropBoxApiArgs = new JSONObject();
 			dropBoxApiArgs.put("url", fileUrl);
 			HttpResponse<InputStream> response = Unirest.post(
 					"https://content.dropboxapi.com/2/sharing/get_shared_link_file")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Dropbox-API-Arg", dropBoxApiArgs.toString())
 					.asBinary();
 
@@ -252,7 +234,7 @@ public class DropBox20 {
 	 * @param userId ID of the user whom to share the file with
 	 * @return A JsonObject with the result of the operation
 	 */
-	public JSONObject shareFile(String fileId, String userId) {
+	public static JSONObject shareFile(String fileId, String userId, String userToken) {
 		try {
 			JSONObject bodyParams = new JSONObject();
 			JSONArray members = new JSONArray();
@@ -269,7 +251,7 @@ public class DropBox20 {
 
 			HttpResponse<JsonNode> response = Unirest.post(
 					"https://api.dropboxapi.com/2/sharing/add_file_member")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Content-Type", "application/json")
 					.body(bodyParams)
 					.asJson();
@@ -286,7 +268,7 @@ public class DropBox20 {
 	 * @param eMail Email of the user whom to unshare the file with
 	 * @return A JsonObject with the result of the operation
 	 */
-	public JSONObject unShareFile(String fileId, String eMail) {
+	public JSONObject unShareFile(String fileId, String eMail, String userToken) {
 		try {
 			JSONObject bodyParams = new JSONObject();
 			JSONObject user = new JSONObject();
@@ -298,7 +280,7 @@ public class DropBox20 {
 
 			HttpResponse<JsonNode> response = Unirest.post(
 					"https://api.dropboxapi.com/2/sharing/remove_file_member_2")
-					.header("Authorization", "Bearer " + this.USER_API_TOKEN)
+					.header("Authorization", "Bearer " + userToken)
 					.header("Content-Type", "application/json")
 					.body(bodyParams)
 					.asJson();
@@ -340,14 +322,6 @@ public class DropBox20 {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	/**
-	 * Getter for the user DropBox Account ID
-	 * @return User DropBox Account ID
-	 */
-	public String getUserDbId() {
-		return this.USER_DBID;
 	}
 
 	/**
