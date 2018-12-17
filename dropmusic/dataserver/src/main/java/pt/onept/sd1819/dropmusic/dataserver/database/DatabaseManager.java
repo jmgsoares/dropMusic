@@ -334,6 +334,30 @@ public class DatabaseManager {
 		return list;
 	}
 
+	public <T extends DropmusicDataType> List<T> listFileShares(int userId, Class<T> tClass) throws SQLException {
+		List<T> list = new LinkedList<>();
+		try (
+				Connection connection = dbConnector.getConnection();
+				PreparedStatement ps = connection.prepareStatement("SELECT u.* FROM account_uploads au LEFT JOIN upload u on au.fil_id = u.id WHERE au.id = ?;")
+		) {
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) list.add(TypeFactory.constructType(tClass, rs));
+		}
+		return list;
+	}
+
+	public void insertShare(int fileId, int userId) throws SQLException {
+		try (
+				Connection connection = dbConnector.getConnection();
+				PreparedStatement ps = connection.prepareStatement("INSERT INTO account_uploads(id, fil_id) VALUES (?, ?)")
+		) {
+			ps.setInt(1, userId);
+			ps.setInt(2, fileId);
+			ps.execute();
+		}
+
+	}
 
 	private <T extends DropmusicDataType> void populate(Class<T> tClass, T object) throws SQLException {
 		if (object instanceof Artist) {
