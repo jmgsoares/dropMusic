@@ -77,4 +77,25 @@ public class FileManager extends UnicastRemoteObject implements FileManagerInter
 	}
 
 
+	@Override
+	public List<File> list(User self) throws RemoteException, DataServerException {
+		List<File> fileList;
+		Message incoming;
+		Message outgoing = MessageBuilder.build(Operation.LIST, self)
+				.setData(new File());
+		try {
+			incoming = multicastHandler.sendAndWait(outgoing);
+			fileList = incoming.getDataList();
+			switch (incoming.getOperation()) {
+				case SUCCESS:
+					break;
+				case EXCEPTION:
+					throw new RemoteException();
+			}
+		} catch (TimeoutException e) {
+			System.out.println("NO SERVER ANSWER!");
+			throw new DataServerException();
+		}
+		return fileList;
+	}
 }

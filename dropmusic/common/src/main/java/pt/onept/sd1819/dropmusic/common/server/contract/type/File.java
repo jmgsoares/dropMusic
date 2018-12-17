@@ -13,8 +13,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 public class File extends DropmusicDataType<File> {
 	private int ownerId;
-	private String name;
-	private Music music;
+	private int musicId;
+	private String musicName;
 	private String dropBoxFileId;
 	private String dropBoxPrevUrl;
 	private String dropBoxFileName;
