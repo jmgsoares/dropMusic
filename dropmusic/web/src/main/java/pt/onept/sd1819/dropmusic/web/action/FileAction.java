@@ -92,6 +92,8 @@ public class FileAction extends ActionSupport implements LoginAware, ModelDriven
 		}
 	}
 
+	public String play() { return Action.SUCCESS; }
+
 	public User getTargetUser() {
 		return targetUser;
 	}
