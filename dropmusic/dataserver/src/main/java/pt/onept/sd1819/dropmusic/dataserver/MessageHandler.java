@@ -170,7 +170,8 @@ final class MessageHandler implements Runnable {
 	private void search(Message incoming, Message outgoing) {
 		DropmusicDataType data = incoming.getData();
 		try {
-			outgoing.setDataList(this.dbManager.searchAlbum(incoming.getQuery()));
+			outgoing.setDataList(this.dbManager.searchAlbum(incoming.getQuery()))
+					.setOperation(Operation.SUCCESS);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			outgoing.setOperation(Operation.EXCEPTION);
@@ -189,6 +190,29 @@ final class MessageHandler implements Runnable {
 				outgoing.setDataList(this.dbManager.list(tClass, data))
 						.setOperation(Operation.SUCCESS);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
+		}
+	}
+
+	private void share(Message incoming, Message outgoing) {
+		try {
+			this.dbManager.insertShare(
+					incoming.getData().getId(),
+					incoming.getTarget().getId()
+			);
+			outgoing.setOperation(Operation.SUCCESS);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			outgoing.setOperation(Operation.EXCEPTION);
+		}
+	}
+
+	private void list_shares(Message incoming, Message outgoing) {
+		try {
+			outgoing.setDataList(this.dbManager.listFileShares(incoming.getSelf().getId(), File.class))
+					.setOperation(Operation.SUCCESS);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			outgoing.setOperation(Operation.EXCEPTION);
