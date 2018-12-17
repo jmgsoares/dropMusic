@@ -18,6 +18,14 @@
 
             <interceptor name="EditorInterceptor" class="pt.onept.sd1819.dropmusic.web.interceptor.EditorInterceptor" />
 
+            <interceptor name="OAuthInterceptor" class="pt.onept.sd1819.dropmusic.web.interceptor.OAuthInterceptor" />
+
+            <interceptor-stack name="OAuthLinkedStack">
+                <interceptor-ref name="AuthenticationInterceptor" />
+                <interceptor-ref name="OAuthInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+
             <interceptor-stack name="AuthenticatedStack">
                 <interceptor-ref name="AuthenticationInterceptor" />
                 <interceptor-ref name="defaultStack" />
@@ -206,22 +214,38 @@
             <result name="login" type="chain">index</result>
         </action>
 
-        <action name="listRemoteFilesAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listRemote">
-            <result name="success">/WEB-INF/fileList.jsp</result>
-            <result name="login" type="chain">index</result>
-        </action>
-
-        <action name="linkFileAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="linkFile">
-            <result name="success">/WEB-INF/dashboard.jsp</result>
-            <result name="error">/WEB-INF/linkFile.jsp</result>
-            <result name="input">/WEB-INF/linkFile.jsp</result>
-            <result name="login" type="chain">index</result>
-        </action>
-
         <action name="showArtistCleanPage">
             <interceptor-ref name="EditorStack" />
             <result>/WEB-INF/artistClean.jsp</result>
         </action>
+
+
+
+
+
+        <action name="listRemoteFilesAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listRemote">
+            <interceptor-ref name="OAuthLinkedStack" />
+            <result name="success">/WEB-INF/remoteFileList.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="linkFileAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="linkFile">
+            <interceptor-ref name="OAuthLinkedStack" />
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="input">/WEB-INF/linkFile.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="listLocalFilesAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listLocal">
+            <interceptor-ref name="OAuthLinkedStack" />
+            <result name="success">/WEB-INF/localFileList.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+
     </package>
 
 </struts>

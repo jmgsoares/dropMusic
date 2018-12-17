@@ -2,6 +2,7 @@ package pt.onept.sd1819.dropmusic.web.action;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.FileManager;
 import com.opensymphony.xwork2.ModelDriven;
 import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
 import pt.onept.sd1819.dropmusic.common.exception.DuplicatedException;
@@ -27,16 +28,12 @@ public class FileAction extends ActionSupport implements LoginAware, ModelDriven
 	private Map<String, Object> session;
 	private List<File> files;
 
-
 	public String linkFile()  {
 		if(file.getDropBoxFileId()==null) return Action.INPUT;
 		file.setOwnerId(this.getUser().getId());
+		file.setMusicName(getMusicName(file.getMusicId()));
 		try {
 			FileManagerInterface fileManager = CommunicationManager.getServerInterface().file();
-
-
-
-
 			fileManager.linkRemoteFile(this.getUser(), file);
 			addActionMessage("The file was linked successfully");
 			return Action.SUCCESS;
@@ -56,6 +53,18 @@ public class FileAction extends ActionSupport implements LoginAware, ModelDriven
 		return Action.SUCCESS;
 	}
 
+	public String listLocal() {
+		try {
+			FileManagerInterface fileManager = CommunicationManager.getServerInterface().file();
+			this.files = fileManager.list(this.getUser());
+			return Action.SUCCESS;
+		} catch (DataServerException | RemoteException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		}
+	}
+
 	public List<Music> getMusics() {
 		try {
 			MusicManagerInterface musicManager = CommunicationManager.getServerInterface().music();
@@ -63,6 +72,18 @@ public class FileAction extends ActionSupport implements LoginAware, ModelDriven
 		} catch (DataServerException | RemoteException e) {
 			e.printStackTrace();
 			return new ArrayList<>();
+		}
+	}
+
+	public String getMusicName(int id) {
+		Music music = new Music().setId(id);
+		try {
+			MusicManagerInterface musicManager = CommunicationManager.getServerInterface().music();
+			music = musicManager.read(this.getUser(), music);
+			return music.getName();
+		} catch (RemoteException | DataServerException | NotFoundException | UnauthorizedException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
