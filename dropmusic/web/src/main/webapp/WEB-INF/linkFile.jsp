@@ -22,9 +22,11 @@
 	<s:form action="linkFileAction" method="POST">
 
 
-		<p><s:select list="remoteFiles" listKey="dropBoxFileId" listValue="dropBoxFileName" name="model.dropBoxFileId" /></p>
+		<p> <s:text name="dropBoxFile" />
+			<s:select list="remoteFiles" listKey="dropBoxFileId" listValue="dropBoxFileName" name="model.dropBoxFileId" /></p>
 
-		<p><s:select list="musics" listKey="id" listValue="name" name="model.musicId"  /></p>
+		<p> <s:text name="localMusic" />
+			<s:select list="musics" listKey="id" listValue="name" name="model.musicId"  /></p>
 
 		<s:submit value="Link File" />
 

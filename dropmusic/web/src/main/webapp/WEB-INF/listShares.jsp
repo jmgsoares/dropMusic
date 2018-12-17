@@ -14,21 +14,31 @@
 	<h1>Files Shared With You</h1>
 	<s:include value="../template/header.jsp"/>
 
+	<br>
+
 	<table>
+
+		<tr>
+			<s:text name="fileName" />
+		</tr>
+
 		<s:iterator value="files">
 			<tr>
 
 				<td>
-					<a href="<s:url value="%{dropBoxPrevUrl}" />">
-						<s:property value="dropBoxFileName" />
+					<a target="_blank" href=" <s:url action="getPlayerAction" >
+						<s:param name="model.dropBoxPrevUrl" value="dropBoxPrevUrl"/>
+						<s:param name="model.dropBoxFileName" value="dropBoxFileName" />
+						</s:url>"><s:property value="dropBoxFileName" />
 					</a>
 				</td>
 				<td>
 
-					<a href=" <s:url action="readMusicAction"> <s:param name="model.id" value="id"/> </s:url>">
+					<a href=" <s:url action="readMusicAction"> <s:param name="model.id" value="musicId"/> </s:url>">
 						<s:text name="linkedMusic" /></a>
 				</td>
 			</tr>
+
 		</s:iterator>
 
 	</table>
