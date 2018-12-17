@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
+/**
+ * Servlet to handle the WebSocket connection
+ */
 @ServerEndpoint(value = "/notification", configurator = GetHttpSessionConfigurator.class)
 public class NotificationServlet {
 	private UUID subscriptionId;
@@ -21,10 +24,13 @@ public class NotificationServlet {
 	public NotificationServlet()  {
 	}
 
+	/**
+	 * On open subscribes the notifications for the current user in session
+	 * @param session user session
+	 */
 	@OnOpen
 	public void open(Session session) {
 		this.user = getUser(session);
-
 		if(user == null) {
 			close();
 			return;
@@ -40,6 +46,9 @@ public class NotificationServlet {
 		}
 	}
 
+	/**
+	 * On close unsubscribes the notifications
+	 */
 	@OnClose
 	public void close() {
 		if (this.user == null) return;
@@ -54,18 +63,32 @@ public class NotificationServlet {
 	public void message(String message) {
 	}
 
+	/**
+	 * On error unsubscribes the client
+	 * @param t error
+	 */
 	@OnError
 	public void handleError(Throwable t) {
 		close();
 		t.printStackTrace();
 	}
 
+	/**
+	 * Function to return the login status of the session
+	 * @param sessionInput user session
+	 * @return user login status
+	 */
 	private static boolean isLogged(Session sessionInput) {
 		HttpSession session = (HttpSession) sessionInput.getUserProperties().get("session");
 		Boolean isLogged = (Boolean) session.getAttribute("logged");
 		return isLogged != null && isLogged;
 	}
 
+	/**
+	 * Function to retrieve the User from the session
+	 * @param sessionInput user session
+	 * @return the user stored in session
+	 */
 	private static User getUser(Session sessionInput) {
 		if( NotificationServlet.isLogged(sessionInput) ) {
 			HttpSession session = (HttpSession) sessionInput.getUserProperties().get("session");
@@ -74,6 +97,11 @@ public class NotificationServlet {
 		return null;
 	}
 
+	/**
+	 * Function to send the notifications to the user
+	 * @param notification notification to send
+	 * @return success of the operation
+	 */
 	public boolean notify(Notification notification) {
 		try {
 			this.endpoint.sendText(notification.getMessage());

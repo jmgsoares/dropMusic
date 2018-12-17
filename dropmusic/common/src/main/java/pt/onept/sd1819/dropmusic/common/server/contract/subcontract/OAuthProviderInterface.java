@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+/**
+ * Manage the platform oath calss
+ *
+ * @author João Soares
+ * @version 1e-1024
+ */
 public interface OAuthProviderInterface extends Remote, Serializable {
 
 	Boolean getLocal() throws RemoteException;

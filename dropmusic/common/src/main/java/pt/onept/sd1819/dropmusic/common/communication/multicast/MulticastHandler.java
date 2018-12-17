@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.*;
 
-
+/**
+ * This class handles all the multicast communication
+ */
 public class MulticastHandler {
 	//TODO failOverTime value never used?? - check if needed
 	private static int failOverTime;

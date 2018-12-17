@@ -14,6 +14,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Class to manage all the music related operations
+ */
 public class MusicManager extends UnicastRemoteObject implements MusicManagerInterface {
 	private MulticastHandler multicastHandler;
 

@@ -13,6 +13,12 @@ import java.util.List;
 import java.util.UUID;
 
 
+/**
+ * Manage the platform notifications
+ *
+ * @author João Soares
+ * @version 1e-1024
+ */
 public interface NotificationManagerInterface extends Remote, Serializable, Crudable<Notification> {
 
 	//TODO replace by the crudable

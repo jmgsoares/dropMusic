@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * This class implements a listener for the multicast messages
+ */
 public class Listener implements Runnable {
 	private String multicastAddress;
 	private int port;

@@ -14,6 +14,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Class to manage all the album review operations
+ */
 public class ReviewManager extends UnicastRemoteObject implements ReviewManagerInterface {
 	private MulticastHandler multicastHandler;
 

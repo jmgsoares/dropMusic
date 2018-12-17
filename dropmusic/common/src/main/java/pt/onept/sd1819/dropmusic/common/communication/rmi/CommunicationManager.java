@@ -8,6 +8,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+/**
+ * Class that handles all RMI communication from client to server
+ */
 public final class CommunicationManager {
 	private static DropmusicServerInterface dropmusicServer = null;
 	private static String serverAddress;

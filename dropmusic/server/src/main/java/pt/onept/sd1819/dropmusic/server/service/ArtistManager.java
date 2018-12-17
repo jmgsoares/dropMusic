@@ -16,6 +16,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Class to manage all the Artist related operations
+ */
 public class ArtistManager extends UnicastRemoteObject implements ArtistManagerInterface {
 
 	private MulticastHandler multicastHandler;

@@ -4,6 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+/**
+ * Class with support methods to serialize e deserialize objects and to json
+ */
+
 public final class JsonUtility {
 	private static Gson gson = new Gson();
 	private static Gson gsonp = new GsonBuilder().setPrettyPrinting().create();

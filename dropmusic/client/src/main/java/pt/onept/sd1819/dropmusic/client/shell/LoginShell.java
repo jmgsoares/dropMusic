@@ -12,6 +12,9 @@ import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
+/**
+ * Entry shell of the application where a user is able to login and logout
+ */
 public class LoginShell implements ShellDependent, ShellManageable {
 	private Shell shell;
 

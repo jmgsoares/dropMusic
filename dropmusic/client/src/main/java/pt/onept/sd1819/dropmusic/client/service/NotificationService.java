@@ -8,10 +8,20 @@ import pt.onept.sd1819.dropmusic.common.server.contract.type.Notification;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+/**
+ * Client Notification service in order to process RPC from the RMI Server
+ */
 public class NotificationService extends UnicastRemoteObject implements Notifiable {
 
+	/**
+	 * The shell to write notifications
+	 */
 	private Shell shell;
 
+	/**
+	 *
+	 * @throws RemoteException
+	 */
 	public NotificationService() throws RemoteException {
 	}
 
@@ -20,6 +30,11 @@ public class NotificationService extends UnicastRemoteObject implements Notifiab
 		return this;
 	}
 
+	/**
+	 * Function to be called remotely to notify the client about an event
+	 * @param notification Notification to display
+	 * @return the success of the operation
+	 */
 	@Override
 	public boolean notify(Notification notification) {
 		try {

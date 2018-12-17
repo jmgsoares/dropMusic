@@ -8,6 +8,9 @@ import pt.onept.sd1819.dropmusic.common.utililty.PropertiesReaderUtility;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Command Line Interface Client
+ */
 public class Client {
 	public static String registryIpAddress;
 	public static int port;

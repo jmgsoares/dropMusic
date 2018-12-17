@@ -6,6 +6,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+/**
+ * User
+ */
+
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)

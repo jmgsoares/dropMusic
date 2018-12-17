@@ -6,6 +6,9 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * This class implements a sender for the multicast messages
+ */
 public class Sender implements Runnable {
 	private String multicastAddress;
 	private int port;

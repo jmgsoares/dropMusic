@@ -1,5 +1,8 @@
 package pt.onept.sd1819.dropmusic.common.communication.protocol;
 
+/**
+ * Enum of all the operations supported (to be some) by the application
+ */
 public enum Operation {
 	REGISTER,               //Self
 	LOGIN,                  //Self -> Self

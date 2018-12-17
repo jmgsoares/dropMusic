@@ -5,11 +5,22 @@ import pt.onept.sd1819.dropmusic.common.server.contract.type.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class with helper methods to perform dataBase operations
+ */
 public final class TypeFactory {
 
 	private TypeFactory() {
 	}
 
+	/**
+	 * Function to construct objects retrieved from the dataBase
+	 * @param tClass The class of the objects to build
+	 * @param rs the result set where the dataBase answer is stored
+	 * @param <T> Type Class
+	 * @return the constructed data object
+	 * @throws SQLException upon any error during construction
+	 */
 	public static <T extends DropmusicDataType> T constructType(Class<T> tClass, ResultSet rs) throws SQLException {
 		T object = null;
 		try {
@@ -68,6 +79,12 @@ public final class TypeFactory {
 	}
 
 
+	/**
+	 * Returns the object parent class
+	 * @param object object
+	 * @param <T> Type class
+	 * @return the Class of the object
+	 */
 	public static <T extends DropmusicDataType> Class getSubtype(T object) {
 		if (object instanceof Album) return Album.class;
 		if (object instanceof Artist) return Artist.class;

@@ -16,7 +16,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeoutException;
 
-
+/**
+ * Class to manage all the notification related operations
+ */
 public class NotificationManager extends UnicastRemoteObject implements NotificationManagerInterface {
 	private MulticastHandler multicastHandler;
 	private Map<UUID, Notifiable> notifiables;

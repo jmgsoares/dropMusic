@@ -8,16 +8,17 @@ import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
 import java.util.Map;
 
+/**
+ * Interceptor to verify if an user has a valid session
+ * @see com.opensymphony.xwork2.interceptor.Interceptor
+ */
 public class AuthenticationInterceptor implements Interceptor {
-	@Override
-	public void destroy() {
-
-	}
 
 	@Override
-	public void init() {
+	public void destroy() {	}
 
-	}
+	@Override
+	public void init() { }
 
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {

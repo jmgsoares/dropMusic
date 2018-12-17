@@ -5,6 +5,9 @@ import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpointConfig;
 
+/**
+ * Configurator to retrieve the user session on upgrading the connection to a WebSocket
+ */
 public class GetHttpSessionConfigurator extends ServerEndpointConfig.Configurator {
 	@Override
 	public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {

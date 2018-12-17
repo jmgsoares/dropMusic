@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.rmi.RemoteException;
 
+/**
+ * Servlet to handle user GET requests routed through the DropBox Rest API upon user login or account linking with the application
+ */
 @WebServlet(urlPatterns = { "/dropBoxOA20" })
 public class CallBackServlet extends HttpServlet {
 
@@ -29,6 +32,7 @@ public class CallBackServlet extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		Boolean isLogged = (Boolean) session.getAttribute("logged");
 		OAuthProviderInterface oAuthProvider;
+
 		try {
 			oAuthProvider = CommunicationManager.getServerInterface().oAuthProvider();
 		} catch (RemoteException e) {
@@ -44,7 +48,6 @@ public class CallBackServlet extends HttpServlet {
 		String codeToTokenResponse = oAuthProvider.getAccessTokenResponse(code);
 
 		JSONObject codeToTokenResponseJson = new JSONObject(codeToTokenResponse);
-
 
 		if ( !codeToTokenResponseJson.has("access_token")) {
 			this.writeAndSendResponse(resp, ResponseType.WRONG_CODE);
@@ -63,6 +66,7 @@ public class CallBackServlet extends HttpServlet {
 				}
 			}
 			this.writeAndSendResponse(resp, ResponseType.REDIRECT_HOME, oAuthProvider);
+
 		} else {
 			String tokenUserId = codeToTokenResponseJson.getString("account_id");
 			try {
@@ -78,9 +82,9 @@ public class CallBackServlet extends HttpServlet {
 		}
 	}
 
-	private void writeAndSendResponse(HttpServletResponse resp, ResponseType type, OAuthProviderInterface dropBoxRestManager) throws IOException {
+	private void writeAndSendResponse(HttpServletResponse resp, ResponseType type, OAuthProviderInterface oAuthProvider) throws IOException {
 		PrintWriter writer = resp.getWriter();
-		if(dropBoxRestManager.getLocal()) writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=http://localhost:8080/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"http://localhost:8080/dropmusic\">\">this page</a></p></body></html>");
+		if(oAuthProvider.getLocal()) writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=http://localhost:8080/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"http://localhost:8080/dropmusic\">\">this page</a></p></body></html>");
 		else writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=https://onept.pt:8443/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"https://onept.pt:8443/dropmusic\">\">this page</a></p></body></html>");
 		writer.flush();
 	}

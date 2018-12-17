@@ -18,6 +18,11 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Class responsible for handling all the messages that come via multicast and sort them to the proper dataBase function call
+ * All methods in this class are directly related to the operations declared in the protocol
+ * @see Operation
+ */
 final class MessageHandler implements Runnable {
 	private DatabaseManager dbManager;
 	private MulticastHandler multicastHandler;
@@ -34,9 +39,12 @@ final class MessageHandler implements Runnable {
 			incoming = this.multicastHandler.receive();
 			handle(incoming);
 		}
-
 	}
 
+	/**
+	 * Function to handle message receiving and calls the appropriate method via the Operation on the incoming message
+	 * @param message the incoming message
+	 */
 	private void handle(Message message) {
 		try {
 			Method method = this.getClass().getDeclaredMethod(message.getOperation().toString().toLowerCase(), Message.class, Message.class);
@@ -288,6 +296,10 @@ final class MessageHandler implements Runnable {
 		}
 	}
 
+	/**
+	 * This function handles the operation logging
+	 * @param incoming the incoming message
+	 */
 	public void accountabilityHandler (Message incoming) {
 		User user = incoming.getSelf();
 		DropmusicDataType data = incoming.getData();
