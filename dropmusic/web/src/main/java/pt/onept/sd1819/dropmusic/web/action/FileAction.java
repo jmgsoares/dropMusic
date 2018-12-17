@@ -2,12 +2,8 @@ package pt.onept.sd1819.dropmusic.web.action;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.FileManager;
 import com.opensymphony.xwork2.ModelDriven;
-import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
-import pt.onept.sd1819.dropmusic.common.exception.DuplicatedException;
-import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
-import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.FileManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.MusicManagerInterface;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.UserManagerInterface;
@@ -27,6 +23,7 @@ public class FileAction extends ActionSupport implements LoginAware, ModelDriven
 	private File file = new File();
 	private Map<String, Object> session;
 	private List<File> files;
+	private User targetUser = new User();
 
 	public String linkFile()  {
 		if(file.getDropBoxFileId()==null) return Action.INPUT;
@@ -63,6 +60,40 @@ public class FileAction extends ActionSupport implements LoginAware, ModelDriven
 			addActionError("There was an error around here");
 			return Action.ERROR;
 		}
+	}
+
+	public String listShares() throws Exception {
+		try {
+			FileManagerInterface fileManager = CommunicationManager.getServerInterface().file();
+			this.files = fileManager.listSharedFiles(this.getUser());
+			return Action.SUCCESS;
+		} catch (RemoteException | DataServerException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		}
+	}
+
+	public String share(){
+		if (this.targetUser.getId() == 0) return Action.INPUT;
+		try {
+			FileManagerInterface fileManager = CommunicationManager.getServerInterface().file();
+			fileManager.shareFile(this.getUser(), this.file, this.targetUser);
+			addActionMessage("File shared successfully");
+			return Action.SUCCESS;
+		} catch (DataServerException | RemoteException e) {
+			e.printStackTrace();
+			addActionError("There was an error around here");
+			return Action.ERROR;
+		} catch (OAuthException e) {
+			e.printStackTrace();
+			addActionError("The user selected doesn't have a dropbox Account Linked");
+			return Action.ERROR;
+		}
+	}
+
+	public User getTargetUser() {
+		return targetUser;
 	}
 
 	public List<Music> getMusics() {
@@ -106,6 +137,16 @@ public class FileAction extends ActionSupport implements LoginAware, ModelDriven
 			FileManagerInterface fileManager = CommunicationManager.getServerInterface().file();
 			return fileManager.listRemoteFiles(this.getUser());
 		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return new LinkedList<>();
+	}
+
+	public List<File> getLocalFiles() {
+		try {
+			FileManagerInterface fileManager = CommunicationManager.getServerInterface().file();
+			return fileManager.list(this.getUser());
+		} catch (DataServerException | RemoteException e) {
 			e.printStackTrace();
 		}
 		return new LinkedList<>();

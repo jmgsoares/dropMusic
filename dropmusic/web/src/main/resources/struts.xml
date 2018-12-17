@@ -220,7 +220,22 @@
         </action>
 
 
+        <action name="shareFileAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="share">
+            <interceptor-ref name="OAuthLinkedStack" />
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="input">/WEB-INF/shareFile.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
 
+
+        <action name="listSharedFiles" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listShares">
+            <interceptor-ref name="OAuthLinkedStack" />
+            <result name="success">/WEB-INF/listShares.jsp</result>
+            <result name="error">/WEB-INF/dashboard.jsp</result>
+            <result name="input">/WEB-INF/shareFile.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
 
 
         <action name="listRemoteFilesAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listRemote">
@@ -244,7 +259,6 @@
             <result name="error">/WEB-INF/dashboard.jsp</result>
             <result name="login" type="chain">index</result>
         </action>
-
 
     </package>
 
