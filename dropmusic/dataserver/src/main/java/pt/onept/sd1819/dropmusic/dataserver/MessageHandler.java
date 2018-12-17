@@ -182,8 +182,13 @@ final class MessageHandler implements Runnable {
 		DropmusicDataType data = incoming.getData();
 		Class tClass = TypeFactory.getSubtype(data);
 		try {
-			outgoing.setDataList(this.dbManager.list(tClass, data))
-					.setOperation(Operation.SUCCESS);
+			if(tClass.equals(File.class)) {
+				outgoing.setDataList(this.dbManager.list(incoming.getSelf().getId(), tClass, data))
+						.setOperation(Operation.SUCCESS);
+			} else {
+				outgoing.setDataList(this.dbManager.list(tClass, data))
+						.setOperation(Operation.SUCCESS);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			outgoing.setOperation(Operation.EXCEPTION);
