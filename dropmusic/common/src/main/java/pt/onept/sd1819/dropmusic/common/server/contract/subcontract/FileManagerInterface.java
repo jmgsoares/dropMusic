@@ -1,9 +1,6 @@
 package pt.onept.sd1819.dropmusic.common.server.contract.subcontract;
 
-import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
-import pt.onept.sd1819.dropmusic.common.exception.DuplicatedException;
-import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
-import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.Listable;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.File;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
@@ -24,4 +21,8 @@ public interface FileManagerInterface extends Remote, Serializable, Listable<Fil
 	List<File> listRemoteFiles(User self) throws RemoteException;
 
 	void linkRemoteFile(User self, File file) throws DuplicatedException, NotFoundException, UnauthorizedException, RemoteException, DataServerException;
+
+	List<File> listSharedFiles(User self) throws RemoteException, DataServerException;
+
+	void shareFile(User self, File file, User targetUser) throws RemoteException, DataServerException, OAuthException;
 }
