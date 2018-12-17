@@ -30,4 +30,6 @@ public interface DropmusicServerInterface extends Remote, Serializable {
 
 	OAuthProviderInterface oAuthProvider() throws RemoteException;
 
+	FileManagerInterface file() throws RemoteException;
+
 }

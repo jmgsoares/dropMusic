@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class File extends DropmusicDataType<File> {
+	private int ownerId;
 	private String name;
 	private Music music;
 	private String dropBoxFileId;
