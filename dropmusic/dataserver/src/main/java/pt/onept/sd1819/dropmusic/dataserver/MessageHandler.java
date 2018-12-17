@@ -111,6 +111,10 @@ final class MessageHandler implements Runnable {
 		else this.create_raw(incoming, outgoing);
 	}
 
+	private void link_file(Message incoming, Message outgoing) {
+		create_raw(incoming, outgoing);
+	}
+
 	private void register(Message incoming, Message outgoing) {
 		incoming.setData(incoming.getSelf());
 		this.create_raw(incoming, outgoing);
