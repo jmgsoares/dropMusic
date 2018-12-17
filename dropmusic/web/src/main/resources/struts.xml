@@ -206,6 +206,18 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <action name="listRemoteFilesAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listRemote">
+            <result name="success">/WEB-INF/fileList.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
+        <action name="linkFileAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="linkFile">
+            <result name="success">/WEB-INF/dashboard.jsp</result>
+            <result name="error">/WEB-INF/linkFile.jsp</result>
+            <result name="input">/WEB-INF/linkFile.jsp</result>
+            <result name="login" type="chain">index</result>
+        </action>
+
         <action name="showArtistCleanPage">
             <interceptor-ref name="EditorStack" />
             <result>/WEB-INF/artistClean.jsp</result>

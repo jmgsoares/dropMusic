@@ -5,27 +5,15 @@
 
 <s:if test="%{#session.logged}">
 <p><s:text name="loggedAs" /> <s:property value="%{#session.user.username}" /></p>
-</s:if>
 
-<s:if test="hasActionErrors()">
-	<div class="errorMessage">
-		<s:actionerror/>
-	</div>
-</s:if>
-
-<s:if test="hasActionMessages()">
-	<div class="message">
-		<s:actionmessage/>
-	</div>
-</s:if>
-
-<s:if test="%{#session.logged}">
 	<nav>
 		<a href="<s:url action="getAccountAction"><s:param name="model.id" value="%{#session.user.id}"/></s:url>">Account</a> |
 		<a href="<s:url action="searchAction"/>">Search</a> |
 		<a href="<s:url action="listArtistsAction"/>">List Artists</a> |
 		<a href="<s:url action="listAlbumsAction"/>">List Albums</a> |
 		<a href="<s:url action="listMusicsAction"/>">List Musics</a> |
+		<a href="<s:url action="listRemoteFilesAction"/>">List Remote Files</a> |
+		<a href="<s:url action="linkFileAction"/>">Link Remote File</a> |
 		<a href="<s:url action="userLogoutAction"/>">Logout</a>
 	</nav>
 
@@ -42,5 +30,17 @@
 
 	</nav>
 	</s:if>
-<br><br>
+<br>
+</s:if>
+
+<s:if test="hasActionErrors()">
+	<div class="errorMessage">
+		<s:actionerror/>
+	</div>
+</s:if>
+
+<s:if test="hasActionMessages()">
+	<div class="message">
+		<s:actionmessage/>
+	</div>
 </s:if>
