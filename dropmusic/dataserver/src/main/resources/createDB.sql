@@ -148,12 +148,12 @@ create index ARTIST_ALBUM2_FK
 create table UPLOAD (
 	                    ID         SERIAL        not null,
 	                    MUS_ID     INT4          not null,
-	                    BIN        bytea         null,
-	                    IP_ADDRESS VARCHAR(1024) null,
 	                    NAME       VARCHAR(1024) not null,
-	                    DROPBOX_FILE_ID VARCHAR(1024) null,
+	                    DROPBOX_FILE_ID VARCHAR(1024) unique null,
 	                    DROPBOX_PREV_URL VARCHAR(1024) null,
 	                    DROPBOX_FILE_NAME VARCHAR(1024) null,
+	                    DROPBOX_FILE_PATH VARCHAR(1024) null,
+
 	                    constraint PK_UPLOAD primary key (ID)
 );
 
@@ -281,7 +281,6 @@ create unique index ACCOUNT_PK
 create table ACCOUNT_UPLOADS (
 	                             ID     INT4 not null,
 	                             FIL_ID INT4 not null,
-	                             DROPBOX_FILE_ID VARCHAR(1024) unique null,
 	                             constraint PK_ACCOUNT_UPLOADS primary key (ID, FIL_ID)
 );
 

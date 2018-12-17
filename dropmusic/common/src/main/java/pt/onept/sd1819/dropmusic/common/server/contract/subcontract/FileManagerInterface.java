@@ -18,8 +18,5 @@ import java.rmi.RemoteException;
  */
 public interface FileManagerInterface extends Remote, Serializable {
 
-	//TODO replace the add with the crudable implementation?
-	File add(User self, File file, Music music) throws NotFoundException, RemoteException, DataServerException;
 
-	File download(User self, long fileId) throws NotFoundException, RemoteException, DataServerException;
 }
