@@ -47,8 +47,9 @@ public class FileManager extends UnicastRemoteObject implements FileManagerInter
 	public void linkRemoteFile(User self, File object) throws NotFoundException, DuplicatedException, UnauthorizedException, RemoteException, DataServerException {
 		JSONObject remoteFileMetaData = DropBox20.getSharedFileMetaData(object.getDropBoxFileId(),self.getDropBoxToken());
 		if (remoteFileMetaData == null) throw new NotFoundException();
+
 		object.setDropBoxFileName(remoteFileMetaData.getString("name"))
-				.setDropBoxPrevUrl(remoteFileMetaData.getString("preview_url"))
+				.setDropBoxPrevUrl(remoteFileMetaData.getString("preview_url").replace("?dl=0","?dl=1"))
 				.setDropBoxFilePath(remoteFileMetaData.getString("path_display"));
 
 		Message outgoing = MessageBuilder.build(Operation.LINK_FILE, self)
