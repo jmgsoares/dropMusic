@@ -4,6 +4,7 @@ import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
 import pt.onept.sd1819.dropmusic.common.exception.DuplicatedException;
 import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
 import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
+import pt.onept.sd1819.dropmusic.common.server.contract.Listable;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.File;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * @author João Soares
  * @version 1e-1024
  */
-public interface FileManagerInterface extends Remote, Serializable {
+public interface FileManagerInterface extends Remote, Serializable, Listable<File> {
 
 	List<File> listRemoteFiles(User self) throws RemoteException;
 
