@@ -14,12 +14,19 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Main shell of the application where all the functions are implemented to be called on the CLI
+ */
 public class AppShell implements ShellManageable, ShellDependent {
 	private Shell shell;
 	private User user;
 	private NotificationService notification;
 	private UUID subscriptionId;
 
+	/**
+	 * Constructor
+	 * @param user User to attach the shell
+	 */
 	public AppShell(User user) {
 		this.user = user;
 		try {
@@ -29,11 +36,20 @@ public class AppShell implements ShellManageable, ShellDependent {
 		}
 	}
 
+	/**
+	 * Prints messages to the user
+	 * @param message message to print
+	 * @return
+	 */
 	@Command
 	public static String message(String message) {
 		return message;
 	}
 
+	/**
+	 * Pre-Processing upon creating the shell
+	 * Retrieves notifications and subscribes to the live notifications
+	 */
 	@Override
 	public void cliEnterLoop() {
 		try {
@@ -107,6 +123,10 @@ public class AppShell implements ShellManageable, ShellDependent {
 //		}
 	}
 
+	/**
+	 * Function to clean on login
+	 * Unsubscribe the live notifications
+	 */
 	@Override
 	public void cliLeaveLoop() {
 		boolean retry = true;

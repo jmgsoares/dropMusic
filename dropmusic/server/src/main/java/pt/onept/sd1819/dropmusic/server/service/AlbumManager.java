@@ -16,6 +16,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Class to manage all the album related operations
+ */
 public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInterface {
 	private MulticastHandler multicastHandler;
 
@@ -102,8 +105,13 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 		}
 	}
 
+	/**
+	 * @deprecated
+	 * @param self
+	 * @param object
+	 */
 	@Override
-	public void delete(User self, Album object) {
+	public void delete(User self, Album object)  {
 
 	}
 

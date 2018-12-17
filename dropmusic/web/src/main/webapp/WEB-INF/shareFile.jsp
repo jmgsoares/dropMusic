@@ -21,10 +21,9 @@
 
 	<s:form action="shareFileAction" method="POST">
 
+		<p><s:text name="dropBoxFile" /> <s:select list="localFiles" listKey="id" listValue="dropBoxFileName" name="model.id" /></p>
 
-		<p><s:select list="localFiles" listKey="id" listValue="dropBoxFileName" name="model.id" /></p>
-
-		<p><s:select list="users" listKey="id" listValue="username" name="targetUser.id"  /></p>
+		<p><s:text name="localMusic" /> <s:select list="users" listKey="id" listValue="username" name="targetUser.id"  /></p>
 
 		<s:submit value="Share File" />
 

@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
 
+/**
+ * Class with support methods to read a properties/resources files from class path
+ */
 public final class PropertiesReaderUtility {
 
 	private PropertiesReaderUtility() {

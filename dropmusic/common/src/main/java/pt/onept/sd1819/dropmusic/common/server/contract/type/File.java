@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+/**
+ * File
+ */
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)

@@ -16,6 +16,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Class to manage all the user related operations
+ */
 public class UserManager extends UnicastRemoteObject implements UserManagerInterface, Listable<User> {
 	private MulticastHandler multicastHandler;
 
@@ -23,7 +26,6 @@ public class UserManager extends UnicastRemoteObject implements UserManagerInter
 		super();
 		this.multicastHandler = multicastHandler;
 	}
-
 
 	@Override
 	public User login(User user) throws RemoteException, UnauthorizedException, DataServerException {

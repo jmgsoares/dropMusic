@@ -8,6 +8,9 @@ import lombok.experimental.Accessors;
 
 import java.util.List;
 
+/**
+ * Artist
+ */
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)

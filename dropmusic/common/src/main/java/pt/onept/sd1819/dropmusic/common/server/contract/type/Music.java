@@ -6,6 +6,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+/**
+ * Music
+ */
+
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)

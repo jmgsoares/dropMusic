@@ -18,6 +18,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class to handle all the related album actions
+ * This Class will handle all the calls to the RMI server in order to perform the necessary operations
+ * It uses the Album Class as its base model
+ * @see com.opensymphony.xwork2.ModelDriven
+ * This class implements the LoginAware interface to use the session attributes
+ * @see pt.onept.sd1819.dropmusic.web.LoginAware
+ */
 public class AlbumAction extends ActionSupport implements LoginAware, ModelDriven<Album> {
 	private Album album = new Album();
 	private List<Album> albums;
@@ -25,9 +33,14 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 	private List<Artist> artistList;
 	private Review review = new Review();
 
-	public String create() throws Exception {
+	/**
+	 * Create Album
+	 * @return Action result
+	 */
+	public String create() {
 		if (album.getName()==null) return Action.INPUT;
 		try {
+			//Gets RMI Album Manager Server Interface to send the information
 			AlbumManagerInterface albumManager = CommunicationManager.getServerInterface().album();
 			albumManager.create(this.getUser(), album);
 			addActionMessage("Album created successfully");
@@ -48,7 +61,11 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
-	public String read() throws Exception {
+	/**
+	 * Read Album
+	 * @return Action result
+	 */
+	public String read() {
 		if (album.getId()==0) return Action.INPUT;
 		try {
 			AlbumManagerInterface albumManager = CommunicationManager.getServerInterface().album();
@@ -67,6 +84,10 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
+	/**
+	 * Lists all the Albums
+	 * @return Action result
+	 */
 	public String list() {
 		try {
 			AlbumManagerInterface albumManager  = CommunicationManager.getServerInterface().album();
@@ -79,6 +100,10 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
+	/**
+	 * Updates a specific album
+	 * @return Action result
+	 */
 	public String update() {
 		if (album.getId() == 0) return Action.INPUT;
 		try {
@@ -102,10 +127,20 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
-	public String delete() throws Exception {
+	/**
+	 * @deprecated
+	 * Not implemented
+	 * @return
+	 * @throws Exception
+	 */
+	public String delete() {
 		return Action.SUCCESS;
 	}
 
+	/**
+	 * Inserts a review into an album
+	 * @return Action Result
+	 */
 	public String review()  {
 		if(review.getReview()==null | review.getReview().equals("") | review.getScore()<0 | review.getScore()>5 ) {
 			addActionError("Some data fields where improperly set (Review score 0-5 + Text)");
@@ -126,6 +161,10 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
+	/**
+	 * Support function to retrieve all of the app artists
+	 * @return A List with all the artists
+	 */
 	public List<Artist> getArtistList() {
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
@@ -136,25 +175,48 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 		return new LinkedList<>();
 	}
 
+	/**
+	 * Support function to retrieve all of the app albums
+	 * @return A List with all the artists
+	 */
 	public List<Album> getAlbums() {
 		return albums;
 	}
 
+	/**
+	 * Getter for the model of this Action Class (in this case, Album)
+	 * @return album parameter
+	 * @see ModelDriven
+	 */
 	@Override
 	public Album getModel() {
 		return this.album;
 	}
 
+	/**
+	 * Setter for session
+	 * @param map session map
+	 * @see pt.onept.sd1819.dropmusic.web.LoginAware
+	 */
 	@Override
 	public void setSession(Map<String, Object> map) {
 		this.session = map;
 	}
 
+	/**
+	 * Getter for session
+	 * @return the session map
+	 * @see pt.onept.sd1819.dropmusic.web.LoginAware
+	 */
 	@Override
 	public Map<String, Object> getSession() {
 		return this.session;
 	}
 
+	/**
+	 * Getter for the review
+	 * @return the review parameter
+	 */
 	public Review getReview() {
 		return this.review;
 	}

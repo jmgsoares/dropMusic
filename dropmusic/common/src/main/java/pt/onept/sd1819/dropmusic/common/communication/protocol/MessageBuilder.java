@@ -5,6 +5,9 @@ import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 
 import java.util.UUID;
 
+/**
+ * Message builder
+ */
 public final class MessageBuilder {
 
 	private MessageBuilder() {

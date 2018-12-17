@@ -6,6 +6,7 @@
 
 <struts>
 
+
     <constant name="struts.devMode" value="true"/>
     <constant name="struts.ui.theme" value="simple"/>
 
@@ -14,23 +15,30 @@
     <package name="web" extends="struts-default">
 
         <interceptors>
+            <!-- Interceptor to verify if a user is authenticated in the application -->
             <interceptor name="AuthenticationInterceptor" class="pt.onept.sd1819.dropmusic.web.interceptor.AuthenticationInterceptor" />
 
+            <!-- Interceptor to verify if the user in an editor -->
             <interceptor name="EditorInterceptor" class="pt.onept.sd1819.dropmusic.web.interceptor.EditorInterceptor" />
 
+            <!-- Interceptor to verify if the user has a linked dropBox account -->
             <interceptor name="OAuthInterceptor" class="pt.onept.sd1819.dropmusic.web.interceptor.OAuthInterceptor" />
 
+            <!-- In the custom interceptor stacks we always verify first if the user is authenticated -->
+            <!-- Stack with the OAuthInterceptor -->
             <interceptor-stack name="OAuthLinkedStack">
                 <interceptor-ref name="AuthenticationInterceptor" />
                 <interceptor-ref name="OAuthInterceptor" />
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>
 
+            <!-- Stack with the Authenticated Interceptor -->
             <interceptor-stack name="AuthenticatedStack">
                 <interceptor-ref name="AuthenticationInterceptor" />
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>
 
+            <!-- Stack with the EditorInterceptor -->
             <interceptor-stack name="EditorStack">
                 <interceptor-ref name="AuthenticationInterceptor" />
                 <interceptor-ref name="EditorInterceptor" />
@@ -39,10 +47,13 @@
 
         </interceptors>
 
+        <!-- By default all the actions need the user to be authenticated -->
         <default-interceptor-ref name="AuthenticatedStack" />
+
 
         <default-action-ref name="index"/>
 
+        <!-- Action to get a refreshed authorization URL | In this case the interceptor stack is the default one-->
         <action name="index" class="pt.onept.sd1819.dropmusic.web.action.IndexAction" method="execute">
             <interceptor-ref name="defaultStack" />
             <result>/login.jsp</result>
@@ -62,6 +73,7 @@
             <result>/WEB-INF/dashboard.jsp</result>
         </action>
 
+        <!-- Register and login actions can also be executed without any login -->
         <action name="registerAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="create">
             <interceptor-ref name="defaultStack" />
             <result name="success" type="chain">index</result>
@@ -82,6 +94,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="addArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="create">
             <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -90,6 +103,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="updateArtistAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="update">
             <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -103,6 +117,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="addAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="create">
             <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -111,6 +126,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="updateAlbumAction" class="pt.onept.sd1819.dropmusic.web.action.AlbumAction" method="update">
             <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -119,6 +135,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="addMusicAction" class="pt.onept.sd1819.dropmusic.web.action.MusicAction" method="create">
             <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -134,6 +151,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="updateMusicAction" class="pt.onept.sd1819.dropmusic.web.action.MusicAction" method="update">
             <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -206,6 +224,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="updateUserAction" class="pt.onept.sd1819.dropmusic.web.action.UserAction" method="update">
             <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -214,6 +233,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="cleanArtistsAction" class="pt.onept.sd1819.dropmusic.web.action.ArtistAction" method="clean">
             <interceptor-ref name="EditorStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -222,6 +242,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to editors, so the interceptor stack changes to the editorStack -->
         <action name="showArtistCleanPage">
             <interceptor-ref name="EditorStack" />
             <result>/WEB-INF/artistClean.jsp</result>
@@ -230,6 +251,7 @@
         </action>
 
 
+        <!-- Action reserved to users with a linked dropBox account, so the interceptor stack changes to the OAuthStack -->
         <action name="shareFileAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="share">
             <interceptor-ref name="OAuthLinkedStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -238,7 +260,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
-
+        <!-- Action reserved to users with a linked dropBox account, so the interceptor stack changes to the OAuthStack -->
         <action name="listSharedFiles" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listShares">
             <interceptor-ref name="OAuthLinkedStack" />
             <result name="success">/WEB-INF/listShares.jsp</result>
@@ -247,7 +269,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
-
+        <!-- Action reserved to users with a linked dropBox account, so the interceptor stack changes to the OAuthStack -->
         <action name="listRemoteFilesAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listRemote">
             <interceptor-ref name="OAuthLinkedStack" />
             <result name="success">/WEB-INF/remoteFileList.jsp</result>
@@ -255,6 +277,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to users with a linked dropBox account, so the interceptor stack changes to the OAuthStack -->
         <action name="linkFileAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="linkFile">
             <interceptor-ref name="OAuthLinkedStack" />
             <result name="success">/WEB-INF/dashboard.jsp</result>
@@ -263,6 +286,7 @@
             <result name="login" type="chain">index</result>
         </action>
 
+        <!-- Action reserved to users with a linked dropBox account, so the interceptor stack changes to the OAuthStack -->
         <action name="listLocalFilesAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="listLocal">
             <interceptor-ref name="OAuthLinkedStack" />
             <result name="success">/WEB-INF/localFileList.jsp</result>

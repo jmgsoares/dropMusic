@@ -16,11 +16,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class to handle all the related music actions
+ * This Class will handle all the calls to the RMI server in order to perform the necessary operations
+ * It uses the Music Class as its base model
+ * @see com.opensymphony.xwork2.ModelDriven
+ * This class implements the LoginAware interface to use the session attributes
+ * @see pt.onept.sd1819.dropmusic.web.LoginAware
+ */
 public class MusicAction extends ActionSupport implements LoginAware, ModelDriven<Music> {
 	private Music music = new Music();
 	private List<Music> musics;
 	private Map<String, Object> session;
 
+	/**
+	 * Create Music
+	 * @return Action result
+	 */
 	public String create() {
 		if (music.getName()==null) return Action.INPUT;
 		try {
@@ -44,7 +56,11 @@ public class MusicAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
-	public String read() throws Exception {
+	/**
+	 * Read Music
+	 * @return Action result
+	 */
+	public String read() {
 		if (music.getId()==0) return Action.INPUT;
 		try {
 			MusicManagerInterface musicManager = CommunicationManager.getServerInterface().music();
@@ -63,6 +79,10 @@ public class MusicAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
+	/**
+	 * Updates a specific music
+	 * @return Action result
+	 */
 	public String update() {
 		if (music.getId() == 0) return Action.INPUT;
 		try {
@@ -86,6 +106,10 @@ public class MusicAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
+	/**
+	 * Lists all the musics
+	 * @return Action result
+	 */
 	public String list() {
 		try {
 			MusicManagerInterface musicManager = CommunicationManager.getServerInterface().music();
@@ -98,10 +122,18 @@ public class MusicAction extends ActionSupport implements LoginAware, ModelDrive
 		}
 	}
 
+	/**
+	 * Getter
+	 * @return musics parameter
+	 */
 	public List<Music> getMusics() {
 		return musics;
 	}
 
+	/**
+	 * Support function to retrieve all of the app albums
+	 * @return A List with all the artists
+	 */
 	public List<Album> getAlbumList() {
 		try {
 			AlbumManagerInterface albumManager = CommunicationManager.getServerInterface().album();
@@ -112,16 +144,31 @@ public class MusicAction extends ActionSupport implements LoginAware, ModelDrive
 		return new LinkedList<>();
 	}
 
+	/**
+	 * Getter for the model of this Action Class (in this case, Album)
+	 * @return album parameter
+	 * @see ModelDriven
+	 */
 	@Override
 	public Music getModel() {
 		return this.music;
 	}
 
+	/**
+	 * Setter for session
+	 * @param map session map
+	 * @see pt.onept.sd1819.dropmusic.web.LoginAware
+	 */
 	@Override
 	public void setSession(Map<String, Object> map) {
 		this.session = map;
 	}
 
+	/**
+	 * Getter for session
+	 * @return the session map
+	 * @see pt.onept.sd1819.dropmusic.web.LoginAware
+	 */
 	@Override
 	public Map<String, Object> getSession() {
 		return this.session;

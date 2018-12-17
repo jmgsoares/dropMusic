@@ -15,6 +15,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is responsible to handle all direct contact with the dataBase via the Data Base Connector
+ * @see DatabaseConnector
+ */
 public class DatabaseManager {
 	private static final Object lock = new Object();
 	private static Map<Class, String> objectTable = null;

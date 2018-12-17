@@ -14,12 +14,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class to handle all the related Artist actions
+ * This Class will handle all the calls to the RMI server in order to perform the necessary operations
+ * It uses the Artist Class as its base model
+ * @see com.opensymphony.xwork2.ModelDriven
+ * This class implements the LoginAware interface to use the session attributes
+ * @see pt.onept.sd1819.dropmusic.web.LoginAware
+ */
 public class ArtistAction extends ActionSupport implements LoginAware, ModelDriven<Artist> {
 	private Artist artist = new Artist();
 	private List<Artist> artists;
 	private Map<String, Object> session;
 
-	public String create() throws Exception{
+	/**
+	 * Create Artist
+	 * @return Action result
+	 */
+	public String create() {
 		if (artist.getName()==null) return Action.INPUT;
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
@@ -42,7 +54,11 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 		}
 	}
 
-	public String read() throws Exception {
+	/**
+	 * Read Artist
+	 * @return Action result
+	 */
+	public String read() {
 		if (artist.getId()==0) return Action.INPUT;
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
@@ -61,7 +77,11 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 		}
 	}
 
-	public String update() throws Exception {
+	/**
+	 * Updates a specific artist
+	 * @return Action result
+	 */
+	public String update() {
 		if (artist.getId() == 0) return Action.INPUT;
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
@@ -84,10 +104,19 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 		}
 	}
 
-	public String delete() throws Exception {
+	/**
+	 * @deprecated
+	 * Not implemented
+	 * @return
+	 */
+	public String delete() {
 		return Action.SUCCESS;
 	}
 
+	/**
+	 * Cleans the DB by removing all the artists that aren't connected to any album or song
+	 * @return Action result
+	 */
 	public String clean() {
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
@@ -101,6 +130,10 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 		}
 	}
 
+	/**
+	 * Lists all the Artists
+	 * @return Action result
+	 */
 	public String list() {
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
@@ -113,20 +146,39 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 		}
 	}
 
+	/**
+	 * Getter for the artists parameter
+	 * @return the artists parameter
+	 */
 	public List<Artist> getArtists() {
 		return artists;
 	}
 
+	/**
+	 * Getter for the model of this Action Class (in this case, Artist)
+	 * @return artist parameter
+	 * @see ModelDriven
+	 */
 	@Override
 	public Artist getModel() {
 		return this.artist;
 	}
 
+	/**
+	 * Setter for session
+	 * @param map session map
+	 * @see pt.onept.sd1819.dropmusic.web.LoginAware
+	 */
 	@Override
 	public void setSession(Map<String, Object> map) {
 		this.session = map;
 	}
 
+	/**
+	 * Getter for session
+	 * @return the session map
+	 * @see pt.onept.sd1819.dropmusic.web.LoginAware
+	 */
 	@Override
 	public Map<String, Object> getSession() {
 		return this.session;

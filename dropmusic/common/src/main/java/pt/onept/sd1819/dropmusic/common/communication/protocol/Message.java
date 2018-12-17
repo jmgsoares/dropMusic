@@ -7,6 +7,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Base Class to support the information exchange via multicast
+ * @param <T>
+ */
 public class Message<T extends DropmusicDataType> implements Serializable {
 	private final static String APPID = "de9db107-9834-4aeb-a731-86d959513831";
 	private String appId;

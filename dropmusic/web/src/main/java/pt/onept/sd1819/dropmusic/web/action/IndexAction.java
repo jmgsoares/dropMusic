@@ -6,13 +6,21 @@ import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
 import java.rmi.RemoteException;
 
+/**
+ * Class to handle the index (default action), in order to always provide a refreshed auth url
+ * This Class will handle all the calls to the RMI server in order to perform the necessary operations
+ */
 public class IndexAction extends ActionSupport {
 
 	@Override
-	public String execute() throws Exception {
+	public String execute() {
 		return Action.SUCCESS;
 	}
 
+	/**
+	 * Function to get the OAuth Authorization URL
+	 * @return the AuthUrl
+	 */
 	public String getoAuthUrl() {
 		try {
 			return CommunicationManager.getServerInterface().oAuthProvider().getAuthorizationUrl();

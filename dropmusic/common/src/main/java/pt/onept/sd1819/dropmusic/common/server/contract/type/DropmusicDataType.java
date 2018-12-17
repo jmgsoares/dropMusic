@@ -8,6 +8,10 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
+/**
+ * Base (Parent) Class for all platform subDataTypes in order to provide compatibility for generic methods
+ */
+
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
