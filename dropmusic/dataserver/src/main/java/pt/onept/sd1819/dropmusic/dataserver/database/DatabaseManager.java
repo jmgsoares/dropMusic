@@ -104,7 +104,13 @@ public class DatabaseManager {
 
 		} else if (object instanceof File) {
 			File file = (File) object;
-			ps = connection.prepareStatement(""); //TODO
+			ps = connection.prepareStatement("SELECT * FROM add_upload(?, ?, ?, ?, ?, ?);");
+			ps.setInt(1, file.getOwnerId());
+			ps.setInt(2, file.getMusic().getId());
+			ps.setString(3, file.getDropBoxFileId());
+			ps.setString(4, file.getDropBoxPrevUrl());
+			ps.setString(5, file.getDropBoxFileName());
+			ps.setString(6, file.getDropBoxFilePath());
 
 		} else if (object instanceof Music) {
 			Music music = (Music) object;

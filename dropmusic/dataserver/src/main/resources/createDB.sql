@@ -148,7 +148,7 @@ create index ARTIST_ALBUM2_FK
 create table UPLOAD (
 	                    ID         SERIAL        not null,
 	                    MUS_ID     INT4          not null,
-	                    NAME       VARCHAR(1024) not null,
+	                    NAME       VARCHAR(1024) null,
 	                    DROPBOX_FILE_ID VARCHAR(1024) unique null,
 	                    DROPBOX_PREV_URL VARCHAR(1024) null,
 	                    DROPBOX_FILE_NAME VARCHAR(1024) null,
@@ -386,21 +386,31 @@ alter table ACCOUNT_UPLOADS
 			on delete cascade on update restrict;
 
 
-DROP FUNCTION IF EXISTS add_album(artist_id SERIAL, name VARCHAR(64), description VARCHAR(1024));
+DROP FUNCTION IF EXISTS add_album();
 CREATE FUNCTION add_album(artist_id INT4, asname VARCHAR(64), descriptionz VARCHAR(1024))
 	RETURNS album AS $$
 DECLARE
 	new_album album%ROWTYPE;
-	t1        text;
-	t2        text;
-	c1        float;
 BEGIN
-	SELECT * FROM ALBUM A WHERE A.NAME LIKE ('%' || asname || '%')
-		INTO t1, t2, c1;
 	INSERT INTO album (name, description) VALUES (asname, descriptionz) RETURNING *
 		INTO new_album;
 	INSERT INTO artist_album (id, alb_id) VALUES (artist_id, new_album.id);
 	RETURN new_album;
+END;
+$$
+LANGUAGE plpgsql STRICT;
+
+DROP FUNCTION IF EXISTS add_upload();
+CREATE FUNCTION add_upload(userid INT4, musid INT4,  dbfileid VARCHAR(1024), dbprevurl VARCHAR(1024), dbfilename VARCHAR(1024), dbfilepath VARCHAR(1024))
+	RETURNS upload AS $$
+DECLARE
+	new_upload upload%ROWTYPE;
+BEGIN
+	INSERT INTO UPLOAD (mus_id, dropbox_file_id, dropbox_prev_url, dropbox_file_name, dropbox_file_path)
+	VALUES (musid, dbfileid, dbprevurl, dbfilename, dbfilepath)
+	RETURNING *	INTO new_upload;
+	INSERT INTO account_uploads (id, fil_id) VALUES (userid, new_upload.id);
+	RETURN new_upload;
 END;
 $$
 LANGUAGE plpgsql STRICT;
