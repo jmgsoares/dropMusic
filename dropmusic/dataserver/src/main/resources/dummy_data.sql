@@ -6,6 +6,8 @@ INSERT INTO account (name, password, editor)
 VALUES ('jaime', '123', true);
 INSERT INTO account (name, password, editor)
 VALUES ('patife', '123', false);
+INSERT INTO account (name, password, editor)
+VALUES ('zemamede', '123', true);
 INSERT INTO artist (name)
 VALUES ('sabao');
 INSERT INTO artist (name)
