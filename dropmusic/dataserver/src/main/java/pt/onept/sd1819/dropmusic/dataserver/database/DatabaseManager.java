@@ -57,6 +57,7 @@ public class DatabaseManager {
 		queries.put(Notification.class, "SELECT * FROM notification");
 		queries.put(Artist.class, "SELECT * FROM artist");
 		queries.put(User.class, "SELECT * FROM account");
+		queries.put(File.class, "SELECT * FROM upload");
 		return queries;
 	}
 
