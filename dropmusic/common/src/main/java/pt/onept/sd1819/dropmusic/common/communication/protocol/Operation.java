@@ -11,7 +11,8 @@ public enum Operation {
 	//TODO delete operation needed?
 	DELETE,                 //Self, music | album | artist
 	CLEAN,                  //Self,
-	SEARCH,                 //Self,  search String -> List<DropmusicDataType>
+	LINK_FILE,              //Self, File
+	SEARCH,                 //Self, search String -> List<DropmusicDataType>
 	LIST,                   //Self, music | album | artist
 	ADD_REVIEW,             //Self, Review
 	GET_NOTIFICATIONS,      //Self -> List<DropmusicDataType>
