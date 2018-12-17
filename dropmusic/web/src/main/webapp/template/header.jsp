@@ -12,8 +12,9 @@
 		<a href="<s:url action="listArtistsAction"/>">List Artists</a> |
 		<a href="<s:url action="listAlbumsAction"/>">List Albums</a> |
 		<a href="<s:url action="listMusicsAction"/>">List Musics</a> |
-		<a href="<s:url action="listRemoteFilesAction"/>">List Remote Files</a> |
-		<a href="<s:url action="linkFileAction"/>">Link Remote File</a> |
+		<a href="<s:url action="listRemoteFilesAction"/>">List DropBox Files</a> |
+		<a href="<s:url action="linkFileAction"/>">Link Music to DropBox File</a> |
+		<a href="<s:url action="listLocalFilesAction"/>">List Linked Files</a> |
 		<a href="<s:url action="userLogoutAction"/>">Logout</a>
 	</nav>
 

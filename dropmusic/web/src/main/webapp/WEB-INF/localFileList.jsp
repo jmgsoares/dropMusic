@@ -5,33 +5,38 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Link File</title>
+	<title>DropMusic Linked Musics - File</title>
 	<s:include value="../template/scripts.jsp"/>
 
 </head>
-
 <body>
-
 <s:i18n name="en-US">
-	<h1>Link File</h1>
+	<h1>DropMusic Linked Musics - File</h1>
 	<s:include value="../template/header.jsp"/>
 
-	<h3><s:text name="disclaimer" /></h3>
-	<h4><s:text name="dropBoxFolderRestrictions" /></h4>
+	<table>
+		<s:iterator value="files">
+			<tr>
+				<td>
 
-	<s:form action="linkFileAction" method="POST">
+					<s:property value="musicName" />
 
+				</td>
 
-		<p><s:select list="remoteFiles" listKey="dropBoxFileId" listValue="dropBoxFileName" name="model.dropBoxFileId" /></p>
+				<td>
+					<a href="<s:url value="%{dropBoxPrevUrl}" />">
+					<s:property value="dropBoxFileName" />
+					</a>
 
-		<p><s:select list="musics" listKey="id" listValue="name" name="model.musicId"  /></p>
+				</td>
 
-		<s:submit value="Link File" />
+			</tr>
+		</s:iterator>
 
-	</s:form>
+	</table>
+
 
 	<s:include value="../template/footer.jsp"/>
 </s:i18n>
-
 </body>
 </html>
