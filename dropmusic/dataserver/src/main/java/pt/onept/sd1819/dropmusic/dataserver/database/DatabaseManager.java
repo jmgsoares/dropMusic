@@ -95,34 +95,41 @@ public class DatabaseManager {
 			ps.setInt(1, album.getArtist().getId());
 			ps.setString(2, album.getName());
 			ps.setString(3, album.getDescription());
+
 		} else if (object instanceof Artist) {
 			Artist artist = (Artist) object;
 			ps = connection.prepareStatement("INSERT INTO artist(name) VALUES(?) RETURNING *;");
 			ps.setString(1, artist.getName());
+
 		} else if (object instanceof File) {
 			File file = (File) object;
 			ps = connection.prepareStatement(""); //TODO
+
 		} else if (object instanceof Music) {
 			Music music = (Music) object;
 			ps = connection.prepareStatement("INSERT INTO music(alb_id, name) VALUES (?, ?) RETURNING *;");
 			ps.setInt(1, music.getAlbumId());
 			ps.setString(2, music.getName());
+
 		} else if (object instanceof Notification) {
 			Notification notification = (Notification) object;
 			ps = connection.prepareStatement("INSERT INTO notification(use_id, message) VALUES(?, ?) RETURNING *;");
 			ps.setInt(1, notification.getUserId());
 			ps.setString(2, notification.getMessage());
+
 		} else if (object instanceof Review) {
 			Review review = (Review) object;
 			ps = connection.prepareStatement("INSERT INTO review(alb_id, text, score) VALUES(?, ?, ?) RETURNING *;");
 			ps.setInt(1, review.getAlbumId());
 			ps.setString(2, review.getReview());
 			ps.setFloat(3, review.getScore());
+
 		} else if (object instanceof User) {
 			User user = (User) object;
 			ps = connection.prepareStatement("INSERT INTO account(name, password) VALUES (?, ?) RETURNING *;");
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getPassword());
+
 		} else {
 			System.out.println("###" + TypeFactory.getSubtype(object).toString());
 			throw new InvalidClassException("");
@@ -237,6 +244,11 @@ public class DatabaseManager {
 				PreparedStatement ps = this.getInsertStatement(dbConnection, tClass, object)
 		) {
 			ResultSet rs = ps.executeQuery();
+			if (tClass.equals(Review.class)) {
+				PreparedStatement ps1 = dbConnection.prepareStatement("UPDATE ALBUM SET SCORE = subQ.avg FROM (SELECT ALB_ID, avg(review.SCORE) FROM review GROUP BY ALB_ID) AS subQ WHERE id = subQ.alb_id AND id = ?;");
+				ps1.setInt(1, ((Review)object).getAlbumId());
+				ps1.execute();
+			}
 			if (rs.next()) return TypeFactory.constructType(tClass, rs);
 			else throw new IncompleteException();
 		}
