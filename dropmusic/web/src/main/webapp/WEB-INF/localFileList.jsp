@@ -14,14 +14,21 @@
 	<h1>DropMusic Linked Musics - File</h1>
 	<s:include value="../template/header.jsp"/>
 
-	<br><br>
+	<br>
 
 	<table>
+		<tr>
+			<s:text name="fileName" />
+		</tr>
 		<s:iterator value="files">
 
 			<tr>
 				<td>
-					<a href="<s:url value="%{dropBoxPrevUrl}" />">
+
+					<a target="_blank" href=" <s:url action="getPlayerAction" >
+						<s:param name="model.dropBoxPrevUrl" value="dropBoxPrevUrl"/>
+						<s:param name="model.dropBoxFileName" value="dropBoxFileName" />
+						</s:url>">
 						<s:property value="dropBoxFileName" />
 					</a>
 
@@ -37,7 +44,6 @@
 		</s:iterator>
 
 	</table>
-
 
 	<s:include value="../template/footer.jsp"/>
 </s:i18n>
