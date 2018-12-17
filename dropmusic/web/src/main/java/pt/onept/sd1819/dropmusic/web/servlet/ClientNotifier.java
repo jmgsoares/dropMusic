@@ -15,7 +15,7 @@ public class ClientNotifier extends UnicastRemoteObject implements Notifiable {
 	/**
 	 *
 	 * @param notificationServlet the servlet that will be used to notify the client
-	 * @throws RemoteException
+	 * @throws RemoteException on RMI error
 	 */
 	public ClientNotifier(NotificationServlet notificationServlet) throws RemoteException {
 		this.notificationServlet = notificationServlet;
@@ -25,7 +25,7 @@ public class ClientNotifier extends UnicastRemoteObject implements Notifiable {
 	 * Function executed upon a new notification
 	 * @param notification the notification to display to the user
 	 * @return the operation success
-	 * @throws RemoteException
+	 * @throws RemoteException on RMI error
 	 */
 	@Override
 	public boolean notify(Notification notification) throws RemoteException {

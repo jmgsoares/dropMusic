@@ -130,8 +130,7 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 	/**
 	 * @deprecated
 	 * Not implemented
-	 * @return
-	 * @throws Exception
+	 * @return Action Result
 	 */
 	public String delete() {
 		return Action.SUCCESS;

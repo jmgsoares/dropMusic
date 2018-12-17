@@ -14,13 +14,13 @@ public interface LoginAware extends SessionAware {
 	/**
 	 * Getter for session
 	 * @see SessionAware
-	 * @return
+	 * @return the session map
 	 */
 	Map<String, Object> getSession();
 
 	/**
 	 * Function to return the user in session
-	 * @return
+	 * @return the user in session
 	 */
 	default User getUser() {
 		return (User) this.getSession().get("user");
@@ -28,7 +28,7 @@ public interface LoginAware extends SessionAware {
 
 	/**
 	 * Function to retrieve the user login status
-	 * @return
+	 * @return the login status of the user
 	 */
 	default boolean isLogged() {
 		return this.getSession() != null && this.getSession().containsKey("logged") && (boolean) this.getSession().get("logged");

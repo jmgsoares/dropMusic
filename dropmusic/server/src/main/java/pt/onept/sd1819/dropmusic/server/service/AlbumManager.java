@@ -107,8 +107,8 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 
 	/**
 	 * @deprecated
-	 * @param self
-	 * @param object
+	 * @param self self
+	 * @param object object
 	 */
 	@Override
 	public void delete(User self, Album object)  {

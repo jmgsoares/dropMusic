@@ -182,7 +182,7 @@ public class FileAction extends ActionSupport implements LoginAware, ModelDriven
 
 	/**
 	 * Getter
-	 * @return
+	 * @return files parameter
 	 */
 	public List<File> getFiles() {
 		return files;

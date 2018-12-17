@@ -9,7 +9,7 @@ import java.util.UUID;
 
 /**
  * Base Class to support the information exchange via multicast
- * @param <T>
+ * @param <T> Class T
  */
 public class Message<T extends DropmusicDataType> implements Serializable {
 	private final static String APPID = "de9db107-9834-4aeb-a731-86d959513831";

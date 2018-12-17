@@ -25,10 +25,9 @@ public class SearchAction extends ActionSupport implements LoginAware {
 	/**
 	 * Search action
 	 * @return Action result
-	 * @throws Exception
 	 */
 	@Override
-	public String execute() throws Exception {
+	public String execute() {
 		if (query == null || query.isEmpty()) return Action.INPUT;
 		try {
 			this.albums = CommunicationManager.getServerInterface().album().search(this.getUser(), query);

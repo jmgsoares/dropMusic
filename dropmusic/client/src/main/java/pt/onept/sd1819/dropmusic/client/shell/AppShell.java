@@ -39,7 +39,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 	/**
 	 * Prints messages to the user
 	 * @param message message to print
-	 * @return
+	 * @return message to print @ the CLI
 	 */
 	@Command
 	public static String message(String message) {

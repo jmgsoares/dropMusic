@@ -107,7 +107,7 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 	/**
 	 * @deprecated
 	 * Not implemented
-	 * @return
+	 * @return Action Result
 	 */
 	public String delete() {
 		return Action.SUCCESS;
