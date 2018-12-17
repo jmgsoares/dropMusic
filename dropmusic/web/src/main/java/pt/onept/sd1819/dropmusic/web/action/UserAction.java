@@ -23,7 +23,6 @@ public class UserAction extends ActionSupport implements LoginAware, ModelDriven
 			UserManagerInterface userManager = CommunicationManager.getServerInterface().user();
 			User loggedUser = userManager.login(this.user);
 			this.login(loggedUser);
-			addActionMessage("Welcome " + user.getUsername());
 			return Action.SUCCESS;
 		} catch (RemoteException | DataServerException e) {
 			e.printStackTrace();
