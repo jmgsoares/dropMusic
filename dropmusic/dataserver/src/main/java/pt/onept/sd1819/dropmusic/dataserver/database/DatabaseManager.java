@@ -57,7 +57,7 @@ public class DatabaseManager {
 		queries.put(Notification.class, "SELECT * FROM notification");
 		queries.put(Artist.class, "SELECT * FROM artist");
 		queries.put(User.class, "SELECT * FROM account");
-		queries.put(File.class, "SELECT * FROM upload");
+		queries.put(File.class, "SELECT * FROM upload where acc_id = ?");
 		return queries;
 	}
 
@@ -104,9 +104,9 @@ public class DatabaseManager {
 
 		} else if (object instanceof File) {
 			File file = (File) object;
-			ps = connection.prepareStatement("SELECT * FROM add_upload(?, ?, ?, ?, ?, ?);");
+			ps = connection.prepareStatement("INSERT INTO upload(acc_id, mus_id, dropbox_file_id, dropbox_prev_url, dropbox_file_name, dropbox_file_path) VALUES (?, ?, ?, ?, ?, ?) RETURNING *;");
 			ps.setInt(1, file.getOwnerId());
-			ps.setInt(2, file.getMusic().getId());
+			ps.setInt(2, file.getMusicId());
 			ps.setString(3, file.getDropBoxFileId());
 			ps.setString(4, file.getDropBoxPrevUrl());
 			ps.setString(5, file.getDropBoxFileName());
@@ -320,6 +320,20 @@ public class DatabaseManager {
 		}
 		return list;
 	}
+
+	public <T extends DropmusicDataType> List<T> list(int id, Class<T> tClass, DropmusicDataType object) throws SQLException {
+		List<T> list = new LinkedList<>();
+		try (
+				Connection connection = dbConnector.getConnection();
+				PreparedStatement ps = connection.prepareStatement(DatabaseManager.getListQuery(tClass))
+		) {
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) list.add(TypeFactory.constructType(tClass, rs));
+		}
+		return list;
+	}
+
 
 	private <T extends DropmusicDataType> void populate(Class<T> tClass, T object) throws SQLException {
 		if (object instanceof Artist) {

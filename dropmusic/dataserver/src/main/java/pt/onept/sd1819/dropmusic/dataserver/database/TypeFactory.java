@@ -28,6 +28,8 @@ public final class TypeFactory {
 			} else if (tClass.equals(File.class)) {
 				((File) object)
 						.setId(rs.getInt("id"))
+						.setOwnerId(rs.getInt("acc_id"))
+						.setMusicId(rs.getInt("mus_id"))
 						.setDropBoxFileId(rs.getString("dropbox_file_id"))
 						.setDropBoxFileName(rs.getString("dropbox_file_name"))
 						.setDropBoxFilePath(rs.getString("dropbox_file_path"))

@@ -147,12 +147,13 @@ create index ARTIST_ALBUM2_FK
 /*==============================================================*/
 create table UPLOAD (
 	                    ID         SERIAL        not null,
+	                    ACC_ID		 INT4					 not null,
 	                    MUS_ID     INT4          not null,
-	                    NAME       VARCHAR(1024) null,
-	                    DROPBOX_FILE_ID VARCHAR(1024) unique null,
-	                    DROPBOX_PREV_URL VARCHAR(1024) null,
-	                    DROPBOX_FILE_NAME VARCHAR(1024) null,
-	                    DROPBOX_FILE_PATH VARCHAR(1024) null,
+	                    MUSIC_NAME     VARCHAR(1024) null,
+	                    DROPBOX_FILE_ID VARCHAR(1024) unique not null,
+	                    DROPBOX_PREV_URL VARCHAR(1024) not null,
+	                    DROPBOX_FILE_NAME VARCHAR(1024) not null,
+	                    DROPBOX_FILE_PATH VARCHAR(1024) not null,
 
 	                    constraint PK_UPLOAD primary key (ID)
 );
@@ -359,6 +360,11 @@ alter table UPLOAD
 	add constraint FK_UPLOAD_UPLOAD_MUSI_MUSIC foreign key (MUS_ID)
 		references MUSIC (ID)
 			on delete cascade on update restrict;
+
+alter table UPLOAD
+	add constraint FK_UPLOAD_ACCOUNT foreign key (ACC_ID)
+		references ACCOUNT (ID)
+		on delete cascade on update restrict;
 
 alter table MUSIC
 	add constraint FK_MUSIC_ALBUM_MUS_ALBUM foreign key (ALB_ID)
