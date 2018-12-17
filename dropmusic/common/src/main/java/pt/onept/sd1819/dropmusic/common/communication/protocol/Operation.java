@@ -21,7 +21,8 @@ public enum Operation {
 	GET_EDITORS,            //Self, album | artist
 	UPLOAD_MUSIC,           //Self, File -> File
 	DOWNLOAD_MUSIC,         //Self, FileId -> File
-	SHARE_MUSIC,            //Self, FileId, UserShare
+	SHARE,                  //Self, FileId, UserShare
+	LIST_SHARES,            //Self
 
 	SUCCESS,
 	DUPLICATE,
@@ -29,6 +30,4 @@ public enum Operation {
 	INCOMPLETE,
 	NO_PERMIT, //Where's your loicence m8?? 👮 👮 👮
 	EXCEPTION
-
-
 }
