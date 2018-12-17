@@ -15,6 +15,8 @@
 		<a href="<s:url action="listRemoteFilesAction"/>">List DropBox Files</a> |
 		<a href="<s:url action="linkFileAction"/>">Link Music to DropBox File</a> |
 		<a href="<s:url action="listLocalFilesAction"/>">List Linked Files</a> |
+		<a href="<s:url action="shareFileAction"/>">Share File</a> |
+		<a href="<s:url action="listSharedFiles"/>">List Shared Files</a> |
 		<a href="<s:url action="userLogoutAction"/>">Logout</a>
 	</nav>
 
