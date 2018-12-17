@@ -28,26 +28,26 @@ public class CallBackServlet extends HttpServlet {
 		HttpSession session = req.getSession(true);
 		User user = (User) session.getAttribute("user");
 		Boolean isLogged = (Boolean) session.getAttribute("logged");
-		OAuthProviderInterface dropBoxRestManager;
+		OAuthProviderInterface oAuthProvider;
 		try {
-			dropBoxRestManager = CommunicationManager.getServerInterface().oAuthProvider();
+			oAuthProvider = CommunicationManager.getServerInterface().oAuthProvider();
 		} catch (RemoteException e) {
 			e.printStackTrace();
-			writeAndSendResponse(resp, ResposeType.ERROR);
+			writeAndSendResponse(resp, ResponseType.ERROR);
 			return;
 		}
 
 		if (code == null) {
-			this.writeAndSendResponse(resp, ResposeType.WRONG_CALL);
+			this.writeAndSendResponse(resp, ResponseType.WRONG_CALL);
 			return;
 		}
-		String codeToTokenResponse = dropBoxRestManager.getAccessTokenResponse(code);
+		String codeToTokenResponse = oAuthProvider.getAccessTokenResponse(code);
 
 		JSONObject codeToTokenResponseJson = new JSONObject(codeToTokenResponse);
 
 
 		if ( !codeToTokenResponseJson.has("access_token")) {
-			this.writeAndSendResponse(resp, ResposeType.WRONG_CODE);
+			this.writeAndSendResponse(resp, ResponseType.WRONG_CODE);
 			return;
 		}
 
@@ -61,10 +61,10 @@ public class CallBackServlet extends HttpServlet {
 				} catch (DataServerException | IncompleteException | NotFoundException | UnauthorizedException e) {
 					e.printStackTrace();
 				} finally {
-					this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME, dropBoxRestManager);
+					this.writeAndSendResponse(resp, ResponseType.REDIRECT_HOME, oAuthProvider);
 				}
 			}
-			this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME, dropBoxRestManager);
+			this.writeAndSendResponse(resp, ResponseType.REDIRECT_HOME, oAuthProvider);
 		} else {
 			String tokenUserId = codeToTokenResponseJson.getString("account_id");
 			try {
@@ -75,19 +75,19 @@ public class CallBackServlet extends HttpServlet {
 			} catch (DataServerException | RemoteException | UnauthorizedException e) {
 				e.printStackTrace();
 			} finally {
-				this.writeAndSendResponse(resp, ResposeType.REDIRECT_HOME, dropBoxRestManager);
+				this.writeAndSendResponse(resp, ResponseType.REDIRECT_HOME, oAuthProvider);
 			}
 		}
 	}
 
-	private void writeAndSendResponse(HttpServletResponse resp, ResposeType type, OAuthProviderInterface dropBoxRestManager) throws IOException {
+	private void writeAndSendResponse(HttpServletResponse resp, ResponseType type, OAuthProviderInterface dropBoxRestManager) throws IOException {
 		PrintWriter writer = resp.getWriter();
 		if(dropBoxRestManager.getLocal()) writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=http://localhost:8080/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"http://localhost:8080/dropmusic\">\">this page</a></p></body></html>");
 		else writer.println("<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0; url=https://onept.pt:8443/dropmusic\"></head><body><p>If your browser doesn't redirect in 5 seconds go to<a href=\"https://onept.pt:8443/dropmusic\">\">this page</a></p></body></html>");
 		writer.flush();
 	}
 
-	private void writeAndSendResponse(HttpServletResponse resp, ResposeType type) throws IOException {
+	private void writeAndSendResponse(HttpServletResponse resp, ResponseType type) throws IOException {
 		PrintWriter writer = resp.getWriter();
 		switch (type) {
 			case WRONG_CALL:

@@ -3,6 +3,10 @@
 <%@ page contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 
+<s:if test="%{#session.logged}">
+<p><s:text name="loggedAs" /> <s:property value="%{#session.user.username}" /></p>
+</s:if>
+
 <s:if test="hasActionErrors()">
 	<div class="errorMessage">
 		<s:actionerror/>
@@ -31,11 +35,12 @@
 	<nav>
 
 		<a href="<s:url action="addArtistAction"/>">Add Artist</a> |
-		<a href="<s:url action="showArtistCleanPage"/>">Clean Artists</a> |
 		<a href="<s:url action="addAlbumAction"/>">Add Album</a> |
+		<a href="<s:url action="addMusicAction"/>">Add Music</a> |
+		<a href="<s:url action="showArtistCleanPage"/>">Clean Artists</a> |
 		<a href="<s:url action="listUsersAction"/>">List Users</a>
 
 	</nav>
 	</s:if>
-
+<br><br>
 </s:if>
