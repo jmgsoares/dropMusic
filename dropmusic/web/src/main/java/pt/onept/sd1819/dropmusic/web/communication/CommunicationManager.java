@@ -19,7 +19,7 @@ public class CommunicationManager {
 	/**
 	 * Gets the parameterized ServerInterface
 	 * @return Server Interface
-	 * @throws RemoteException
+	 * @throws RemoteException on RMI error
 	 */
 	public static synchronized DropmusicServerInterface getServerInterface() throws RemoteException {
 		return pt.onept.sd1819.dropmusic.common.communication.rmi.CommunicationManager.getServerInterface(

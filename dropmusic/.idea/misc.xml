@@ -8,8 +8,9 @@
     <option name="languageLevel" value="ES6" />
   </component>
   <component name="JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Desktop" />
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Desktop/api" />
     <option name="OPTION_SCOPE" value="private" />
+    <option name="OPEN_IN_BROWSER" value="false" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

@@ -52,6 +52,7 @@ public final class DropBox20 {
 
 	/**
 	 * Lists the file the user has inside the "App" folder.
+	 * @param userToken the user access token
 	 * @return An array with all the files in the folder
 	 */
 	public static JSONArray listUserFiles(String userToken) {
@@ -78,6 +79,7 @@ public final class DropBox20 {
 
 	/**
 	 * Lists the files other users shared with the user
+	 * @param userToken the user access token
 	 * @return An array with all the files other users shared with the user
 	 */
 	public static JSONArray listSharedFiles(String userToken) {
@@ -100,6 +102,7 @@ public final class DropBox20 {
 
 	/**
 	 * Uploads a file to the user "App" folder
+	 * @param userToken the user access token
 	 * @param pathToAppFolder Path to the folder where the source file is located
 	 * @param fileName Name of the file to upload
 	 * @return A JsonObject with the uploaded file information
@@ -124,6 +127,7 @@ public final class DropBox20 {
 
 	/**
 	 * Deletes a file from the user "App" folder
+	 * @param userToken the user access token
 	 * @param fileName Name of the file to delete
 	 * @return The success of the operation
 	 */
@@ -146,6 +150,7 @@ public final class DropBox20 {
 
 	/**
 	 * Gets a file form the user "App" folder
+	 * @param userToken the user access token
 	 * @param pathToLocalAppFolder Path to the local folder where to store the file
 	 * @param fileName Name of the file to download
 	 * @return A JsonObject with the downloaded file information
@@ -177,6 +182,7 @@ public final class DropBox20 {
 
 	/**
 	 * Gets the meta data of a shared file
+	 * @param userToken the user access token
 	 * @param fileId Dropbox file Id
 	 * @return A JsonObject with the shared file information
 	 */
@@ -199,6 +205,7 @@ public final class DropBox20 {
 
 	/**
 	 * Gets a file shared by other users
+	 * @param userToken the user access token
 	 * @param pathToLocalAppFolder Path to the local folder where to store the file
 	 * @param fileUrl Dropbox preview url
 	 * @return A JsonObject with the downloaded file information
@@ -230,6 +237,7 @@ public final class DropBox20 {
 
 	/**
 	 * Shares a file with a specific user
+	 * @param userToken the user access token
 	 * @param fileId The dropbox file id to share
 	 * @param userId ID of the user whom to share the file with
 	 * @return A JsonObject with the result of the operation
@@ -264,6 +272,7 @@ public final class DropBox20 {
 
 	/**
 	 * Unshares a file with a specific user
+	 * @param userToken the user access token
 	 * @param fileId The dropbox file id to unshare
 	 * @param eMail Email of the user whom to unshare the file with
 	 * @return A JsonObject with the result of the operation

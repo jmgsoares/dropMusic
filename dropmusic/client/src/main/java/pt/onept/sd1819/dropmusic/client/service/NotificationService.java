@@ -20,7 +20,7 @@ public class NotificationService extends UnicastRemoteObject implements Notifiab
 
 	/**
 	 *
-	 * @throws RemoteException
+	 * @throws RemoteException on creation
 	 */
 	public NotificationService() throws RemoteException {
 	}
