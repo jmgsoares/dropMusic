@@ -60,8 +60,6 @@ public class CallBackServlet extends HttpServlet {
 					userManager.update(new User().setEditor(true), user);
 				} catch (DataServerException | IncompleteException | NotFoundException | UnauthorizedException e) {
 					e.printStackTrace();
-				} finally {
-					this.writeAndSendResponse(resp, ResponseType.REDIRECT_HOME, oAuthProvider);
 				}
 			}
 			this.writeAndSendResponse(resp, ResponseType.REDIRECT_HOME, oAuthProvider);
