@@ -16,6 +16,8 @@
 
 	<p><s:text name="musicName" /> : <s:property value="model.name" /></p>
 
+	<p> <a href=" <s:url action="readAlbumAction"> <s:param name="model.id" value="model.albumid"/> </s:url>">View Album</a></p>
+
 	<s:if test="%{#session.user.editor}">
 
 		<button onclick="$('#toggleableAdminDiv').toggle()">Edit Music</button>
