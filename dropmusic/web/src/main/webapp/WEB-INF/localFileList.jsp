@@ -40,6 +40,11 @@
 						<s:text name="linkedMusic" /></a>
 				</td>
 
+				<td>
+
+					<a href="<s:property value="dropBoxPrevUrl" />"><s:text name="download" /></a>
+				</td>
+
 			</tr>
 		</s:iterator>
 
