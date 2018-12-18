@@ -7,6 +7,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Album</title>
 	<s:include value="../template/scripts.jsp"/>
+	<script type="text/javascript" src="template/scripts/liveUpdate.js"></script>
 
 </head>
 <body>
