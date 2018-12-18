@@ -40,7 +40,7 @@ public class LiveUpdateServlet {
 		this.endpoint = session.getBasicRemote();
 		try {
 			subscriptionId = CommunicationManager.getServerInterface().update().subscribe(
-					getBean(session),
+					getObject(session),
 					new ClientUpdater(this));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -54,7 +54,7 @@ public class LiveUpdateServlet {
 	public void close() {
 		if (this.user == null) return;
 		try {
-			CommunicationManager.getServerInterface().update().unSubscribe(getBean(this.session), this.subscriptionId);
+			CommunicationManager.getServerInterface().update().unSubscribe(getObject(this.session), this.subscriptionId);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -104,10 +104,10 @@ public class LiveUpdateServlet {
 	 * @param <T> Type
 	 * @return bean object
 	 */
-	private static <T extends DropmusicDataType> T getBean(Session sessionInput) {
+	private static <T extends DropmusicDataType> T getObject(Session sessionInput) {
 		if( LiveUpdateServlet.isLogged(sessionInput) ) {
 			HttpSession session = (HttpSession) sessionInput.getUserProperties().get("session");
-			return (T) session.getAttribute("bean");
+			return (T) session.getAttribute("object");
 		}
 		return null;
 	}
