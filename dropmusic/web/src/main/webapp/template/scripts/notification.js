@@ -1,11 +1,11 @@
 $(document).ready(main);
 
 function main() {
-    let socket = getWebSocketCrossBrowser(getNotificationUrl());
-    socket.onmessage = messageHandler;
+    let notificationSocket = getWebSocketCrossBrowser(getNotificationUrl());
+    notificationSocket.onmessage = NotificationMessageHandler;
 }
 
-function messageHandler(message) {
+function NotificationMessageHandler(message) {
     alert(message.data);
 }
 

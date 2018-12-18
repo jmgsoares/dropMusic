@@ -15,26 +15,27 @@
 	<h1>Album</h1>
 	<s:include value="../template/header.jsp"/>
 
-	<p><s:text name="albumName" /> : <s:property value="model.name" /></p>
+	<p><s:text name="albumName" /> :
+		<a id="name"><s:property value="model.name" /></a></p>
 
 	<p><s:text name="artistName" /> :
 		<a href=" <s:url action="readArtistAction"> <s:param name="model.id" value="model.artist.id"/> </s:url>">
-				<s:property value="model.artist.name" />
+			<s:property value="model.artist.name" />
 		</a>
 	</p>
 
 	<p>
 		<s:text name="description" /> :
-		<s:property value="model.description" />
+		<a id="albumDescription"><s:property value="model.description" /></a>
 	</p>
 
 	<p>
 		<s:text name="score" /> :
-		<s:property value="model.score" />
+		<a id="albumScore"><s:property value="model.score" /></a>
 	</p>
 
 	<p><s:text name="musics" /></p>
-	<table>
+	<table id="musicTale">
 		<s:iterator value="model.musics">
 			<tr>
 				<td>
@@ -43,14 +44,13 @@
 						<s:property value="name"/>
 					</a>
 				</td>
-
 			</tr>
 		</s:iterator>
 
 	</table>
 
 	<p><s:text name="reviews" /></p>
-	<table>
+	<table id="reviewTable">
 		<tr>
 			<td><s:text name="review" /></td>
 			<td><s:text name="score" /></td>
