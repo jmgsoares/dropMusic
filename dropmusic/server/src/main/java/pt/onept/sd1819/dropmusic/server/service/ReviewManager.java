@@ -7,8 +7,10 @@ import pt.onept.sd1819.dropmusic.common.communication.protocol.Operation;
 import pt.onept.sd1819.dropmusic.common.exception.DataServerException;
 import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.ReviewManagerInterface;
+import pt.onept.sd1819.dropmusic.common.server.contract.type.Album;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Review;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
+import pt.onept.sd1819.dropmusic.server.Server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -40,6 +42,15 @@ public class ReviewManager extends UnicastRemoteObject implements ReviewManagerI
 				default:
 					throw new RemoteException();
 			}
+
+
+			Message outgoingAlbumRequest = MessageBuilder.build(Operation.READ, self)
+					.setData(new Album().setId(review.getAlbumId()));
+			Message incomingAlbum = multicastHandler.sendAndWait(outgoingAlbumRequest);
+			Server.dropmusicServer.update().update(incomingAlbum.getData());
+
+
+
 		} catch (TimeoutException e) {
 			System.out.println("NO SERVER ANSWER!");
 			throw new DataServerException();
