@@ -6,8 +6,10 @@ import pt.onept.sd1819.dropmusic.common.communication.protocol.MessageBuilder;
 import pt.onept.sd1819.dropmusic.common.communication.protocol.Operation;
 import pt.onept.sd1819.dropmusic.common.exception.*;
 import pt.onept.sd1819.dropmusic.common.server.contract.subcontract.MusicManagerInterface;
+import pt.onept.sd1819.dropmusic.common.server.contract.type.Album;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.Music;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
+import pt.onept.sd1819.dropmusic.server.Server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -84,7 +86,8 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 				case INCOMPLETE:
 					throw new IncompleteException();
 			}
-		} catch (TimeoutException e) {
+			Server.dropmusicServer.update().update(this.read(self, object));
+		} catch (TimeoutException | DataServerException e) {
 			e.printStackTrace();
 		}
 	}

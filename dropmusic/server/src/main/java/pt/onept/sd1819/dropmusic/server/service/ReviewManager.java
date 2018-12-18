@@ -43,18 +43,14 @@ public class ReviewManager extends UnicastRemoteObject implements ReviewManagerI
 					throw new RemoteException();
 			}
 
-
 			Message outgoingAlbumRequest = MessageBuilder.build(Operation.READ, self)
 					.setData(new Album().setId(review.getAlbumId()));
 			Message incomingAlbum = multicastHandler.sendAndWait(outgoingAlbumRequest);
 			Server.dropmusicServer.update().update(incomingAlbum.getData());
-
-
 
 		} catch (TimeoutException e) {
 			System.out.println("NO SERVER ANSWER!");
 			throw new DataServerException();
 		}
 	}
-
 }

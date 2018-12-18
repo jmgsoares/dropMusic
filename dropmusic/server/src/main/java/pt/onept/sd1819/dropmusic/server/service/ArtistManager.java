@@ -11,6 +11,7 @@ import pt.onept.sd1819.dropmusic.common.server.contract.type.Notification;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
 import pt.onept.sd1819.dropmusic.server.Server;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -100,7 +101,8 @@ public class ArtistManager extends UnicastRemoteObject implements ArtistManagerI
 				case INCOMPLETE:
 					throw new IncompleteException();
 			}
-		} catch (TimeoutException e) {
+			Server.dropmusicServer.update().update(this.read(self, object));
+		} catch (DataServerException | TimeoutException e) {
 			e.printStackTrace();
 		}
 	}
