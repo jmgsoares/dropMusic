@@ -61,10 +61,12 @@ public class MusicAction extends ActionSupport implements LoginAware, ModelDrive
 	 * @return Action result
 	 */
 	public String read() {
+		session.remove("bean");
 		if (music.getId()==0) return Action.INPUT;
 		try {
 			MusicManagerInterface musicManager = CommunicationManager.getServerInterface().music();
 			music = musicManager.read(this.getUser(), music);
+			session.put("bean", music);
 			return Action.SUCCESS;
 		} catch (RemoteException | DataServerException e) {
 			e.printStackTrace();

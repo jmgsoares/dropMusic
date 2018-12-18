@@ -82,11 +82,13 @@ public class ArtistAction extends ActionSupport implements LoginAware, ModelDriv
 	 * @return Action result
 	 */
 	public String update() {
+		session.remove("bean");
 		if (artist.getId() == 0) return Action.INPUT;
 		try {
 			ArtistManagerInterface artistManager = CommunicationManager.getServerInterface().artist();
 			artistManager.update(this.getUser(), artist);
 			addActionMessage("Artist updated successfully");
+			session.put("bean", artist);
 			return Action.SUCCESS;
 		} catch (NotFoundException e) {
 			addActionError("The Artist wasn't found");
