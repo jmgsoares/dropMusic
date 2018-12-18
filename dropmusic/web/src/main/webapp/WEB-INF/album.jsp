@@ -28,6 +28,11 @@
 		<s:property value="model.description" />
 	</p>
 
+	<p>
+		<s:text name="score" /> :
+		<s:property value="model.score" />
+	</p>
+
 	<p><s:text name="musics" /></p>
 	<table>
 		<s:iterator value="model.musics">
