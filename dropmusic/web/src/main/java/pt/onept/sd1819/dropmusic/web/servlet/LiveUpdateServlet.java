@@ -2,6 +2,7 @@ package pt.onept.sd1819.dropmusic.web.servlet;
 
 import pt.onept.sd1819.dropmusic.common.server.contract.type.DropmusicDataType;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.User;
+import pt.onept.sd1819.dropmusic.common.utililty.JsonUtility;
 import pt.onept.sd1819.dropmusic.web.communication.CommunicationManager;
 
 import javax.servlet.http.HttpSession;
@@ -118,7 +119,7 @@ public class LiveUpdateServlet {
 	 */
 	public boolean update(DropmusicDataType object) {
 		try {
-			this.endpoint.sendText(object.toString());
+			this.endpoint.sendText(JsonUtility.toJson(object));
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
