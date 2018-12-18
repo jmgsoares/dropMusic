@@ -7,13 +7,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Music</title>
 	<s:include value="../template/scripts.jsp"/>
+	<script type="text/javascript" src="template/scripts/liveUpdate.js"></script>
 </head>
 <body>
 <s:i18n name="en-US">
 	<h1>Music</h1>
 	<s:include value="../template/header.jsp"/>
 
-	<p><s:text name="musicName" /> : <s:property value="model.name" /></p>
+	<p><s:text name="musicName" /> :
+		<a id="name"><s:property value="model.name" /></a></p>
 
 	<p> <a href=" <s:url action="readAlbumAction"> <s:param name="model.id" value="model.albumid"/> </s:url>">View Album</a></p>
 
