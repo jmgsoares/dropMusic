@@ -25,6 +25,10 @@
 		Your browser does not support the audio element.
 	</audio>
 
+	<br>
+
+	<a href="<s:property value="model.dropBoxPrevUrl" />"><s:text name="download" /></a>
+
 	<s:include value="../template/footer.jsp"/>
 </s:i18n>
 </body>
