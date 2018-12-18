@@ -66,10 +66,12 @@ public class AlbumAction extends ActionSupport implements LoginAware, ModelDrive
 	 * @return Action result
 	 */
 	public String read() {
+		session.remove("bean");
 		if (album.getId()==0) return Action.INPUT;
 		try {
 			AlbumManagerInterface albumManager = CommunicationManager.getServerInterface().album();
 			album = albumManager.read(this.getUser(), album);
+			session.put("bean", album);
 			return Action.SUCCESS;
 		} catch (RemoteException | DataServerException e) {
 			e.printStackTrace();
