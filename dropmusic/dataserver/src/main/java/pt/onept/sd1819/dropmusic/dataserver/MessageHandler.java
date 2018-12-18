@@ -8,8 +8,9 @@ import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
 import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
 import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.*;
+import pt.onept.sd1819.dropmusic.common.utililty.SubType;
 import pt.onept.sd1819.dropmusic.dataserver.database.DatabaseManager;
-import pt.onept.sd1819.dropmusic.dataserver.database.TypeFactory;
+
 
 import java.io.InvalidClassException;
 import java.lang.reflect.InvocationTargetException;
@@ -59,7 +60,7 @@ final class MessageHandler implements Runnable {
 
 	private void get_editors(Message incoming, Message outgoing) {
 		try {
-			outgoing.setDataList(this.dbManager.getEditors(TypeFactory.getSubtype(incoming.getData()), incoming.getData()))
+			outgoing.setDataList(this.dbManager.getEditors(SubType.getSubtype(incoming.getData()), incoming.getData()))
 					.setOperation(Operation.SUCCESS);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,7 +94,7 @@ final class MessageHandler implements Runnable {
 
 	private void read(Message incoming, Message outgoing) {
 		DropmusicDataType data = incoming.getData();
-		Class tClass = TypeFactory.getSubtype(data);
+		Class tClass = SubType.getSubtype(data);
 		try {
 			outgoing.setData(this.dbManager.read(tClass, data.getId()))
 					.setOperation(Operation.SUCCESS);
@@ -132,8 +133,8 @@ final class MessageHandler implements Runnable {
 	private void create_raw(Message incoming, Message outgoing) {
 		DropmusicDataType data = incoming.getData();
 		try {
-			DropmusicDataType createdObject = this.dbManager.insert(TypeFactory.getSubtype(data), data);
-			if(TypeFactory.getSubtype(data).equals(Album.class)) {
+			DropmusicDataType createdObject = this.dbManager.insert(SubType.getSubtype(data), data);
+			if(SubType.getSubtype(data).equals(Album.class)) {
 				Album createdAlbum = (Album) createdObject;
 				Album dataAlbum = (Album) data;
 				if(dataAlbum.getMusics() != null) {
@@ -189,7 +190,7 @@ final class MessageHandler implements Runnable {
 
 	private void list(Message incoming, Message outgoing) {
 		DropmusicDataType data = incoming.getData();
-		Class tClass = TypeFactory.getSubtype(data);
+		Class tClass = SubType.getSubtype(data);
 		try {
 			if(tClass.equals(File.class)) {
 				outgoing.setDataList(this.dbManager.list(incoming.getSelf().getId(), tClass, data))
@@ -233,7 +234,7 @@ final class MessageHandler implements Runnable {
 			return;
 		}
 		DropmusicDataType data = incoming.getData();
-		Class tClass = TypeFactory.getSubtype(data);
+		Class tClass = SubType.getSubtype(data);
 		try {
 			this.dbManager.update(tClass, data);
 			accountabilityHandler(incoming);
@@ -251,7 +252,7 @@ final class MessageHandler implements Runnable {
 		DropmusicDataType data = incoming.getData();
 
 		try {
-			outgoing.setData(this.dbManager.insert(TypeFactory.getSubtype(data), data))
+			outgoing.setData(this.dbManager.insert(SubType.getSubtype(data), data))
 					.setOperation(Operation.SUCCESS);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -268,7 +269,7 @@ final class MessageHandler implements Runnable {
 
 	private void delete_notifications(Message incoming, Message outgoing) {
 		DropmusicDataType data = incoming.getData();
-		Class tClass = TypeFactory.getSubtype(data);
+		Class tClass = SubType.getSubtype(data);
 		try {
 			dbManager.delete(tClass, incoming.getData());
 			System.out.println(tClass.toString());
@@ -283,7 +284,7 @@ final class MessageHandler implements Runnable {
 	private void update_user(Message incoming, Message outgoing) {
 		if (!incoming.getSelf().getEditor()) outgoing.setOperation(Operation.NO_PERMIT);
 		DropmusicDataType data = incoming.getTarget();
-		Class tClass = TypeFactory.getSubtype(data);
+		Class tClass = SubType.getSubtype(data);
 		try {
 			this.dbManager.update(tClass, data);
 			outgoing.setOperation(Operation.SUCCESS);
@@ -304,7 +305,7 @@ final class MessageHandler implements Runnable {
 		User user = incoming.getSelf();
 		DropmusicDataType data = incoming.getData();
 		if (user == null || data == null) return;
-		Class cls = TypeFactory.getSubtype(data);
+		Class cls = SubType.getSubtype(data);
 		if(cls.equals(Album.class) || cls.equals(Artist.class)) this.dbManager.logInsert(cls, data, user.getId());
 	}
 }
