@@ -100,7 +100,8 @@ public class AlbumManager extends UnicastRemoteObject implements AlbumManagerInt
 				case INCOMPLETE:
 					throw new IncompleteException();
 			}
-		} catch (TimeoutException e) {
+			Server.dropmusicServer.update().update(this.read(self, object));
+		} catch (TimeoutException | DataServerException e) {
 			e.printStackTrace();
 		}
 	}
