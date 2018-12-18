@@ -20,6 +20,7 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 	private ReviewManagerInterface reviewManager;
 	private OAuthProviderInterface oAuthProvider;
 	private FileManagerInterface fileManager;
+	private UpdateManagerInterface updateManager;
 
 	public DropmusicServer(MulticastHandler multicastHandler) throws RemoteException {
 		super();
@@ -32,6 +33,7 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 		this.reviewManager = new ReviewManager(this.multicastHandler);
 		this.fileManager = new FileManager(this.multicastHandler);
 		this.oAuthProvider = new OAuthProvider();
+		this.updateManager = new UpdateManager();
 	}
 
 	@Override
@@ -72,5 +74,10 @@ public class DropmusicServer extends UnicastRemoteObject implements DropmusicSer
 	@Override
 	public FileManagerInterface file() throws RemoteException {
 		return this.fileManager;
+	}
+
+	@Override
+	public UpdateManagerInterface update() throws RemoteException {
+		return this.updateManager;
 	}
 }

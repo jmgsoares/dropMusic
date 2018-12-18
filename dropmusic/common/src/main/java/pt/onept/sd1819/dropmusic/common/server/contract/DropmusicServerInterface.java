@@ -32,4 +32,6 @@ public interface DropmusicServerInterface extends Remote, Serializable {
 
 	FileManagerInterface file() throws RemoteException;
 
+	UpdateManagerInterface update() throws RemoteException;
+
 }
