@@ -10,7 +10,7 @@
     <constant name="struts.devMode" value="true"/>
     <constant name="struts.ui.theme" value="simple"/>
 
-    <constant name="struts.action.excludePattern" value="/notification, /dropBoxOA20" />
+    <constant name="struts.action.excludePattern" value="/notification, /dropBoxOA20, /liveUpdate" />
 
     <package name="web" extends="struts-default">
 
