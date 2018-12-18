@@ -4,6 +4,7 @@ import pt.onept.sd1819.dropmusic.common.exception.IncompleteException;
 import pt.onept.sd1819.dropmusic.common.exception.NotFoundException;
 import pt.onept.sd1819.dropmusic.common.exception.UnauthorizedException;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.*;
+import pt.onept.sd1819.dropmusic.common.utililty.SubType;
 
 import java.io.InvalidClassException;
 import java.sql.Connection;
@@ -142,7 +143,7 @@ public class DatabaseManager {
 			ps.setString(2, user.getPassword());
 
 		} else {
-			System.out.println("###" + TypeFactory.getSubtype(object).toString());
+			System.out.println("###" + SubType.getSubtype(object).toString());
 			throw new InvalidClassException("");
 		}
 		return ps;
@@ -176,7 +177,7 @@ public class DatabaseManager {
 			ps.setString(3, user.getDropBoxToken());
 			ps.setInt(4, user.getId());
 		} else {
-			System.out.println("###" + TypeFactory.getSubtype(object).toString());
+			System.out.println("###" + SubType.getSubtype(object).toString());
 			throw new InvalidClassException("");
 		}
 		return ps;
