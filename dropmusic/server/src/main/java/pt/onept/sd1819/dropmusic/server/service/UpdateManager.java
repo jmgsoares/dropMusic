@@ -28,6 +28,8 @@ public class UpdateManager extends UnicastRemoteObject implements UpdateManagerI
 
 	@Override
 	public <T extends DropmusicDataType> void update(T object) throws RemoteException {
+		if(this.objectUuid.get(SubType.getSubtype(object)) == null) return;
+		if(this.objectUuid.get(SubType.getSubtype(object)).get(object.getId()) == null) return;
 		Set<UUID> updatableIds = this.objectUuid.get(SubType.getSubtype(object)).get(object.getId());
 		if( updatableIds != null) updatableIds.stream()
 				.parallel()
