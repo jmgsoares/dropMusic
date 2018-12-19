@@ -43,7 +43,7 @@ public class Dataserver {
 		if (cleanAndPopulate) {
 			System.out.println("Cleaning and populating db @ " + db);
 			databaseConnector.executeSqlScript("createDB.sql");
-			databaseConnector.executeSqlScript("dummy_data.sql");
+			databaseConnector.executeSqlScript("test_data.sql");
 		}
 
 		multicastHandler = new MulticastHandler(txMultiCastAddress, rxMultiCastAddress, multiCastPort, failOverTime);
