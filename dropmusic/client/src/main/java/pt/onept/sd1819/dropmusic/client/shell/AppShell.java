@@ -1,6 +1,11 @@
 package pt.onept.sd1819.dropmusic.client.shell;
 
 import asg.cliche.*;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONObject;
 import pt.onept.sd1819.dropmusic.client.Client;
 import pt.onept.sd1819.dropmusic.common.communication.rmi.CommunicationManager;
 import pt.onept.sd1819.dropmusic.client.service.NotificationService;
@@ -9,6 +14,10 @@ import pt.onept.sd1819.dropmusic.common.server.contract.Crudable;
 import pt.onept.sd1819.dropmusic.common.server.contract.type.*;
 import pt.onept.sd1819.dropmusic.common.utililty.JsonUtility;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +34,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	/**
 	 * Constructor
+	 *
 	 * @param user User to attach the shell
 	 */
 	public AppShell(User user) {
@@ -38,6 +48,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 
 	/**
 	 * Prints messages to the user
+	 *
 	 * @param message message to print
 	 * @return message to print @ the CLI
 	 */
@@ -68,7 +79,7 @@ public class AppShell implements ShellManageable, ShellDependent {
 					CommunicationManager.handleFailOver();
 				}
 			}
-			if(retry) this.shell.processLine("message \"RMI SERVER ERROR while subscribing\n" +
+			if (retry) this.shell.processLine("message \"RMI SERVER ERROR while subscribing\n" +
 					"You will not be able to receive live notifications\"");
 		} catch (CLIException e) {
 			e.printStackTrace();
@@ -603,6 +614,248 @@ public class AppShell implements ShellManageable, ShellDependent {
 		return output;
 	}
 
+	@Command(name = "listRemote", description = "List remote files")
+	public String listRemoteFiles() {
+		List<File> fileList;
+		boolean retry = true;
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+			try {
+				this.user = CommunicationManager.getServerInterface().user().read(this.user, user);
+
+				fileList = CommunicationManager.getServerInterface().file().listRemoteFiles(this.user);
+				retry = false;
+				return JsonUtility.toPrettyJson(fileList);
+
+			} catch (RemoteException | NotFoundException | UnauthorizedException | DataServerException e) {
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
+
+	@Command(name = "listMusics", description = "List app musics")
+	public String listMusics() {
+		List<Music> musicList;
+		boolean retry = true;
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+			try {
+				this.user = CommunicationManager.getServerInterface().user().read(this.user, user);
+
+				musicList = CommunicationManager.getServerInterface().music().list(this.user);
+
+				retry = false;
+
+				return JsonUtility.toPrettyJson(musicList);
+
+			} catch (RemoteException | NotFoundException | UnauthorizedException | DataServerException e) {
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
+
+	@Command(name = "linkRemote", description = "Link file")
+	public String linkRemote(String remoteId, int localId) {
+		boolean retry = true;
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+		while (retry & deadLine >= System.currentTimeMillis()) {
+			try {
+				this.user = CommunicationManager.getServerInterface().user().read(this.user, user);
+				Music music = CommunicationManager.getServerInterface().music().read(this.user, new Music().setId(localId));
+
+				 CommunicationManager.getServerInterface().file().linkRemoteFile(
+				 		this.user,
+						 new File()
+								 .setDropBoxFileId(remoteId)
+								 .setMusicId(localId)
+								 .setOwnerId(this.user.getId())
+						         .setMusicName(music.getName())
+						 );
+				retry = false;
+
+			} catch (RemoteException | NotFoundException | UnauthorizedException | DataServerException | DuplicatedException e) {
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
+
+	@Command(name = "listUsers", description = "Link file")
+	public String listUsers() {
+		List<User> userList;
+		boolean retry = true;
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+			try {
+				this.user = CommunicationManager.getServerInterface().user().read(this.user, user);
+
+				userList = CommunicationManager.getServerInterface().user().list(this.user);
+
+				retry = false;
+
+				return JsonUtility.toPrettyJson(userList);
+
+			} catch (RemoteException | NotFoundException | UnauthorizedException | DataServerException e) {
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
+
+	@Command(name = "listFiles", description = "List files")
+	public String listFiles() {
+		List<File> fileList;
+		boolean retry = true;
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+			try {
+				this.user = CommunicationManager.getServerInterface().user().read(this.user, user);
+
+				fileList = CommunicationManager.getServerInterface().file().list(this.user);
+				retry = false;
+				return JsonUtility.toPrettyJson(fileList);
+
+			} catch (RemoteException | NotFoundException | UnauthorizedException | DataServerException e) {
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
+
+	@Command(name = "listSharedFiles", description = "List shared")
+	public String listSharedFiles() {
+		List<File> fileList;
+		boolean retry = true;
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+			try {
+				this.user = CommunicationManager.getServerInterface().user().read(this.user, user);
+
+				fileList = CommunicationManager.getServerInterface().file().listSharedFiles(this.user);
+				retry = false;
+				return JsonUtility.toPrettyJson(fileList);
+
+			} catch (RemoteException | NotFoundException | UnauthorizedException | DataServerException e) {
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
+
+	@Command(name = "shareFile", description = "Share a file")
+	public String shareFile(int fileId, int userId) {
+		boolean retry = true;
+		long deadLine = System.currentTimeMillis() + Client.failOverTime;
+
+		while (retry & deadLine >= System.currentTimeMillis()) {
+			try {
+				this.user = CommunicationManager.getServerInterface().user().read(this.user, user);
+
+				CommunicationManager.getServerInterface().file().shareFile(
+						this.user,
+						new File().setId(fileId),
+						new User().setId(userId));
+				retry = false;
+				return "";
+
+			} catch (RemoteException | NotFoundException | UnauthorizedException | DataServerException e) {
+				e.printStackTrace();
+			} catch (OAuthException e) {
+				return "That user has no DropBox Account Associated";
+			}
+		}
+		return "";
+	}
+
+	@Command(name = "saveFile", description = "Save a file")
+	public String saveFile(String fileName, String path) {
+		try {
+			JSONObject filePath = new JSONObject();
+			filePath.put("path", "/SD_UC_1819/" + fileName);
+			HttpResponse<InputStream> response = Unirest.post(
+					"https://content.dropboxapi.com/2/files/download")
+					.header("Authorization", "Bearer " + this.user.getDropBoxToken())
+					.header("Content-Type", "application/octet-stream")
+					.header("Dropbox-API-Arg", filePath.toString())
+					.asBinary();
+			JSONObject responseApiResult = new JSONObject(
+					response.getHeaders().getFirst("dropbox-api-result"));
+
+			saveFileLocally(
+					response.getRawBody(),
+					path,
+					responseApiResult.get("name").toString());
+
+			return "SUCCESS";
+		} catch (UnirestException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static void saveFileLocally(InputStream inputStream, String pathToLocalAppFolder, String fileName) {
+		try {
+			java.io.File file = new java.io.File(pathToLocalAppFolder + "/" + fileName);
+
+			Files.copy(inputStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Command(name = "saveSharedFile", description = "Save a shared file")
+	public String saveSharedFile(String urlFile, String path) {
+		try {
+			JSONObject dropBoxApiArgs = new JSONObject();
+			dropBoxApiArgs.put("url", urlFile);
+			HttpResponse<InputStream> response = Unirest.post(
+					"https://content.dropboxapi.com/2/sharing/get_shared_link_file")
+					.header("Authorization", "Bearer " + this.user.getDropBoxToken())
+					.header("Dropbox-API-Arg", dropBoxApiArgs.toString())
+					.asBinary();
+
+			JSONObject responseApiResult = new JSONObject(
+					response.getHeaders().getFirst("dropbox-api-result"));
+
+			saveFileLocally(
+					response.getRawBody(),
+					path,
+					responseApiResult.get("name").toString());
+
+			return "SUCCESS";
+		} catch (UnirestException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Command(name = "uploadFile", description = "Upload a file")
+	public String uploadFile(String path, String fileName) {
+		try {
+			JSONObject filePath = new JSONObject();
+			filePath.put("path", "/SD_UC_1819/" + fileName);
+			java.io.File file = new java.io.File(path + "/SD_UC_1819/" + fileName);
+			HttpResponse<JsonNode> response = Unirest.post("https://content.dropboxapi.com/2/files/upload")
+					.header("Authorization", "Bearer " + this.user.getDropBoxToken())
+					.header("Content-Type", "application/octet-stream")
+					.header("Dropbox-API-Arg", filePath.toString())
+					.body(Files.readAllBytes(file.toPath()))
+					.asJson();
+			return "SUCCESS";
+		} catch (UnirestException | IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private <T> String cat(T objectId, Crudable<T> client) {
 		String output = null;
 		T object;
@@ -631,4 +884,5 @@ public class AppShell implements ShellManageable, ShellDependent {
 		}
 		return output;
 	}
+
 }
