@@ -98,13 +98,13 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 
 	@Override
 	public List<Music> list(User self) throws RemoteException, DataServerException {
-		List<Music> artistList;
+		List<Music> musicList;
 		Message incoming;
 		Message outgoing = MessageBuilder.build(Operation.LIST, self)
 				.setData(new Music());
 		try {
 			incoming = multicastHandler.sendAndWait(outgoing);
-			artistList = incoming.getDataList();
+			musicList = incoming.getDataList();
 			switch (incoming.getOperation()) {
 				case SUCCESS:
 					break;
@@ -115,6 +115,6 @@ public class MusicManager extends UnicastRemoteObject implements MusicManagerInt
 			System.out.println("NO SERVER ANSWER!");
 			throw new DataServerException();
 		}
-		return artistList;
+		return musicList;
 	}
 }
