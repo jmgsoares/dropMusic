@@ -61,7 +61,7 @@
 
 
         <action name="getPlayerAction" class="pt.onept.sd1819.dropmusic.web.action.FileAction" method="play">
-            <interceptor-ref name="EditorStack" />
+            <interceptor-ref name="OAuthLinkedStack" />
             <result>/WEB-INF/player.jsp</result>
             <result name="error" type="chain">index</result>
             <result name="login" type="chain">index</result>
