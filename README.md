@@ -1,5 +1,5 @@
 # ds-project
-## Distributed Systems - BSc Course - University of Coimbra - 2018/2019
+## Distributed Systems Project - BSc Course - University of Coimbra - 2018/2019
 This repository contains the project assignment for the Distributed Systems subject (2018/2019 edition) on the Bachelor's Degree in Informatics Engineering course from the University of Coimbra
 
 The objective of the project was to create a distributed system following the architecture bellow
